@@ -1,0 +1,4 @@
+rootProject.name = 'stock'
+include 'modules:stock-data'
+findProject(':modules:stock-data')?.name = 'stock-data'
+

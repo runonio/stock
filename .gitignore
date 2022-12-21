@@ -1,0 +1,36 @@
+# intellij files
+.idea/
+*.iml
+*.ipr
+*.iws
+build-idea/
+out/
+/classes/
+
+# eclipse files
+.project
+.classpath
+.settings
+build-eclipse/
+
+# gradle stuff
+.gradle/
+build/
+
+# testing stuff
+**/.local*
+.vagrant/
+/logs/
+/log/
+/config/
+
+# osx stuff
+.DS_Store
+
+# random old stuff that we should look at the necessity of...
+/tmp/
+eclipse-build
+
+# data
+/data/
+chromedriver.exe
