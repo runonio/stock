@@ -1,4 +1,6 @@
 rootProject.name = 'stock'
 include 'modules:stock-data'
 findProject(':modules:stock-data')?.name = 'stock-data'
+include 'modules:stock-trading'
+findProject(':modules:stock-trading')?.name = 'stock-trading'
 
