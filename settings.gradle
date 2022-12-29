@@ -3,4 +3,8 @@ include 'modules:stock-data'
 findProject(':modules:stock-data')?.name = 'stock-data'
 include 'modules:stock-trading'
 findProject(':modules:stock-trading')?.name = 'stock-trading'
+include 'modules:stock-jdbc'
+findProject(':modules:stock-jdbc')?.name = 'stock-jdbc'
+include 'modules:stock-ds'
+findProject(':modules:stock-ds')?.name = 'stock-ds'
 
