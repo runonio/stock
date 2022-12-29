@@ -5,12 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>io.runon.stock</groupId>
-    <artifactId>stock-data</artifactId>
+    <artifactId>stock-ds</artifactId>
     <version>0.0.1</version>
     <packaging>jar</packaging>
 
-    <name>stock-data</name>
-    <description>stock trading data</description>
+    <name>stock-ds</name>
+    <description>stock data service</description>
     <url>https://github.com/runonio/stock</url>
 
     <licenses>
