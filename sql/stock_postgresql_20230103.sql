@@ -1,3 +1,4 @@
+drop table stock_group_map
 
 CREATE TABLE bonds
 (
@@ -44,10 +45,10 @@ CREATE TABLE futures
     tick_value           VARCHAR NULL,
     symbol               VARCHAR NULL,
     point_value          VARCHAR NULL,
-    month                VARBINARY NULL,
+    maturity_month       VARCHAR NULL,
     contract_size        VARCHAR NULL,
     settlement_type      VARCHAR NULL,
-    settlement_day       VARBINARY NULL,
+    settlement_day       VARCHAR NULL,
     last_rollover_day    VARCHAR NULL
 );
 
@@ -157,7 +158,7 @@ comment on table futures is '선물';
          comment on column futures.tick_value is '틱가치';
          comment on column futures.symbol is '티커_심볼';
          comment on column futures.point_value is '포인트가치';
-         comment on column futures.month is '만기월';
+         comment on column futures.maturity_month is '만기월';
          comment on column futures.contract_size is '계약단위';
          comment on column futures.settlement_type is '결제방식';
          comment on column futures.settlement_day is '결제일';
