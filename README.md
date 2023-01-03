@@ -22,6 +22,46 @@ stock data service
 
 위 서비스들은 사용자 단에서 직접 접근하는 경우는 없습니다. 직접 접근이 가능한 관련도가 깊은 개발자들이 사용하는 프로젝트이며 분석에 필요한 표준화된 데이터 구조로 변환시키는 작업을 합니다
 
+# 데이터 구조
+
+퀀트에 필요하다고 생각하는 데이터구조를 정리 합니다.
+<br><br>
+현물과 선물의 폴더 구조는 국가코드_심볼
+<br> 예:)KOR_500069
+
+- data/stock/indices
+  - 인덱스( 코스피, 나스닥, S&P500 ...)
+- data/stock/spot
+  - 현물정보 candle,order_book, 기타정보(신용, 대차잔고, 공매도) 
+- data/stock/futures
+  - 선물 정보 candle, order_book, open_interest 
+  - data/stock/futures/indices 증시 선물
+  - data/stock/futures/commodities 원자재 선물
+  - data/stock/futures/bonds 채권 선물
+- data/stock/company
+  - 회사정보, 제무재표, 발행주식수, 공시
+- data/bonds
+  - 채권, 국채금리
+- data/forex
+  - 외환시장, 환율
+
+- 매크로
+  - 통화량
+  - 기준금리
+  - CPI, PCE
+  - OECD 경기선행지수
+  - 제조업 PMI
+  - 실업청구건수
+  - 구인건수, 자발적 퇴직건수
+  - 고용지표
+  - GDP
+  - 국가부채
+  - 가계부채
+  - 회사부채
+  - ECB Balance sheet (유럽 양적와화 긴축 차트)
+  - US M2 money supply: YoY change (미국 유동성 차트)
+- 부동산
+
 
 
 # communication
