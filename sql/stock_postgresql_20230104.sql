@@ -1,5 +1,3 @@
-drop table stock_group_map
-
 CREATE TABLE bonds
 (
     bond_id              VARCHAR NOT NULL,
@@ -77,28 +75,6 @@ ALTER TABLE indices
 
 
 
-CREATE TABLE stock
-(
-    stock_id             VARCHAR NOT NULL,
-    exchange             VARCHAR NULL,
-    symbol               VARCHAR NULL,
-    stock_type           VARCHAR NOT NULL DEFAULT 'STOCK',
-    cik                  VARCHAR NULL,
-    name_ko              VARCHAR NULL,
-    name_en              VARCHAR NULL,
-    description          VARCHAR NULL,
-    is_listing           boolean NOT NULL DEFAULT true,
-    listed_at            TIMESTAMP NULL,
-    founded_at           TIMESTAMP NULL,
-    updated_at           TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
-);
-
-
-
-ALTER TABLE stock
-    ADD PRIMARY KEY (stock_id);
-
-
 
 CREATE TABLE stock_group
 (
@@ -129,6 +105,79 @@ CREATE TABLE stock_group_map
 
 ALTER TABLE stock_group_map
     ADD PRIMARY KEY (group_id,stock_id);
+
+
+
+
+
+CREATE TABLE issued_shares_history
+(
+    row_no               BIGINT NOT NULL,
+    stock_id             VARCHAR NOT NULL,
+    stock_type           VARCHAR NOT NULL DEFAULT 'STOCK',
+    par_value            NUMERIC NULL,
+    description          VARCHAR NULL,
+    issued_shares_change NUMERIC NOT NULL,
+    listed_at            TIMESTAMP NOT NULL
+);
+
+
+
+ALTER TABLE issued_shares_history
+    ADD PRIMARY KEY (row_no);
+
+
+CREATE TABLE stock
+(
+    stock_id             VARCHAR NOT NULL,
+    exchange             VARCHAR NULL,
+    symbol               VARCHAR NULL,
+    stock_type           VARCHAR NOT NULL DEFAULT 'STOCK',
+    cik                  VARCHAR NULL,
+    name_ko              VARCHAR NULL,
+    name_en              VARCHAR NULL,
+    description          VARCHAR NULL,
+    is_listing           boolean NOT NULL DEFAULT true,
+    listed_at            TIMESTAMP NULL,
+    issued_shares        NUMERIC NULL,
+    shares_outstanding   NUMERIC NULL,
+    founded_at           TIMESTAMP NULL,
+    updated_at           TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+
+
+ALTER TABLE stock
+    ADD PRIMARY KEY (stock_id);
+
+
+
+comment on table issued_shares_history is '주식발행이력';
+        comment on column issued_shares_history.row_no is '로우번호';
+         comment on column issued_shares_history.stock_id is '주식아이디';
+         comment on column issued_shares_history.stock_type is '주식종류';
+         comment on column issued_shares_history.par_value is '액면가';
+         comment on column issued_shares_history.description is 'description';
+         comment on column issued_shares_history.issued_shares_change is '발행주식수증감';
+         comment on column issued_shares_history.listed_at is '상장일시';
+
+comment on table stock is '주식';
+        comment on column stock.stock_id is '주식아이디';
+         comment on column stock.exchange is '거래소';
+         comment on column stock.symbol is '심볼';
+         comment on column stock.stock_type is '주식유형';
+         comment on column stock.cik is 'CIK';
+         comment on column stock.name_ko is '이름_한글';
+         comment on column stock.name_en is '이름_영문';
+         comment on column stock.description is 'description';
+         comment on column stock.is_listing is '상장여부';
+         comment on column stock.listed_at is '상장일시';
+         comment on column stock.issued_shares is '발행주식수';
+         comment on column stock.shares_outstanding is '유통주식수';
+         comment on column stock.founded_at is '창립일시';
+         comment on column stock.updated_at is '업데이트일시';
+
+
 
 
 
@@ -173,19 +222,6 @@ comment on table indices is '지수';
          comment on column indices.description is 'description';
          comment on column indices.updated_at is '업데이트일시';
 
-comment on table stock is '주식종목';
-        comment on column stock.stock_id is '주식아이디';
-         comment on column stock.exchange is '거래소';
-         comment on column stock.symbol is '심볼';
-         comment on column stock.stock_type is '주식유형';
-         comment on column stock.cik is 'CIK';
-         comment on column stock.name_ko is '이름_한글';
-         comment on column stock.name_en is '이름_영문';
-         comment on column stock.description is 'description';
-         comment on column stock.is_listing is '상장여부';
-         comment on column stock.listed_at is '상장일시';
-         comment on column stock.founded_at is '창립일시';
-         comment on column stock.updated_at is '업데이트일시';
 
 comment on table stock_group is '주식그룹';
         comment on column stock_group.group_id is '그룹아이디';
@@ -204,3 +240,5 @@ comment on table stock_group_map is '주식그룹맵';
 
 create index idx_stock_01
     on stock (exchange desc);
+
+create sequence seq_issued_shares_history;
