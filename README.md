@@ -50,17 +50,22 @@ stock data service
   - 기준금리
   - CPI, PCE
   - OECD 경기선행지수
+  - ISM 제조업 지표
   - 제조업 PMI
+  - 실업률과 고용지표 관련자료 ADP고용
   - 실업청구건수
   - 구인건수, 자발적 퇴직건수
-  - 고용지표
   - GDP
   - 국가부채
   - 가계부채
   - 회사부채
   - ECB Balance sheet (유럽 양적와화 긴축 차트)
   - US M2 money supply: YoY change (미국 유동성 차트)
+  - 연준지수 (몇개의 주가 좋지 않은지)
+  - GWIM equity allocation ) (Bofa investment strategy)(주식비중 차트)
 - 부동산
+  - 주택구입 부담지수
+  - GDP 대비 부동산 시가총액
 
 
 
