@@ -127,12 +127,14 @@ ALTER TABLE issued_shares_history
     ADD PRIMARY KEY (row_no);
 
 
+
 CREATE TABLE stock
 (
     stock_id             VARCHAR NOT NULL,
     exchange             VARCHAR NULL,
     symbol               VARCHAR NULL,
     stock_type           VARCHAR NOT NULL DEFAULT 'STOCK',
+    isin                 VARCHAR NULL,
     cik                  VARCHAR NULL,
     name_ko              VARCHAR NULL,
     name_en              VARCHAR NULL,
@@ -152,20 +154,12 @@ ALTER TABLE stock
 
 
 
-comment on table issued_shares_history is '주식발행이력';
-        comment on column issued_shares_history.row_no is '로우번호';
-         comment on column issued_shares_history.stock_id is '주식아이디';
-         comment on column issued_shares_history.stock_type is '주식종류';
-         comment on column issued_shares_history.par_value is '액면가';
-         comment on column issued_shares_history.description is 'description';
-         comment on column issued_shares_history.issued_shares_change is '발행주식수증감';
-         comment on column issued_shares_history.listed_at is '상장일시';
-
 comment on table stock is '주식';
         comment on column stock.stock_id is '주식아이디';
          comment on column stock.exchange is '거래소';
          comment on column stock.symbol is '심볼';
          comment on column stock.stock_type is '주식유형';
+         comment on column stock.isin is 'ISIN';
          comment on column stock.cik is 'CIK';
          comment on column stock.name_ko is '이름_한글';
          comment on column stock.name_en is '이름_영문';
@@ -178,7 +172,18 @@ comment on table stock is '주식';
          comment on column stock.updated_at is '업데이트일시';
 
 
+create index idx_stock_01
+    on stock (exchange desc);
 
+
+comment on table issued_shares_history is '주식발행이력';
+        comment on column issued_shares_history.row_no is '로우번호';
+         comment on column issued_shares_history.stock_id is '주식아이디';
+         comment on column issued_shares_history.stock_type is '주식종류';
+         comment on column issued_shares_history.par_value is '액면가';
+         comment on column issued_shares_history.description is 'description';
+         comment on column issued_shares_history.issued_shares_change is '발행주식수증감';
+         comment on column issued_shares_history.listed_at is '상장일시';
 
 
 comment on table bonds is '채권';
@@ -237,8 +242,5 @@ comment on table stock_group_map is '주식그룹맵';
          comment on column stock_group_map.stock_id is '주식아이디';
          comment on column stock_group_map.created_at is '등록일시';
 
-
-create index idx_stock_01
-    on stock (exchange desc);
 
 create sequence seq_issued_shares_history;
