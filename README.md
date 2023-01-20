@@ -25,6 +25,9 @@ stock data service
 # 데이터 구조
 
 퀀트에 필요하다고 생각하는 데이터구조를 정리 합니다.
+<br>
+데이터 구조는 데이터를 다운받으면 서버에 접근없이 개별 PC 환경에서도 분석이 가능한게 목적에 있습니다.
+
 <br><br>
 현물과 선물의 폴더 구조는 국가코드_심볼
 <br> 예:)KOR_500069
@@ -32,7 +35,8 @@ stock data service
 - data/stock/indices
   - 인덱스( 코스피, 나스닥, S&P500 ...)
 - data/stock/spot
-  - 현물정보 candle,order_book, 기타정보(신용, 대차잔고, 공매도) 
+  - 현물정보 candle,order_book, 기타정보(신용, 대차잔고, 공매도)
+  - 예졔: data/stock/spot/candle/KOR_500069
 - data/stock/futures
   - 선물 정보 candle, order_book, open_interest 
   - data/stock/futures/indices 증시 선물
@@ -67,7 +71,8 @@ stock data service
   - 주택구입 부담지수
   - GDP 대비 부동산 시가총액
 
-
+<br>
+주식 종류와 유증, 액면 분할정보는 Sqlite 파일로 제공
 
 # 데이터조사
 

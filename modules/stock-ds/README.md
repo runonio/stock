@@ -1,4 +1,4 @@
-# stock-data
+# stock-ds
 - Relational Database Service
 - Redis
 - 기타 빅데이터 처리 시스템

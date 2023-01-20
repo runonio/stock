@@ -9,7 +9,9 @@ country.xlsx 파일 참조
 <br>
 예:) 한국 KOR 미국 USA
 
-
+# 글로벌 종목 식별코드
+아래 문서 참조
+- [글로벌 종목 식별코드](https://github.com/runonio/stock/blob/main/doc/global_id.md)
 
 # communication
 ### blog, homepage
