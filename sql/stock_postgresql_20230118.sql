@@ -108,26 +108,6 @@ ALTER TABLE stock_group_map
 
 
 
-
-
-CREATE TABLE issued_shares_history
-(
-    row_no               BIGINT NOT NULL,
-    stock_id             VARCHAR NOT NULL,
-    stock_type           VARCHAR NOT NULL DEFAULT 'STOCK',
-    par_value            NUMERIC NULL,
-    description          VARCHAR NULL,
-    issued_shares_change NUMERIC NOT NULL,
-    listed_at            TIMESTAMP NOT NULL
-);
-
-
-
-ALTER TABLE issued_shares_history
-    ADD PRIMARY KEY (row_no);
-
-
-
 CREATE TABLE stock
 (
     stock_id             VARCHAR NOT NULL,
@@ -147,11 +127,38 @@ CREATE TABLE stock
     updated_at           TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-
-
 ALTER TABLE stock
     ADD PRIMARY KEY (stock_id);
 
+
+create index idx_stock_01
+    on stock (exchange desc);
+
+
+CREATE TABLE issue_shares_history
+(
+    row_no               BIGINT NOT NULL,
+    stock_id             VARCHAR NOT NULL,
+    stock_type           VARCHAR NOT NULL DEFAULT 'STOCK',
+    par_value            NUMERIC NULL,
+    description          VARCHAR NULL,
+    issue_qty            NUMERIC NOT NULL,
+    issue_ymd            VARCHAR NULL,
+    listing_ymd          VARCHAR NULL,
+    PRIMARY KEY (row_no)
+);
+
+
+
+comment on table issue_shares_history is '주식발행이력';
+        comment on column issue_shares_history.row_no is '로우번호';
+         comment on column issue_shares_history.stock_id is '주식아이디';
+         comment on column issue_shares_history.stock_type is '주식종류';
+         comment on column issue_shares_history.par_value is '액면가';
+         comment on column issue_shares_history.description is 'description';
+         comment on column issue_shares_history.issue_qty is '발행주식수증감';
+         comment on column issue_shares_history.issue_ymd is '발행년월일';
+         comment on column issue_shares_history.listing_ymd is '상장년월일';
 
 
 comment on table stock is '주식';
@@ -172,18 +179,6 @@ comment on table stock is '주식';
          comment on column stock.updated_at is '업데이트일시';
 
 
-create index idx_stock_01
-    on stock (exchange desc);
-
-
-comment on table issued_shares_history is '주식발행이력';
-        comment on column issued_shares_history.row_no is '로우번호';
-         comment on column issued_shares_history.stock_id is '주식아이디';
-         comment on column issued_shares_history.stock_type is '주식종류';
-         comment on column issued_shares_history.par_value is '액면가';
-         comment on column issued_shares_history.description is 'description';
-         comment on column issued_shares_history.issued_shares_change is '발행주식수증감';
-         comment on column issued_shares_history.listed_at is '상장일시';
 
 
 comment on table bonds is '채권';
@@ -243,4 +238,4 @@ comment on table stock_group_map is '주식그룹맵';
          comment on column stock_group_map.created_at is '등록일시';
 
 
-create sequence seq_issued_shares_history;
+create sequence seq_issue_shares_history;
