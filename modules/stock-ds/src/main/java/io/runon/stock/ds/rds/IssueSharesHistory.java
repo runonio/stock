@@ -1,9 +1,10 @@
-package io.runon.stock.ds.issue;
+package io.runon.stock.ds.rds;
 
 import com.seomse.jdbc.annotation.Column;
 import com.seomse.jdbc.annotation.PrimaryKey;
 import com.seomse.jdbc.annotation.Sequence;
 import com.seomse.jdbc.annotation.Table;
+import io.runon.stock.ds.ValidNullCheck;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -37,31 +38,48 @@ public class IssueSharesHistory {
     BigDecimal issueQty;
 
     @Column(name = "issue_ymd")
-    String issueYmd;
+    Integer issueYmd;
 
     @Column(name = "listing_ymd")
-    String listingYmd;
+    Integer listingYmd;
 
+    public void setIssueYmd(String issueYmdValue) {
+        if(issueYmdValue == null){
+            this.issueYmd = null;
+            return;
+        }
+
+        this.issueYmd = Integer.parseInt(issueYmdValue);
+    }
+
+    public void setListingYmd(String listingYmdValue) {
+        if(listingYmdValue == null){
+            this.listingYmd = null;
+            return;
+        }
+
+        this.listingYmd = Integer.parseInt(listingYmdValue);
+    }
 
     public boolean equals(IssueSharesHistory target){
         try {
-            if (!stockType.equals(target.stockType)) {
+            if (!ValidNullCheck.equals(stockType, target.stockType)) {
                 return false;
             }
 
-            if(parValue.compareTo(target.parValue) != 0){
+            if(!ValidNullCheck.equals(parValue, target.parValue)){
                 return false;
             }
 
-            if(issueQty.compareTo(target.issueQty) != 0){
+            if(!ValidNullCheck.equals(issueQty, target.issueQty)){
                 return false;
             }
 
-            if (!issueYmd.equals(target.issueYmd)) {
+            if (!ValidNullCheck.equals(issueYmd, target.issueYmd)) {
                 return false;
             }
 
-            if (!listingYmd.equals(target.listingYmd)) {
+            if (!ValidNullCheck.equals(listingYmd, target.listingYmd)) {
                 return false;
             }
         }catch(Exception ignore){
