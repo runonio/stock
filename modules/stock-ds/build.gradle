@@ -10,7 +10,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.seomse.commons:commons:1.4.1'
+    implementation 'com.seomse.commons:commons:1.4.2'
     implementation 'com.seomse.commons:jdbc:1.0.8'
 
     implementation 'io.runon.trading:trading:0.4.3'
