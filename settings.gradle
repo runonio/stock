@@ -1,10 +1,11 @@
 rootProject.name = 'stock'
-include 'modules:stock-data'
-findProject(':modules:stock-data')?.name = 'stock-data'
-include 'modules:stock-trading'
-findProject(':modules:stock-trading')?.name = 'stock-trading'
-include 'modules:stock-jdbc'
-findProject(':modules:stock-jdbc')?.name = 'stock-jdbc'
-include 'modules:stock-ds'
-findProject(':modules:stock-ds')?.name = 'stock-ds'
+
+include 'stock-trading'
+project(':stock-trading').projectDir = new File(settingsDir,'modules/stock-trading')
+include 'stock-data'
+project(':stock-data').projectDir = new File(settingsDir,'modules/stock-data')
+include 'stock-ds'
+project(':stock-ds').projectDir = new File(settingsDir,'modules/stock-ds')
+
+
 

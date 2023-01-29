@@ -2,7 +2,6 @@ package io.runon.stock.trading;
 
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.GsonBuilder;
-import io.runon.trading.symbol.SymbolInteger;
 import lombok.Data;
 
 import java.math.BigDecimal;

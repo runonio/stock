@@ -20,6 +20,8 @@ dependencies {
     implementation group: 'org.postgresql', name: 'postgresql', version: '42.5.1'
     compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.24'
 
+    implementation project(path: ':stock-trading')
+
 }
 
 test {
