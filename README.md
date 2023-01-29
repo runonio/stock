@@ -78,6 +78,9 @@ stock data service
 
 컨센서스 수집 사이트 조사
 
+# 데이터키
+주식대차(대주정보): stock_loan
+
 # communication
 ### blog, homepage
 - [runon.io](https://runon.io)

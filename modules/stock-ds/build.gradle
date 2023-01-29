@@ -10,7 +10,7 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.seomse.commons:commons:1.4.0'
+    implementation 'com.seomse.commons:commons:1.4.2'
     implementation 'com.seomse.commons:jdbc:1.0.8'
 
     implementation 'io.runon.trading:trading:0.4.3'
@@ -19,6 +19,8 @@ dependencies {
 
     implementation group: 'org.postgresql', name: 'postgresql', version: '42.5.1'
     compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.24'
+
+    implementation project(path: ':stock-trading')
 
 }
 

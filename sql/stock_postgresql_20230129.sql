@@ -119,11 +119,11 @@ CREATE TABLE stock
     name_ko              VARCHAR NULL,
     name_en              VARCHAR NULL,
     description          VARCHAR NULL,
-    is_listing           boolean NOT NULL DEFAULT true,
-    listed_at            TIMESTAMP NULL,
     issued_shares        NUMERIC NULL,
     shares_outstanding   NUMERIC NULL,
-    founded_at           TIMESTAMP NULL,
+    is_listing           boolean NOT NULL DEFAULT true,
+    listed_ymd           INTEGER NULL,
+    founding_ymd         INTEGER NULL,
     updated_at           TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -134,6 +134,25 @@ ALTER TABLE stock
 create index idx_stock_01
     on stock (exchange desc);
 
+comment on table stock is '주식';
+        comment on column stock.stock_id is '주식아이디';
+         comment on column stock.exchange is '거래소';
+         comment on column stock.symbol is '심볼';
+         comment on column stock.stock_type is '주식유형';
+         comment on column stock.isin is 'ISIN';
+         comment on column stock.cik is 'CIK';
+         comment on column stock.name_ko is '이름_한글';
+         comment on column stock.name_en is '이름_영문';
+         comment on column stock.description is 'description';
+         comment on column stock.issued_shares is '발행주식수';
+         comment on column stock.shares_outstanding is '유통주식수';
+         comment on column stock.is_listing is '상장여부';
+         comment on column stock.listed_ymd is '상장년월일';
+         comment on column stock.founding_ymd is '창립년월일';
+         comment on column stock.updated_at is '업데이트일시';
+
+
+
 
 CREATE TABLE issue_shares_history
 (
@@ -143,8 +162,8 @@ CREATE TABLE issue_shares_history
     par_value            NUMERIC NULL,
     description          VARCHAR NULL,
     issue_qty            NUMERIC NOT NULL,
-    issue_ymd            VARCHAR NULL,
-    listing_ymd          VARCHAR NULL,
+    issue_ymd            INTEGER NULL,
+    listing_ymd          INTEGER NULL,
     PRIMARY KEY (row_no)
 );
 
@@ -160,23 +179,27 @@ comment on table issue_shares_history is '주식발행이력';
          comment on column issue_shares_history.issue_ymd is '발행년월일';
          comment on column issue_shares_history.listing_ymd is '상장년월일';
 
+CREATE TABLE stock_daily
+(
+    stock_id             VARCHAR NOT NULL,
+    ymd                  INTEGER NOT NULL,
+    data_key             VARCHAR NOT NULL,
+    data_value           VARCHAR NULL,
+    updated_at           TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (stock_id,ymd,data_key)
+);
 
-comment on table stock is '주식';
-        comment on column stock.stock_id is '주식아이디';
-         comment on column stock.exchange is '거래소';
-         comment on column stock.symbol is '심볼';
-         comment on column stock.stock_type is '주식유형';
-         comment on column stock.isin is 'ISIN';
-         comment on column stock.cik is 'CIK';
-         comment on column stock.name_ko is '이름_한글';
-         comment on column stock.name_en is '이름_영문';
-         comment on column stock.description is 'description';
-         comment on column stock.is_listing is '상장여부';
-         comment on column stock.listed_at is '상장일시';
-         comment on column stock.issued_shares is '발행주식수';
-         comment on column stock.shares_outstanding is '유통주식수';
-         comment on column stock.founded_at is '창립일시';
-         comment on column stock.updated_at is '업데이트일시';
+
+
+comment on table stock_daily is '주식일별데이터';
+        comment on column stock_daily.stock_id is '주식아이디';
+         comment on column stock_daily.ymd is '년월일';
+         comment on column stock_daily.data_key is '데이터키';
+         comment on column stock_daily.data_value is '데이터값';
+         comment on column stock_daily.updated_at is '업데이트일시';
+
+
+
 
 
 
