@@ -44,4 +44,8 @@ public class StockLoanDaily {
     public String toString(){
         return new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).setPrettyPrinting().create().toJson(this);
     }
+
+    public static StockLoanDaily make(String jsonStr){
+        return new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create().fromJson(jsonStr, StockLoanDaily.class);
+    }
 }
