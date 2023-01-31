@@ -6,6 +6,7 @@ import java.math.BigDecimal;
  * 주식 발행 내역
  * @author macle
  */
+@SuppressWarnings("BooleanMethodIsAlwaysInverted")
 public class ValidNullCheck {
 
     public static boolean equals(String source, String target){
