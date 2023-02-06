@@ -201,6 +201,25 @@ comment on table stock_daily is '주식일별데이터';
 
 
 
+CREATE TABLE stock_api_data
+(
+    stock_id             VARCHAR NOT NULL,
+    api_url              VARCHAR NOT NULL,
+    api_param            VARCHAR NOT NULL,
+    data_value           VARCHAR NULL,
+    updated_at           TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (stock_id,api_url,api_param)
+);
+
+
+
+comment on table stock_api_data is '주식API데이터';
+        comment on column stock_api_data.stock_id is '주식아이디';
+         comment on column stock_api_data.api_url is 'api_url';
+         comment on column stock_api_data.api_param is 'api_param';
+         comment on column stock_api_data.data_value is '데이터값';
+         comment on column stock_api_data.updated_at is '업데이트일시';
+
 
 
 
@@ -262,3 +281,6 @@ comment on table stock_group_map is '주식그룹맵';
 
 
 create sequence seq_issue_shares_history;
+
+
+
