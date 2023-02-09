@@ -5,7 +5,7 @@ import io.runon.stock.trading.ShortSellingDaily;
 import io.runon.stock.trading.StockLoanDaily;
 
 /**
- * RDS 에 저장된 StockLoanDaily
+ * RDS 에 저장된 일별
  * 일별 대차(대주 정보)
  * @author macle
  */
