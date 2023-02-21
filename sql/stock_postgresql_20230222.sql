@@ -258,7 +258,7 @@ comment on table futures is '선물';
 comment on table indices is '지수';
         comment on column indices.index_id is '지수아이디';
          comment on column indices.country is '국가';
-         comment on column indices.stock_group_id is '그룹아이디';
+         comment on column indices.stock_group_id is '주식그룹아이디';
          comment on column indices.name_ko is '이름_한글';
          comment on column indices.name_en is '이름_영문';
          comment on column indices.description is 'description';
@@ -266,7 +266,7 @@ comment on table indices is '지수';
 
 
 comment on table stock_group is '주식그룹';
-        comment on column stock_group.group_id is '그룹아이디';
+        comment on column stock_group.group_id is '주식그룹아이디';
          comment on column stock_group.group_type is '그륩유형';
          comment on column stock_group.country is '국가';
          comment on column stock_group.name_ko is '이름_한글';
