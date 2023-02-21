@@ -61,7 +61,7 @@ CREATE TABLE indices
 (
     index_id             VARCHAR NOT NULL,
     country              VARCHAR NOT NULL,
-    group_id             VARCHAR NULL,
+    stock_group_id             VARCHAR NULL,
     name_ko              VARCHAR NULL,
     name_en              VARCHAR NULL,
     description          VARCHAR NULL,
@@ -90,7 +90,7 @@ CREATE TABLE stock_group
 
 
 ALTER TABLE stock_group
-    ADD PRIMARY KEY (group_id);
+    ADD PRIMARY KEY (stock_group_id);
 
 
 
@@ -266,7 +266,7 @@ comment on table indices is '지수';
 
 
 comment on table stock_group is '주식그룹';
-        comment on column stock_group.group_id is '주식그룹아이디';
+        comment on column stock_group.stock_group_id is '주식그룹아이디';
          comment on column stock_group.group_type is '그륩유형';
          comment on column stock_group.country is '국가';
          comment on column stock_group.name_ko is '이름_한글';
