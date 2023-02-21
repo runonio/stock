@@ -78,7 +78,7 @@ ALTER TABLE indices
 
 CREATE TABLE stock_group
 (
-    group_id             VARCHAR NOT NULL,
+    stock_group_id             VARCHAR NOT NULL,
     group_type           VARCHAR NOT NULL,
     country              VARCHAR NULL,
     name_ko              VARCHAR NULL,
@@ -96,7 +96,7 @@ ALTER TABLE stock_group
 
 CREATE TABLE stock_group_map
 (
-    group_id             VARCHAR NOT NULL,
+    stock_group_id             VARCHAR NOT NULL,
     stock_id             VARCHAR NOT NULL,
     created_at           TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
@@ -104,7 +104,7 @@ CREATE TABLE stock_group_map
 
 
 ALTER TABLE stock_group_map
-    ADD PRIMARY KEY (group_id,stock_id);
+    ADD PRIMARY KEY (stock_group_id,stock_id);
 
 
 
@@ -258,7 +258,7 @@ comment on table futures is '선물';
 comment on table indices is '지수';
         comment on column indices.index_id is '지수아이디';
          comment on column indices.country is '국가';
-         comment on column indices.group_id is '그룹아이디';
+         comment on column indices.stock_group_id is '그룹아이디';
          comment on column indices.name_ko is '이름_한글';
          comment on column indices.name_en is '이름_영문';
          comment on column indices.description is 'description';
@@ -275,7 +275,7 @@ comment on table stock_group is '주식그룹';
          comment on column stock_group.updated_at is '업데이트일시';
 
 comment on table stock_group_map is '주식그룹맵';
-        comment on column stock_group_map.group_id is '그룹아이디';
+        comment on column stock_group_map.stock_group_id is '그룹아이디';
          comment on column stock_group_map.stock_id is '주식아이디';
          comment on column stock_group_map.created_at is '등록일시';
 
