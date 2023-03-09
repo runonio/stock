@@ -1,5 +1,6 @@
 package io.runon.stock.ds.rds;
 
+import com.seomse.jdbc.JdbcQuery;
 import com.seomse.jdbc.annotation.Column;
 import com.seomse.jdbc.annotation.DateTime;
 import com.seomse.jdbc.annotation.PrimaryKey;
@@ -48,4 +49,11 @@ public class StockApiData {
         }
         return true;
     }
+
+    public static String getData(String stockId, String apiUrl, String apiParam){
+
+        return JdbcQuery.getResultOne("select data_value from stock_api_data where stock_id='" + stockId +"' and api_url='" + apiUrl + "' and api_param='" + apiParam  + "'");
+
+    }
+
 }

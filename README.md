@@ -50,23 +50,29 @@ stock data service
   - 외환시장, 환율
 
 - 매크로
-  - 통화량
+  - 통화량(M1,M2,M3) 
   - 기준금리
   - CPI, PCE
   - OECD 경기선행지수
   - ISM 제조업 지표
   - 제조업 PMI
+  - 개인지출
   - 실업률과 고용지표 관련자료 ADP고용
-  - 실업청구건수
+  - 실업청구건수 (고용지표 선행지수)
   - 구인건수, 자발적 퇴직건수
   - GDP
-  - 국가부채
-  - 가계부채
-  - 회사부채
+  - 국가부채 (GDP 대비 비율필요)
+  - 가계부채 (GDP 대비 비율필요)
+  - 회사부채 (GDP 대비 비율필요)
   - ECB Balance sheet (유럽 양적와화 긴축 차트)
   - US M2 money supply: YoY change (미국 유동성 차트)
   - 연준지수 (몇개의 주가 좋지 않은지)
-  - GWIM equity allocation ) (Bofa investment strategy)(주식비중 차트)
+  - GWIM equity allocation  (Bofa investment strategy)(주식비중 차트)
+  - 연체율
+    -  
+  - 내부자지수 (insider transactions ratio)
+  - 세계 중앙은행 자산규모 
+    - 자산규모가 많아지면 시장 유동성은 증가 
 - 부동산
   - 주택구입 부담지수
   - GDP 대비 부동산 시가총액
