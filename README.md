@@ -32,20 +32,23 @@ stock data service
 현물과 선물의 폴더 구조는 국가코드_심볼
 <br> 예:)KOR_500069
 
-- data/stock/indices
-  - 인덱스( 코스피, 나스닥, S&P500 ...)
+- data/indices/major
+  - 세계주요지수
+- data/indices/futures
+  - 지수선물
 - data/stock/spot
   - 현물정보 candle,order_book, 기타정보(신용, 대차잔고, 공매도)
   - 예졔: data/stock/spot/candle/KOR_500069
 - data/stock/futures
-  - 선물 정보 candle, order_book, open_interest 
-  - data/stock/futures/indices 증시 선물
-  - data/stock/futures/commodities 원자재 선물
-  - data/stock/futures/bonds 채권 선물
-- data/stock/company
+  - 개별주식 선물 정보선물 정보 candle, order_book, open_interest 
+  - data/stock/company
   - 회사정보, 제무재표, 발행주식수, 공시
-- data/bonds
-  - 채권, 국채금리
+- data/bonds/yield
+  - 채권금리
+- data/bonds/futures
+  - 채권선물
+- data/commodities/
+  - 원자재 선물 
 - data/forex
   - 외환시장, 환율
 
@@ -60,6 +63,9 @@ stock data service
   - 실업률과 고용지표 관련자료 ADP고용
   - 실업청구건수 (고용지표 선행지수)
   - 구인건수, 자발적 퇴직건수
+  - 노동참여율
+  - 임금상승률
+    - 시간당 평균임금 상승률 
   - GDP
   - 국가부채 (GDP 대비 비율필요)
   - 가계부채 (GDP 대비 비율필요)
@@ -69,13 +75,23 @@ stock data service
   - 연준지수 (몇개의 주가 좋지 않은지)
   - GWIM equity allocation  (Bofa investment strategy)(주식비중 차트)
   - 연체율
-    -  
   - 내부자지수 (insider transactions ratio)
   - 세계 중앙은행 자산규모 
     - 자산규모가 많아지면 시장 유동성은 증가 
+  - fear-and-greed 
+    - https://edition.cnn.com/markets/fear-and-greed
+  - 신용 스프레드
+  - 연준 자산
+    - 자산이 증가하면 연준이 돈을 풀고 있다는 의미 
+  - 전세계 성장률 (미국, 한국 우선순위) 
+  - IBES
+    - 1976년부터 다양한 애널리스트 전망자료  
+  - 컨퍼런스보드 경기선행지수 
 - 부동산
   - 주택구입 부담지수
   - GDP 대비 부동산 시가총액
+  - PIR 가구소득 대비 주택가격비율 (주택구입까지 몇년동안 번 소득으로 살 수 있는지)
+    - 전국가, 각 국가의 부동산 고평가 저평가  
 
 <br>
 주식 종류와 유증, 액면 분할정보는 Sqlite 파일로 제공

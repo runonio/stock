@@ -3,7 +3,7 @@ plugins {
 }
 
 group 'io.runon.stock'
-version '1.0-SNAPSHOT'
+version '0.0.1'
 
 repositories {
     mavenCentral()
@@ -12,9 +12,9 @@ repositories {
 dependencies {
 
     implementation 'com.seomse.commons:commons:1.4.2'
-    implementation 'io.runon.trading:trading:0.4.4'
-    implementation 'io.runon.trading:technical-analysis:0.4.6'
-    implementation 'io.runon.trading:trading-data:0.2.6'
+    implementation 'io.runon.trading:trading:0.4.5'
+    implementation 'io.runon.trading:technical-analysis:0.4.61'
+    implementation 'io.runon.trading:trading-data:0.2.61'
 
     implementation 'io.runon.trading:backtesting:0.1.7'
     implementation 'io.runon.trading:chart-view:0.2.6'

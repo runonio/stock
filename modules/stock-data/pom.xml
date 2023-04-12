@@ -124,25 +124,25 @@
         <dependency>
             <groupId>com.seomse.commons</groupId>
             <artifactId>commons</artifactId>
-            <version>1.4.0</version>
+            <version>1.4.2</version>
         </dependency>
 
         <dependency>
             <groupId>io.runon.trading</groupId>
             <artifactId>trading</artifactId>
-            <version>0.4.4</version>
+            <version>0.4.5</version>
         </dependency>
 
         <dependency>
             <groupId>io.runon.trading</groupId>
             <artifactId>trading-data</artifactId>
-            <version>0.2.5</version>
+            <version>0.2.61</version>
         </dependency>
 
         <dependency>
             <groupId>io.runon.trading</groupId>
             <artifactId>technical-analysis</artifactId>
-            <version>0.4.5</version>
+            <version>0.4.61</version>
         </dependency>
 
 

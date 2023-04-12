@@ -13,9 +13,9 @@ dependencies {
 
     implementation 'com.seomse.commons:commons:1.4.2'
 
-    implementation 'io.runon.trading:trading:0.4.4'
-    implementation 'io.runon.trading:technical-analysis:0.4.6'
-    implementation 'io.runon.trading:trading-data:0.2.6'
+    implementation 'io.runon.trading:trading:0.4.5'
+    implementation 'io.runon.trading:technical-analysis:0.4.61'
+    implementation 'io.runon.trading:trading-data:0.2.61'
 
     compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.24'
 

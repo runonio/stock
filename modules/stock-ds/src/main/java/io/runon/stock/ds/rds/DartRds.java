@@ -13,5 +13,5 @@ public class DartRds {
     public static String fnlttSinglAcntAll(String symbol, int year, int quarter){
         return StockApiData.getData("KOR_" + symbol, "opendart.fss.or.kr/api/fnlttSinglAcntAll.json", year +"," + quarter);
     }
-
+    
 }
