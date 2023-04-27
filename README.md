@@ -81,12 +81,16 @@ stock data service
   - fear-and-greed 
     - https://edition.cnn.com/markets/fear-and-greed
   - 신용 스프레드
+  - Bears Reload On Equity Shorts (월가 숏교모, 소수몽키가 Bloomberg 자료에서 발췌 ,Source: CFTC)
   - 연준 자산
     - 자산이 증가하면 연준이 돈을 풀고 있다는 의미 
   - 전세계 성장률 (미국, 한국 우선순위) 
   - IBES
     - 1976년부터 다양한 애널리스트 전망자료  
   - 컨퍼런스보드 경기선행지수 
+  - 미국 소매판매증가율
+  - 미국 소매판매 로그차트 (우상향) 인플레감안 없음 인플레 + 인구증가로 이론상 우상향 해야하는데 꺽이면 해석필요
+  - 컨퍼런스보드 경기선행지수
 - 부동산
   - 주택구입 부담지수
   - GDP 대비 부동산 시가총액
