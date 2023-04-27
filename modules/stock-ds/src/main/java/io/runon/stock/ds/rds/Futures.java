@@ -17,8 +17,8 @@ public class Futures {
     @Column(name = "futures_id")
     String futuresId;
 
-    @Column(name = "futures_type")
-    String futuresType;
+    @Column(name = "market_type")
+    String marketType;
 
     @Column(name = "exchange")
     String exchange;

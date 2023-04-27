@@ -33,7 +33,7 @@ ALTER TABLE exchange
 CREATE TABLE futures
 (
     futures_id           VARCHAR NOT NULL,
-    futures_type         VARCHAR NOT NULL DEFAULT 'INDEX',
+    market_type          VARCHAR NOT NULL DEFAULT 'INDEX',
     exchange             VARCHAR NULL,
     name_ko              VARCHAR NULL,
     name_en              VARCHAR NULL,
@@ -218,7 +218,7 @@ comment on table stock_api_data is '주식API데이터';
 
 comment on table futures is '선물';
         comment on column futures.futures_id is '선물아이디';
-         comment on column futures.futures_type is '선물유형';
+         comment on column futures.market_type is '시장유형';
          comment on column futures.exchange is '거래소';
          comment on column futures.name_ko is '이름_한글';
          comment on column futures.name_en is '이름_영문';
