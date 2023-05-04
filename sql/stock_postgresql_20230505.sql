@@ -248,6 +248,41 @@ CREATE TABLE bonds
     PRIMARY KEY (bond_id)
 );
 
+CREATE TABLE indices
+(
+    index_id             VARCHAR NOT NULL,
+    country              VARCHAR NOT NULL,
+    stock_group_id       VARCHAR NULL,
+    name_ko              VARCHAR NULL,
+    name_en              VARCHAR NULL,
+    candle_path          VARCHAR NULL,
+    description          VARCHAR NULL,
+    data_value           VARCHAR NULL,
+    updated_at           TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (index_id)
+);
+
+comment on table bonds is '채권';
+        comment on column bonds.bond_id is '채권아이디';
+         comment on column bonds.country is '국가';
+         comment on column bonds.maturity is '채권만기';
+         comment on column bonds.name_ko is '이름_한글';
+         comment on column bonds.name_en is '이름_영문';
+         comment on column bonds.candle_path is '캔들경로';
+         comment on column bonds.description is 'description';
+         comment on column bonds.data_value is '데이터값';
+         comment on column bonds.updated_at is '업데이트일시';
+
+comment on table indices is '지수';
+        comment on column indices.index_id is '지수아이디';
+         comment on column indices.country is '국가';
+         comment on column indices.stock_group_id is '그룹아이디';
+         comment on column indices.name_ko is '이름_한글';
+         comment on column indices.name_en is '이름_영문';
+         comment on column indices.candle_path is '캔들경로';
+         comment on column indices.description is 'description';
+         comment on column indices.data_value is '데이터값';
+         comment on column indices.updated_at is '업데이트일시';
 
 
 CREATE TABLE futures
@@ -258,6 +293,7 @@ CREATE TABLE futures
     name_ko              VARCHAR NULL,
     name_en              VARCHAR NULL,
     candle_path          VARCHAR NULL,
+    currency             VARCHAR NULL,
     tick_size            VARCHAR NULL,
     tick_value           VARCHAR NULL,
     symbol               VARCHAR NULL,
@@ -273,35 +309,6 @@ CREATE TABLE futures
     PRIMARY KEY (futures_id)
 );
 
-
-
-CREATE TABLE indices
-(
-    index_id             VARCHAR NOT NULL,
-    country              VARCHAR NOT NULL,
-    stock_group_id       VARCHAR NULL,
-    name_ko              VARCHAR NULL,
-    name_en              VARCHAR NULL,
-    candle_path          VARCHAR NULL,
-    description          VARCHAR NULL,
-    data_value           VARCHAR NULL,
-    updated_at           TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (index_id)
-);
-
-
-
-comment on table bonds is '채권';
-        comment on column bonds.bond_id is '채권아이디';
-         comment on column bonds.country is '국가';
-         comment on column bonds.maturity is '채권만기';
-         comment on column bonds.name_ko is '이름_한글';
-         comment on column bonds.name_en is '이름_영문';
-         comment on column bonds.candle_path is '캔들경로';
-         comment on column bonds.description is 'description';
-         comment on column bonds.data_value is '데이터값';
-         comment on column bonds.updated_at is '업데이트일시';
-
 comment on table futures is '선물';
         comment on column futures.futures_id is '선물아이디';
          comment on column futures.market_type is '시장유형';
@@ -309,6 +316,7 @@ comment on table futures is '선물';
          comment on column futures.name_ko is '이름_한글';
          comment on column futures.name_en is '이름_영문';
          comment on column futures.candle_path is '캔들경로';
+         comment on column futures.currency is '기준통화';
          comment on column futures.tick_size is '틱크기';
          comment on column futures.tick_value is '틱가치';
          comment on column futures.symbol is '티커_심볼';
@@ -322,16 +330,6 @@ comment on table futures is '선물';
          comment on column futures.data_value is '데이터값';
          comment on column futures.updated_at is '업데이트일시';
 
-comment on table indices is '지수';
-        comment on column indices.index_id is '지수아이디';
-         comment on column indices.country is '국가';
-         comment on column indices.stock_group_id is '그룹아이디';
-         comment on column indices.name_ko is '이름_한글';
-         comment on column indices.name_en is '이름_영문';
-         comment on column indices.candle_path is '캔들경로';
-         comment on column indices.description is 'description';
-         comment on column indices.data_value is '데이터값';
-         comment on column indices.updated_at is '업데이트일시';
 
 
 
