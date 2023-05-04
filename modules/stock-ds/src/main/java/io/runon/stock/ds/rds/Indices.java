@@ -1,27 +1,28 @@
 package io.runon.stock.ds.rds;
 
 import com.seomse.jdbc.annotation.Column;
-import com.seomse.jdbc.annotation.DateTime;
-import com.seomse.jdbc.annotation.PrimaryKey;
 import com.seomse.jdbc.annotation.Table;
+import com.seomse.jdbc.annotation.PrimaryKey;
+import com.seomse.jdbc.annotation.DateTime;
 import lombok.Data;
+
 
 /**
  * @author macle
  */
 @Data
-@Table(name="bonds")
-public class Bonds {
+@Table(name="indices")
+public class Indices {
 
     @PrimaryKey(seq = 1)
-    @Column(name = "bond_id")
-    String bondId;
+    @Column(name = "index_id")
+    String indexId;
 
     @Column(name = "country")
     String country;
 
-    @Column(name = "maturity")
-    String maturity;
+    @Column(name = "stock_group_id")
+    String stockGroupId;
 
     @Column(name = "name_ko")
     String nameKo;
@@ -41,5 +42,4 @@ public class Bonds {
     @DateTime
     @Column(name = "updated_at")
     Long updatedAt;
-
 }

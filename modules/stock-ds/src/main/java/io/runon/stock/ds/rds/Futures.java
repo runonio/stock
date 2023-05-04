@@ -29,6 +29,10 @@ public class Futures {
     @Column(name = "name_en")
     String nameEn;
 
+
+    @Column(name = "candle_path")
+    String candlePath;
+
     @Column(name = "tick_size")
     String tickSize;
 
