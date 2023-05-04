@@ -29,6 +29,8 @@ public class Futures {
     @Column(name = "name_en")
     String nameEn;
 
+    @Column(name = "currency")
+    String currency;
 
     @Column(name = "candle_path")
     String candlePath;
