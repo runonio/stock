@@ -49,8 +49,8 @@ stock data service
   - 채권선물
 - data/commodities/
   - 원자재 선물 
-- data/forex
-  - 외환시장, 환율
+- data/currencies
+  - 환율
 
 - 매크로
   - 통화량(M1,M2,M3) 
