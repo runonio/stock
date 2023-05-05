@@ -288,4 +288,31 @@ comment on table futures is '선물';
 
 
 
+CREATE TABLE currencies
+(
+    currency_id          VARCHAR NOT NULL,
+    name_ko              VARCHAR NULL,
+    name_en              VARCHAR NULL,
+    candle_path          VARCHAR NULL,
+    description          VARCHAR NULL,
+    data_value           VARCHAR NULL,
+    updated_at           TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (currency_id)
+);
+
+
+
+comment on table currencies is '통화_환율';
+        comment on column currencies.currency_id is '통화아이디';
+         comment on column currencies.name_ko is '이름_한글';
+         comment on column currencies.name_en is '이름_영문';
+         comment on column currencies.candle_path is '캔들경로';
+         comment on column currencies.description is 'description';
+         comment on column currencies.data_value is '데이터값';
+         comment on column currencies.updated_at is '업데이트일시';
+
+
+
+
+
 
