@@ -11,15 +11,17 @@ repositories {
 
 dependencies {
 
-    implementation 'com.seomse.commons:commons:1.4.2'
-    implementation 'io.runon.trading:trading:0.4.5'
-    implementation 'io.runon.trading:technical-analysis:0.4.61'
-    implementation 'io.runon.trading:trading-data:0.2.61'
+    implementation project(path: ':trading')
+    implementation project(path: ':chart-view')
+    implementation project(path: ':technical-analysis')
+    implementation project(path: ':trading-data')
+    implementation project(path: ':backtesting')
 
-    implementation 'io.runon.trading:backtesting:0.1.7'
-    implementation 'io.runon.trading:chart-view:0.2.6'
+    implementation 'com.seomse.commons:commons:1.5.0'
+    implementation group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '4.13.0'
 
-    compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.24'
+    compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.28'
+    annotationProcessor 'org.projectlombok:lombok:1.18.28'
 
 }
 
