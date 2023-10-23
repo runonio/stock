@@ -1,0 +1,40 @@
+plugins {
+    id 'java'
+}
+
+group 'io.runon.stock'
+version '0.0.1'
+
+repositories {
+    mavenCentral()
+}
+
+//개발환경 gradle. 기본 trading 프로젝트도 같이 업데이트 한다.
+
+dependencies {
+
+    implementation project(path: ':trading')
+    implementation project(path: ':chart-view')
+    implementation project(path: ':technical-analysis')
+    implementation project(path: ':trading-data')
+    implementation project(path: ':backtesting')
+
+
+    implementation project(path: ':stock-trading')
+    implementation project(path: ':stock-data')
+    implementation project(path: ':stock-ds')
+
+
+
+    implementation 'com.seomse.commons:commons:1.5.0'
+    implementation 'com.seomse.commons:jdbc:1.1.1'
+    implementation group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '4.13.0'
+
+    compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.28'
+    annotationProcessor 'org.projectlombok:lombok:1.18.28'
+
+}
+
+test {
+    useJUnitPlatform()
+}
