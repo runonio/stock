@@ -16,7 +16,7 @@ dependencies {
     implementation project(path: ':technical-analysis')
     implementation project(path: ':trading-data')
 
-    implementation 'com.seomse.commons:commons:1.5.3'
+    implementation 'com.seomse.commons:commons:1.5.6'
 
     compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.30'
     annotationProcessor 'org.projectlombok:lombok:1.18.30'
