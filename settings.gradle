@@ -2,8 +2,7 @@ rootProject.name = 'stock'
 
 include 'stock-trading'
 project(':stock-trading').projectDir = new File(settingsDir,'modules/stock-trading')
-include 'stock-data'
-project(':stock-data').projectDir = new File(settingsDir,'modules/stock-data')
+
 include 'stock-ds'
 project(':stock-ds').projectDir = new File(settingsDir,'modules/stock-ds')
 
