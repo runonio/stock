@@ -10,4 +10,10 @@ public interface StockData {
 
     Stock[] getStocks(String [] exchanges, String [] types);
 
+    Stock[] getStocks(String [] exchanges);
+
+
+
+
+
 }

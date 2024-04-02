@@ -13,9 +13,6 @@ project(':trading').projectDir = new File(settingsDir,'../../runon/trading/modul
 include ':technical-analysis'
 project(':technical-analysis').projectDir = new File(settingsDir,'../../runon/trading/modules/technical-analysis')
 
-include ':backtesting'
-project(':backtesting').projectDir = new File(settingsDir,'../../runon/trading/modules/backtesting')
-
 include ':trading-data'
 project(':trading-data').projectDir = new File(settingsDir,'../../runon/trading/modules/trading-data')
 

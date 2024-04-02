@@ -47,7 +47,7 @@ public class KorStocksExample {
         StockDataManager stockDataManager = StockDataManager.getInstance();
         StockData stockData = stockDataManager.getStockData();
 
-        Stock[] stocks =stockData.getStocks(exchanges, types);
+        Stock[] stocks =stockData.getStocks(exchanges);
 
         for(Stock stock : stocks){
             System.out.println(stock);
