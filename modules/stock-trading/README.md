@@ -7,6 +7,9 @@ https://github.com/seomse/seomse-stock
 
 동기화가 필요한 데이터는
 
+# 개발환경
+- open jdk 17
+
 
 # communication
 ### blog, homepage
@@ -18,6 +21,9 @@ https://github.com/seomse/seomse-stock
 
 ### email
 - iorunon@gmail.com
+
+### cafe
+- [cafe.naver.com/radvisor](https://cafe.naver.com/radvisor)
 
 ## main developer
 - macle

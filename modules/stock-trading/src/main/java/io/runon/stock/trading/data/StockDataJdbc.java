@@ -3,6 +3,7 @@ package io.runon.stock.trading.data;
 import com.seomse.jdbc.QueryUtils;
 import com.seomse.jdbc.objects.JdbcObjects;
 import io.runon.stock.trading.Stock;
+import io.runon.stock.trading.exception.StockDataException;
 
 /**
  * @author macle
@@ -44,5 +45,20 @@ public class StockDataJdbc implements StockData{
         where.append(" and is_listing = true");
 
        return JdbcObjects.getObjList(Stock.class, where.toString()).toArray(new Stock[0]);
+    }
+
+    @Override
+    public Stock[] getStocks(String[] exchanges) {
+        if(exchanges == null){
+            throw new StockDataException("exchange null");
+        }
+
+        if(exchanges.length == 0){
+            throw new StockDataException("exchange size 0");
+        }
+        String where = "exchange in " + QueryUtils.whereIn(exchanges) +
+                " and is_listing = true";
+
+        return JdbcObjects.getObjList(Stock.class, where).toArray(new Stock[0]);
     }
 }

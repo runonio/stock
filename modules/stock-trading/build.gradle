@@ -15,7 +15,6 @@ dependencies {
 
     implementation project(path: ':technical-analysis')
     implementation project(path: ':trading-data')
-    implementation project(path: ':backtesting')
 
     implementation 'com.seomse.commons:commons:1.6.0'
 
