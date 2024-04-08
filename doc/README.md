@@ -13,18 +13,28 @@ country.xlsx 파일 참조
 아래 문서 참조
 - [글로벌 종목 식별코드](https://github.com/runonio/stock/blob/main/doc/global_id.md)
 
+
 # communication
 ### blog, homepage
 - [runon.io](https://runon.io)
-- [www.seomse.com](https://www.seomse.com/)
 - [github.com/runonio](https://github.com/runonio)
 - [github.com/seomse](https://github.com/seomse)
+- [www.seomse.com](https://www.seomse.com/)
 
-### 카카오톡 오픈톡
- - https://open.kakao.com/o/g6vzOKqb
-     - 참여코드: runon
- 
-# main developer
- - macle
-    -  [github.com/macle86](https://github.com/macle86)
-    -  [macle.dev](https://macle.dev)
+
+### email
+- iorunon@gmail.com
+
+### cafe
+- [cafe.naver.com/radvisor](https://cafe.naver.com/radvisor)
+
+
+### talk
+- 로보어드바이저, 시스템트레이딩, 퀀트 단톡방
+   - https://open.kakao.com/o/g6vzOKqb
+   - 참여코드: runon
+
+## main developer
+- macle
+   - github(source code): [github.com/macle86](https://github.com/macle86)
+   - email: ysys86a@gmail.com
