@@ -11,10 +11,11 @@ https://github.com/seomse/seomse-stock
 - open jdk 17
 
 
+
 # communication
 ### blog, homepage
-- [github.com/runonio](https://github.com/runonio)
 - [runon.io](https://runon.io)
+- [github.com/runonio](https://github.com/runonio)
 - [github.com/seomse](https://github.com/seomse)
 - [www.seomse.com](https://www.seomse.com/)
 
@@ -24,6 +25,12 @@ https://github.com/seomse/seomse-stock
 
 ### cafe
 - [cafe.naver.com/radvisor](https://cafe.naver.com/radvisor)
+
+
+### talk
+- 로보어드바이저, 시스템트레이딩, 퀀트 단톡방
+  - https://open.kakao.com/o/g6vzOKqb
+  - 참여코드: runon
 
 ## main developer
 - macle

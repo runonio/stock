@@ -13,8 +13,6 @@ dependencies {
     implementation 'com.seomse.commons:jdbc:1.2.1'
 
     implementation project(path: ':trading')
-    implementation project(path: ':technical-analysis')
-    implementation project(path: ':trading-data')
     implementation project(path: ':stock-trading')
 
     implementation 'com.seomse.commons:commons:1.6.0'

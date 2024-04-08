@@ -14,20 +14,13 @@ repositories {
 dependencies {
 
     implementation project(path: ':trading')
-    implementation project(path: ':chart-view')
-    implementation project(path: ':technical-analysis')
-    implementation project(path: ':trading-data')
-    implementation project(path: ':backtesting')
 
 
     implementation project(path: ':stock-trading')
     implementation project(path: ':stock-ds')
 
-
-
     implementation 'com.seomse.commons:commons:1.6.0'
     implementation 'com.seomse.commons:jdbc:1.2.1'
-    implementation group: 'org.seleniumhq.selenium', name: 'selenium-java', version: '4.18.1'
 
     compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.30'
     annotationProcessor 'org.projectlombok:lombok:1.18.30'

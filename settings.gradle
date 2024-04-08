@@ -6,19 +6,6 @@ project(':stock-trading').projectDir = new File(settingsDir,'modules/stock-tradi
 include 'stock-ds'
 project(':stock-ds').projectDir = new File(settingsDir,'modules/stock-ds')
 
-
 include ':trading'
 project(':trading').projectDir = new File(settingsDir,'../../runon/trading/modules/trading')
-
-include ':technical-analysis'
-project(':technical-analysis').projectDir = new File(settingsDir,'../../runon/trading/modules/technical-analysis')
-
-include ':trading-data'
-project(':trading-data').projectDir = new File(settingsDir,'../../runon/trading/modules/trading-data')
-
-include ':chart-view'
-project(':chart-view').projectDir = new File(settingsDir,'../../runon/trading/modules/chart-view')
-
-
-
 
