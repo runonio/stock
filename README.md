@@ -121,10 +121,20 @@ stock data service
 - 자사주 매입신청 페이지
   - https://kind.krx.co.kr/corpgeneral/treasurystk.do?method=loadInitPage
 컨센서스 수집 사이트 조사
+- https://datamall.koscom.co.kr/kor/datamall/stock/middaySearchData.do?screenId=100130&menuNo=200014
+  - 코스콤 데이터 판매가격 
 
 # 데이터키
 주식대차(대주정보): stock_loan
 
+# 뉴스활용
+뉴스에서 많이나오는 단어 기업내 주요인물을 이터뷰한 기사. 주요인물이 무엇을 중요하게 보고있는지를 보고 섹터를 파악.
+
+역배열종목을 제외하고 정배열종목을 관찰
+
+관련방법 소개영상
+
+- https://www.youtube.com/watch?v=Ia4m0MW6MAs
 
 # communication
 ### blog, homepage
