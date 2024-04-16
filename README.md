@@ -39,6 +39,8 @@ stock data service
 - data/stock/spot
   - 현물정보 candle,order_book, 기타정보(신용, 대차잔고, 공매도)
   - 예졔: data/stock/spot/candle/KOR_500069
+- data/stock/(국가코드)/spot/candle
+  - 현물 캔들정보  
 - data/stock/futures
   - 개별주식 선물 정보선물 정보 candle, order_book, open_interest 
   - data/stock/company
@@ -52,8 +54,11 @@ stock data service
 - data/currencies
   - 환율
 
+# 이후 추가 데이터 연동이 필요한 항목
+
 - 매크로
   - 통화량(M1,M2,M3) 
+    - 중앙은행 자산, 국가부채, 가계부채를 통합해서 봐야할거 같음. 
   - 기준금리
   - CPI, PCE
   - OECD 경기선행지수
@@ -115,6 +120,20 @@ stock data service
 - 새로 등장한 매출 구성제품 분석
   - 주 매출 구성 제품은 가격에 반영되어있는 경우가 많음
   - 새로운 제품중에 매출의 증가가 커지는 제품이 있는경우 시장분석
+
+# 국내 공시정보 수집
+dart api 공시정보 검색을 활용해서 검색된 공시 정부 수집하기.
+주요공시 목록
+- 배당공시
+- 주식수 공시
+- 주요주주 공시
+- 유상증좌 결정
+- 무상증좌 결정
+- 감자결정
+- 전환사채 발행결정
+- 제무재표
+- 자사주 취득
+- 자사주 처분
 
 
 # 데이터조사
