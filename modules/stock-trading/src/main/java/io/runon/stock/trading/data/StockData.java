@@ -12,6 +12,7 @@ public interface StockData {
 
     Stock[] getStocks(String [] exchanges);
 
+    Stock[] getStocks(String [] exchanges, String standardYmd);
 
 
 

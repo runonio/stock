@@ -19,4 +19,9 @@ public class StockDataApi implements StockData{
     public Stock[] getStocks(String[] exchanges) {
         return new Stock[0];
     }
+
+    @Override
+    public Stock[] getStocks(String[] exchanges, String standardYmd) {
+        return new Stock[0];
+    }
 }

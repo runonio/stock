@@ -49,11 +49,15 @@ public class KorStocksExample {
 
         Stock[] stocks =stockData.getStocks(exchanges);
 
-        for(Stock stock : stocks){
-            System.out.println(stock);
-        }
+//        for(Stock stock : stocks){
+//            System.out.println(stock);
+//        }
 
         System.out.println(stocks.length);
 
+        String starndardYmd = "20230101";
+        stocks =stockData.getStocks(exchanges, starndardYmd);
+
+        System.out.println(stocks.length);
     }
 }
