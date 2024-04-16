@@ -1,6 +1,6 @@
 package dev;
 
-import io.runon.stock.trading.StockCandles;
+import io.runon.stock.trading.candle.StockCandles;
 import io.runon.trading.CountryCode;
 
 /**
