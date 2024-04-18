@@ -27,6 +27,10 @@ public class Stocks {
     }
 
 
+    public static String getCountryCode(String stockId){
+        return stockId.substring(0, stockId.indexOf("_"));
+    }
+
 
 
 }

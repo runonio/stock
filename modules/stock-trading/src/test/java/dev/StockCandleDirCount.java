@@ -8,7 +8,7 @@ import io.runon.trading.CountryCode;
  */
 public class StockCandleDirCount {
     public static void main(String[] args) {
-        System.out.println(StockCandles.getSpotCandleDirsCount(CountryCode.kOR));
+        System.out.println(StockCandles.getSpotCandleDirsCount(CountryCode.KOR));
 
     }
 }

@@ -3,9 +3,12 @@ rootProject.name = 'stock'
 include 'stock-trading'
 project(':stock-trading').projectDir = new File(settingsDir,'modules/stock-trading')
 
-include 'stock-ds'
-project(':stock-ds').projectDir = new File(settingsDir,'modules/stock-ds')
+include 'koreainvestment'
+project(':koreainvestment').projectDir = new File(settingsDir,'modules/koreainvestment')
 
 include ':trading'
 project(':trading').projectDir = new File(settingsDir,'../../runon/trading/modules/trading')
 
+
+include ':seomse-commons'
+project(':seomse-commons').projectDir = new File(settingsDir,'../../seomse/seomse-commons/modules/commons')
