@@ -1,13 +1,17 @@
 package io.runon.stock.trading.candle;
 
 import com.seomse.commons.config.Config;
+import com.seomse.commons.parallel.ParallelArrayJob;
+import com.seomse.commons.parallel.ParallelArrayWork;
 import io.runon.stock.trading.Stock;
+import io.runon.stock.trading.Stocks;
 import io.runon.stock.trading.data.StockLong;
 import io.runon.trading.CountryCode;
+import io.runon.trading.CountryUtils;
 import io.runon.trading.TradingConfig;
+import io.runon.trading.data.DataPathTimeRange;
 import io.runon.trading.data.csv.CsvTimeFile;
-import io.runon.trading.parallel.ParallelArrayJob;
-import io.runon.trading.parallel.ParallelArrayWork;
+import io.runon.trading.data.file.Files;
 
 import java.io.File;
 import java.nio.file.FileSystems;
@@ -87,6 +91,8 @@ public class StockCandles {
         };
 
         ParallelArrayJob<StockLong> parallelArrayJob = new ParallelArrayJob<>(sortStocks, work);
+        parallelArrayJob.setThreadCount(TradingConfig.getTradingThreadCount());
+
         parallelArrayJob.runSync();
 
         Arrays.sort(sortStocks, StockLong.SORT);
@@ -145,6 +151,27 @@ public class StockCandles {
         }
 
         return spotCandleDirPath;
+    }
+
+    public static String getStockSpotCandleFilesPath(String stockId, String interval){
+        String fileSeparator = FileSystems.getDefault().getSeparator();
+        return  getStockSpotCandlePath(Stocks.getCountryCode(stockId))+fileSeparator+stockId+fileSeparator+interval;
+    }
+
+
+
+    public static DataPathTimeRange getSpotCandleTimeRange(String stockId, String interval){
+
+        String countryCode = Stocks.getCountryCode(stockId);
+
+
+        DataPathTimeRange dataPathTimeRange= Files.getTimeRange(new File(getStockSpotCandleFilesPath(stockId, interval)));
+
+        if(dataPathTimeRange == null){
+            return null;
+        }
+        dataPathTimeRange.setZoneId(CountryUtils.getZoneId(countryCode));
+        return dataPathTimeRange;
     }
 
 }
