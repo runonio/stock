@@ -26,10 +26,10 @@ public class BacktestingStockQuantityAccount extends BacktestingHoldingAccount<S
 
     private Map<String, Stock> stockMap = null;
 
-    BacktestingStockPrice symbolPrice = new BacktestingStockPrice(this);
+    BacktestingStockPrice stockPrice = new BacktestingStockPrice(this);
 
     public BacktestingStockQuantityAccount() {
-        setSymbolPrice(symbolPrice);
+        setIdPrice(stockPrice);
     }
 
     public void setStockMap(Map<String, Stock> stockMap) {
@@ -90,7 +90,7 @@ public class BacktestingStockQuantityAccount extends BacktestingHoldingAccount<S
     
 
 
-    public BacktestingStockPrice getSymbolPrice() {
-        return symbolPrice;
+    public BacktestingStockPrice getStockPrice() {
+        return stockPrice;
     }
 }
