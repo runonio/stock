@@ -16,7 +16,6 @@ import io.runon.trading.technical.analysis.candle.Candles;
 import io.runon.trading.technical.analysis.candle.TradeCandle;
 import lombok.extern.slf4j.Slf4j;
 
-import java.nio.file.FileSystems;
 
 /**
  * 현물 일봉 캔들 내리기
@@ -53,7 +52,7 @@ public class SpotDailyCandleOut {
         for(Stock stock : stocks){
             try {
                 //같은 데이터를 호출하면 호출 제한이 걸리는 경우가 있다 전체 캔들을 내릴때는 예외처리를 강제해서 멈추지 않는 로직을 추가
-                out(stock, CountryCode.KOR);
+                out(stock);
             }catch (Exception e){
                 try{
                     Thread.sleep(5000L);
@@ -66,9 +65,8 @@ public class SpotDailyCandleOut {
     /**
      * 상장 시점부터 내릴 수 있는 전체 정보를 내린다.
      * @param stock 종목정보
-     * @param countryCode 국가코드
      */
-    public void out(Stock stock,  CountryCode countryCode){
+    public void out(Stock stock){
 //        String type;
 //        if(stock.getStockType().startsWith("ETF")){
 //             type = "ETF";
@@ -88,7 +86,6 @@ public class SpotDailyCandleOut {
         //초기 데이터는 상장 년원일
         String nextYmd ;
 
-        String fileSeparator = FileSystems.getDefault().getSeparator();
 
         String filesDirPath = StockCandles.getStockSpotCandleFilesPath(stock.getStockId(),"1d");
 
