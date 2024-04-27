@@ -15,7 +15,7 @@ public class PricePeriodJsonTextOut {
 
         KoreainvestmentPeriodDataApi periodDataApi = api.getPeriodDataApi();
 
-        String text = periodDataApi.getPeriodDataJsonText("069500","D","20240101","20240415",true);
+        String text = periodDataApi.getPeriodDataJsonText("111820","D","20200101","20210901",true);
 
         System.out.println(text);
         TradeCandle [] candles = KoreainvestmentPeriodDataApi.getCandles(text);

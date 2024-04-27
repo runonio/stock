@@ -13,18 +13,25 @@ public class BacktestingStockPrice extends MapPrice<TradeCandle> {
 
     private final BacktestingStockQuantityAccount account;
 
+
+
     public BacktestingStockPrice(BacktestingStockQuantityAccount account){
         this.account = account;
     }
 
     @Override
-    public BigDecimal getBuyPrice(String symbol) {
-        return null;
+    public BigDecimal getBuyPrice(String id) {
+        BigDecimal buyFeeRate = account.getBuyFeeRate(id);
+        BigDecimal price = getPrice(id);
+
+        return price.add(price.multiply(buyFeeRate));
     }
 
     @Override
-    public BigDecimal getSellPrice(String symbol) {
-        return null;
+    public BigDecimal getSellPrice(String id) {
+        BigDecimal price = getPrice(id);
+        BigDecimal sellFeeRate = account.getSellFeeRate(id);
+        return price.subtract(price.multiply(sellFeeRate));
     }
 }
 

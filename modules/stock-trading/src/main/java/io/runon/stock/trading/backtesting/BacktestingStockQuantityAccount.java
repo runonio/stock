@@ -2,6 +2,7 @@ package io.runon.stock.trading.backtesting;
 
 import io.runon.stock.trading.Stock;
 import io.runon.stock.trading.StockHoldingQuantity;
+import io.runon.stock.trading.Stocks;
 import io.runon.stock.trading.exception.StockDataException;
 import io.runon.trading.backtesting.account.BacktestingHoldingAccount;
 
@@ -26,7 +27,7 @@ public class BacktestingStockQuantityAccount extends BacktestingHoldingAccount<S
 
     private Map<String, Stock> stockMap = null;
 
-    BacktestingStockPrice stockPrice = new BacktestingStockPrice(this);
+    private final BacktestingStockPrice stockPrice = new BacktestingStockPrice(this);
 
     public BacktestingStockQuantityAccount() {
         setIdPrice(stockPrice);
@@ -63,9 +64,7 @@ public class BacktestingStockQuantityAccount extends BacktestingHoldingAccount<S
 
     //구매 수수료
     public BigDecimal getBuyFeeRate(String id){
-
-        Stock stock = stockMap.get(id);
-
+        Stock stock = getStock(id);
 
         if(stock.getStockType().startsWith("STOCK")){
             //주식류는 세금
@@ -79,7 +78,7 @@ public class BacktestingStockQuantityAccount extends BacktestingHoldingAccount<S
 
 
     public BigDecimal getSellFeeRate(String id){
-        Stock stock = stockMap.get(id);
+        Stock stock =  getStock(id);
 
         if(stock.getStockType().startsWith("STOCK")){
             return sellFeeRate.add(sellTaxRate);
@@ -87,10 +86,40 @@ public class BacktestingStockQuantityAccount extends BacktestingHoldingAccount<S
             return sellFeeRate;
         }
     }
-    
+
+    public Stock getStock(String id){
+        if(stockMap == null){
+            stockMap = new HashMap<>();
+        }
+
+        Stock stock = stockMap.get(id);
+        if(stock == null){
+            stock = Stocks.getStock(id);
+            stockMap.put(id, stock);
+        }
+
+        return stock;
+    }
+
 
 
     public BacktestingStockPrice getStockPrice() {
         return stockPrice;
+    }
+
+    public void setBuyFeeRate(BigDecimal buyFeeRate) {
+        this.buyFeeRate = buyFeeRate;
+    }
+
+    public void setSellFeeRate(BigDecimal sellFeeRate) {
+        this.sellFeeRate = sellFeeRate;
+    }
+
+    public void setBuyTaxRate(BigDecimal buyTaxRate) {
+        this.buyTaxRate = buyTaxRate;
+    }
+
+    public void setSellTaxRate(BigDecimal sellTaxRate) {
+        this.sellTaxRate = sellTaxRate;
     }
 }
