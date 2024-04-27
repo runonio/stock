@@ -10,6 +10,7 @@ import com.seomse.commons.http.HttpApiResponse;
 import com.seomse.commons.http.HttpApis;
 import com.seomse.commons.utils.GsonUtils;
 import com.seomse.commons.utils.time.Times;
+import io.runon.trading.CountryCode;
 import io.runon.trading.closed.days.ClosedDaysFileOut;
 
 import java.util.HashMap;
@@ -103,7 +104,7 @@ public class KoreainvestmentApi {
         accountApi = new KoreainvestmentAccountApi(this);
         marketApi = new KoreainvestmentMarketApi(this);
 
-        closedDaysFileOut = new ClosedDaysFileOut(marketApi);
+        closedDaysFileOut = new ClosedDaysFileOut(marketApi, CountryCode.KOR);
     }
 
     public void closedDaysOut(){
@@ -267,4 +268,7 @@ public class KoreainvestmentApi {
     }
 
 
+    public void setCandleOutSleep(long candleOutSleep) {
+        this.candleOutSleep = candleOutSleep;
+    }
 }
