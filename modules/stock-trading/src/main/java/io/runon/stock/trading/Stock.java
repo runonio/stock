@@ -56,6 +56,13 @@ public class Stock {
     @Column(name = "listed_ymd")
     Integer listedYmd;
 
+    @Column(name = "delisted_ymd")
+    Integer delistedYmd;
+
+    @Column(name = "delist_reason")
+    String delistReason;
+
+
     @Column(name = "founding_ymd")
     Integer foundingYmd;
 
