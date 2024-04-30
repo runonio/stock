@@ -61,6 +61,27 @@ public class SpotDailyCandleOut {
             }
         }
     }
+    
+    //상폐된 주식 캔들 내리기
+    public void outKorDelisted(){
+        String [] exchanges = {
+                "KOSPI"
+                , "KOSDAQ"
+        };
+
+        Stock [] stocks = Stocks.getDelistedStocks(exchanges, "19900101", YmdUtil.now(TradingTimes.KOR_ZONE_ID));
+        for(Stock stock : stocks){
+            try {
+                //같은 데이터를 호출하면 호출 제한이 걸리는 경우가 있다 전체 캔들을 내릴때는 예외처리를 강제해서 멈추지 않는 로직을 추가
+                out(stock);
+            }catch (Exception e){
+                try{
+                    Thread.sleep(5000L);
+                }catch (Exception ignore){}
+                log.error(ExceptionUtil.getStackTrace(e) +"\n" + stock);
+            }
+        }
+    }
 
     /**
      * 상장 시점부터 내릴 수 있는 전체 정보를 내린다.
@@ -86,19 +107,28 @@ public class SpotDailyCandleOut {
         //초기 데이터는 상장 년원일
         String nextYmd ;
 
-
         String filesDirPath = StockCandles.getStockSpotCandleFilesPath(stock.getStockId(),"1d");
 
         long lastOpenTime = CsvTimeFile.getLastOpenTime(filesDirPath);
 
         if(lastOpenTime > -1){
             nextYmd = YmdUtil.getYmd(lastOpenTime, TradingTimes.KOR_ZONE_ID);
+
+            if(stock.getDelistedYmd() != null){
+                int lastYmdInt = Integer.parseInt(nextYmd);
+                if(lastYmdInt >= stock.getDelistedYmd()){
+                    //상폐종목인경우 이미 캔들이 다 저장되어 있을때
+                    return ;
+                }
+            }
+
         }else{
             if(stock.getListedYmd() == null){
                 log.error("listed ymd null: " + stock);
                 return ;
             }
             nextYmd = Integer.toString(stock.getListedYmd());
+
         }
 
         TimeName.Type timeNameType = TimeName.getCandleType(Times.DAY_1);
@@ -107,6 +137,12 @@ public class SpotDailyCandleOut {
 
 
         log.debug("start stock: " + stock);
+
+        int maxYmd = nowYmdNum;
+
+        if(stock.getDelistedYmd() != null){
+            maxYmd = stock.getDelistedYmd();
+        }
         //최대100건
         for(;;){
 
@@ -116,23 +152,25 @@ public class SpotDailyCandleOut {
 
             String endYmd = YmdUtil.getYmd(nextYmd, 100);
 
-            int endYmdNum =  Integer.parseInt( endYmd);
-            if(endYmdNum > nowYmdNum){
-                endYmd = nowYmd;
+            int endYmdNum =  Integer.parseInt(endYmd);
+            if(endYmdNum > maxYmd){
+                endYmd = Integer.toString(maxYmd);
             }
 
             String text = periodDataApi.getPeriodDataJsonText(stock.getSymbol(),"D", nextYmd, endYmd, true);
             TradeCandle [] candles = KoreainvestmentPeriodDataApi.getCandles(text);
+
             String [] lines = CsvCandle.lines(candles);
 
             if(isFirst) {
+
                 CsvCandleOut.outBackPartChange(lines, filesDirPath, timeNameType, TradingTimes.KOR_ZONE_ID);
                 isFirst = false;
             }else{
                 CsvCandleOut.outNewLines(lines, filesDirPath, timeNameType, TradingTimes.KOR_ZONE_ID);
             }
 
-            if(endYmdNum >= nowYmdNum){
+            if(endYmdNum >= maxYmd){
                 break;
             }
 

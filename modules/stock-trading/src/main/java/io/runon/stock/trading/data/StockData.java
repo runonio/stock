@@ -14,6 +14,7 @@ public interface StockData {
 
     Stock[] getStocks(String [] exchanges, String standardYmd);
 
+    Stock[] getDelistedStocks(String [] exchanges, String beginYmd, String endYmd);
 
 
 

@@ -26,11 +26,14 @@ public class Stocks {
         return stockData.getStocks(exchanges);
     }
 
+    public static Stock [] getDelistedStocks(String[] exchanges, String beginYmd, String endYmd){
+        StockDataManager stockDataManager = StockDataManager.getInstance();
+        StockData stockData = stockDataManager.getStockData();
+        return stockData.getDelistedStocks(exchanges, beginYmd, endYmd);
+    }
 
     public static String getCountryCode(String stockId){
         return stockId.substring(0, stockId.indexOf("_"));
     }
-
-
 
 }
