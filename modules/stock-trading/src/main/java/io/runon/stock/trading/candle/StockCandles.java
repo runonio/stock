@@ -74,9 +74,8 @@ public class StockCandles {
         }
     }
 
-    public static void sortUseLastOpenTimeParallel(Stock [] stocks, CountryCode countryCode, String interval){
+    public static void sortUseLastOpenTimeParallel(Stock [] stocks, String interval){
 
-        String dirPath =  getStockSpotCandlePath(countryCode);
         String fileSeparator = FileSystems.getDefault().getSeparator();
         StockLong[] sortStocks = new StockLong[stocks.length];
         for (int i = 0; i <sortStocks.length ; i++) {
@@ -86,7 +85,7 @@ public class StockCandles {
         }
 
         ParallelArrayWork<StockLong> work = stockLong -> {
-            String filesDirPath = dirPath+fileSeparator+stockLong.getStock().getStockId()+fileSeparator+interval;
+            String filesDirPath = StockCandles.getStockSpotCandleFilesPath(stockLong.getStock().getStockId(),interval);
             stockLong.setNum(CsvTimeFile.getLastOpenTime(filesDirPath));
         };
 

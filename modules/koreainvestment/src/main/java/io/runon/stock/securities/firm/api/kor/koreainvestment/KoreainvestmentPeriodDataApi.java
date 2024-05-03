@@ -79,16 +79,13 @@ public class KoreainvestmentPeriodDataApi {
         if(response.getResponseCode() != 200){
             throw new KoreainvestmentApiException("token make fail code:" + response.getResponseCode() +", " + response.getMessage());
         }
-
         return response.getMessage();
-
     }
 
     public TradeCandle [] getCandles(String symbol, String period, String beginYmd, String endYmd, boolean isRevisePrice){
         String jsonText = getPeriodDataJsonText(symbol, period, beginYmd, endYmd, isRevisePrice);
         return getCandles(jsonText);
     }
-
 
     public static TradeCandle [] getCandles(String jsonText){
 
@@ -122,7 +119,6 @@ public class KoreainvestmentPeriodDataApi {
             }
 
             String ymd = row.getString("stck_bsop_date");
-
 
             TradeCandle tradeCandle = new TradeCandle();
             tradeCandle.setOpenTime(Times.getTime(dateFormat, ymd +" 09:00", TradingTimes.KOR_ZONE_ID));
@@ -191,6 +187,4 @@ public class KoreainvestmentPeriodDataApi {
 
         return candles;
     }
-
-
 }

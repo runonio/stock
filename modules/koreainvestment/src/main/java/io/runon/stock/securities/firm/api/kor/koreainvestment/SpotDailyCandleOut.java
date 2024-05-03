@@ -1,5 +1,6 @@
 package io.runon.stock.securities.firm.api.kor.koreainvestment;
 
+import com.seomse.commons.config.JsonFileProperties;
 import com.seomse.commons.utils.ExceptionUtil;
 import com.seomse.commons.utils.time.Times;
 import com.seomse.commons.utils.time.YmdUtil;
@@ -29,7 +30,6 @@ public class SpotDailyCandleOut {
     private final KoreainvestmentApi koreainvestmentApi;
 
 
-
     public SpotDailyCandleOut(KoreainvestmentApi koreainvestmentApi){
         this.koreainvestmentApi = koreainvestmentApi;
 
@@ -48,7 +48,7 @@ public class SpotDailyCandleOut {
         };
 
         Stock [] stocks = Stocks.getStocks(exchanges);
-        StockCandles.sortUseLastOpenTimeParallel(stocks, CountryCode.KOR, "1d");
+        StockCandles.sortUseLastOpenTimeParallel(stocks,  "1d");
         for(Stock stock : stocks){
             try {
                 //같은 데이터를 호출하면 호출 제한이 걸리는 경우가 있다 전체 캔들을 내릴때는 예외처리를 강제해서 멈추지 않는 로직을 추가
@@ -69,7 +69,14 @@ public class SpotDailyCandleOut {
                 , "KOSDAQ"
         };
 
-        Stock [] stocks = Stocks.getDelistedStocks(exchanges, "19900101", YmdUtil.now(TradingTimes.KOR_ZONE_ID));
+        JsonFileProperties jsonFileProperties = koreainvestmentApi.getJsonFileProperties();
+        jsonFileProperties.getString("delisted_stocks_ymd");
+
+        String delistedYmd = jsonFileProperties.getString("delisted_stocks_ymd","19900101");
+
+        String nowYmd = YmdUtil.now(TradingTimes.KOR_ZONE_ID);
+
+        Stock [] stocks = Stocks.getDelistedStocks(exchanges, delistedYmd, nowYmd);
         for(Stock stock : stocks){
             try {
                 //같은 데이터를 호출하면 호출 제한이 걸리는 경우가 있다 전체 캔들을 내릴때는 예외처리를 강제해서 멈추지 않는 로직을 추가
@@ -81,6 +88,9 @@ public class SpotDailyCandleOut {
                 log.error(ExceptionUtil.getStackTrace(e) +"\n" + stock);
             }
         }
+
+        jsonFileProperties.set("delisted_stocks_ymd", nowYmd);
+
     }
 
     /**
@@ -103,7 +113,6 @@ public class SpotDailyCandleOut {
         int nowYmdNum = Integer.parseInt(nowYmd);
         KoreainvestmentPeriodDataApi periodDataApi = koreainvestmentApi.getPeriodDataApi();
 
-        
         //초기 데이터는 상장 년원일
         String nextYmd ;
 
@@ -182,7 +191,26 @@ public class SpotDailyCandleOut {
 
             koreainvestmentApi.candleOutSleep();
         }
+    }
 
+    public static void main(String[] args) {
+
+//        jsonFileProperties.set("delisted_stocks_ymd","20240501");
+        String [] exchanges = {
+                "KOSPI"
+                , "KOSDAQ"
+        };
+
+        Stock [] stocks = Stocks.getDelistedStocks(exchanges, "20240503", "20240503");
+
+        for(Stock stock : stocks){
+            System.out.println(stock);
+        }
+        System.out.println(stocks.length);
+
+//        SpotDailyCandleOut spotDailyCandleOut = new SpotDailyCandleOut();
+//
+//        KoreainvestmentApi.getInstance();
     }
 
 }

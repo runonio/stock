@@ -36,4 +36,13 @@ public class Stocks {
         return stockId.substring(0, stockId.indexOf("_"));
     }
 
+    public static String [] getIds(Stock [] stocks){
+        String [] ids = new String[stocks.length];
+        for (int i = 0; i <ids.length ; i++) {
+            ids[i] = stocks[i].getStockId();
+        }
+        return ids;
+
+    }
+
 }

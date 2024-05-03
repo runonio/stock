@@ -23,7 +23,7 @@ public class StockSortTest {
         System.out.println(stocks[1]);
 
         long sortBeginTime = System.currentTimeMillis();
-        StockCandles.sortUseLastOpenTimeParallel(stocks, CountryCode.KOR, "1d");
+        StockCandles.sortUseLastOpenTimeParallel(stocks,  "1d");
 
         System.out.println(TimeUtil.getTimeValue(System.currentTimeMillis() - sortBeginTime));
         System.out.println("-------------------------");

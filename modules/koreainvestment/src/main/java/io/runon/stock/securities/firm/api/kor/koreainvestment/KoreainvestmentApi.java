@@ -21,17 +21,22 @@ import java.util.Map;
  */
 public class KoreainvestmentApi {
 
-    private static final KoreainvestmentApi instance = new KoreainvestmentApi();
+    private static class Singleton {
+        private static final KoreainvestmentApi instance = new KoreainvestmentApi();
+    }
 
     public static KoreainvestmentApi getInstance(){
-        return instance;
+        return Singleton.instance;
     }
+
+
 
     //실전 투자
     private static final String ACTUAL_DOMAIN = "https://openapi.koreainvestment.com:9443";
     
     //모의 투자
     private static final String SIMULATED_DOMAIN ="https://openapivts.koreainvestment.com:29443";
+
 
 
     private final String key = Config.getConfig("stock.securities.firm.api.kor.koreainvestment.key");
@@ -190,7 +195,6 @@ public class KoreainvestmentApi {
         return GsonUtils.toJson(lastToken);
     }
 
-
     public HttpApi getHttpGet() {
         return httpGet;
     }
@@ -233,7 +237,6 @@ public class KoreainvestmentApi {
             map = makeSingleMap(key,value);
             return map;
         }
-
     }
 
     public Map<String,String> getRequestPropertyMap(String urlKey){
@@ -267,6 +270,9 @@ public class KoreainvestmentApi {
         }catch (Exception ignore){}
     }
 
+    public JsonFileProperties getJsonFileProperties() {
+        return jsonFileProperties;
+    }
 
     public void setCandleOutSleep(long candleOutSleep) {
         this.candleOutSleep = candleOutSleep;
