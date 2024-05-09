@@ -5,8 +5,8 @@ import com.seomse.commons.parallel.ParallelArrayWork;
 import com.seomse.commons.utils.time.Times;
 import io.runon.stock.trading.Stock;
 import io.runon.stock.trading.Stocks;
-import io.runon.stock.trading.candle.StockCandles;
 import io.runon.stock.trading.exception.StockDataException;
+import io.runon.stock.trading.path.StockPaths;
 import io.runon.trading.CountryCode;
 import io.runon.trading.TradingConfig;
 import io.runon.trading.data.modify.ModifyPrice;
@@ -75,7 +75,7 @@ public class StockModifyPriceSearch {
 
         ParallelArrayWork<String> work = stockId -> {
 
-            String filesDirPath = StockCandles.getStockSpotCandleFilesPath(stockId,"1d");
+            String filesDirPath = StockPaths.getSpotCandleFilesPath(stockId,"1d");
 
             List<CandlePreviousCandle> list =  ModifyPrice.searchLock(filesDirPath, Times.DAY_1,errorRate,errorPrice, beginTime);
 

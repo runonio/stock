@@ -1,7 +1,17 @@
 package io.runon.stock.trading;
 
+import com.seomse.commons.parallel.ParallelArrayJob;
+import com.seomse.commons.parallel.ParallelArrayWork;
 import io.runon.stock.trading.data.StockData;
 import io.runon.stock.trading.data.StockDataManager;
+import io.runon.stock.trading.data.StockLong;
+import io.runon.stock.trading.path.StockPathLastTime;
+import io.runon.stock.trading.path.StockPaths;
+import io.runon.trading.TradingConfig;
+import io.runon.trading.data.csv.CsvTimeFile;
+
+import java.nio.file.FileSystems;
+import java.util.Arrays;
 
 /**
  * @author macle
@@ -44,5 +54,36 @@ public class Stocks {
         return ids;
 
     }
+
+
+    public static void sortUseLastTimeParallel(Stock [] stocks, String interval, StockPathLastTime stockPathLastTime){
+
+        String fileSeparator = FileSystems.getDefault().getSeparator();
+        StockLong[] sortStocks = new StockLong[stocks.length];
+        for (int i = 0; i <sortStocks.length ; i++) {
+            Stock stock = stocks[i];
+            sortStocks[i] = new StockLong();
+            sortStocks[i].setStock(stock);
+        }
+
+        ParallelArrayWork<StockLong> work = stockLong -> {
+
+            long time = stockPathLastTime.getLastTime(stockLong.getStock(), interval);
+            stockLong.setNum(time);
+        };
+
+        ParallelArrayJob<StockLong> parallelArrayJob = new ParallelArrayJob<>(sortStocks, work);
+        parallelArrayJob.setThreadCount(TradingConfig.getTradingThreadCount());
+
+        parallelArrayJob.runSync();
+
+        Arrays.sort(sortStocks, StockLong.SORT);
+        for (int i = 0; i <sortStocks.length ; i++) {
+            stocks[i] = sortStocks[i].getStock();
+        }
+
+    }
+
+
 
 }

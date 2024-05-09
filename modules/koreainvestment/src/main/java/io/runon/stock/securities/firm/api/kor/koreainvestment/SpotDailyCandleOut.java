@@ -7,7 +7,7 @@ import com.seomse.commons.utils.time.YmdUtil;
 import io.runon.stock.trading.Stock;
 import io.runon.stock.trading.Stocks;
 import io.runon.stock.trading.candle.StockCandles;
-import io.runon.trading.CountryCode;
+import io.runon.stock.trading.path.StockPaths;
 import io.runon.trading.TradingTimes;
 import io.runon.trading.data.csv.CsvCandle;
 import io.runon.trading.data.csv.CsvCandleOut;
@@ -27,7 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class SpotDailyCandleOut {
 
-    private final KoreainvestmentApi koreainvestmentApi;
+    protected final KoreainvestmentApi koreainvestmentApi;
 
 
     public SpotDailyCandleOut(KoreainvestmentApi koreainvestmentApi){
@@ -48,7 +48,7 @@ public class SpotDailyCandleOut {
         };
 
         Stock [] stocks = Stocks.getStocks(exchanges);
-        StockCandles.sortUseLastOpenTimeParallel(stocks,  "1d");
+        StockCandles.sortUseLastTimeParallel(stocks,  "1d");
         for(Stock stock : stocks){
             try {
                 //같은 데이터를 호출하면 호출 제한이 걸리는 경우가 있다 전체 캔들을 내릴때는 예외처리를 강제해서 멈추지 않는 로직을 추가
@@ -72,7 +72,7 @@ public class SpotDailyCandleOut {
         JsonFileProperties jsonFileProperties = koreainvestmentApi.getJsonFileProperties();
         jsonFileProperties.getString("delisted_stocks_ymd");
 
-        String delistedYmd = jsonFileProperties.getString("delisted_stocks_ymd","19900101");
+        String delistedYmd = jsonFileProperties.getString("delisted_stocks_candle_1d","19900101");
 
         String nowYmd = YmdUtil.now(TradingTimes.KOR_ZONE_ID);
 
@@ -89,7 +89,7 @@ public class SpotDailyCandleOut {
             }
         }
 
-        jsonFileProperties.set("delisted_stocks_ymd", nowYmd);
+        jsonFileProperties.set("delisted_stocks_candle_1d", nowYmd);
 
     }
 
@@ -116,9 +116,9 @@ public class SpotDailyCandleOut {
         //초기 데이터는 상장 년원일
         String nextYmd ;
 
-        String filesDirPath = StockCandles.getStockSpotCandleFilesPath(stock.getStockId(),"1d");
+        String filesDirPath = StockPaths.getSpotCandleFilesPath(stock.getStockId(),"1d");
 
-        long lastOpenTime = CsvTimeFile.getLastOpenTime(filesDirPath);
+        long lastOpenTime = CsvTimeFile.getLastTime(filesDirPath);
 
         if(lastOpenTime > -1){
             nextYmd = YmdUtil.getYmd(lastOpenTime, TradingTimes.KOR_ZONE_ID);
