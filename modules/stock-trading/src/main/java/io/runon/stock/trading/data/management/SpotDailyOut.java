@@ -1,4 +1,4 @@
-package io.runon.stock.securities.firm.api.kor.koreainvestment;
+package io.runon.stock.trading.data.management;
 
 import com.seomse.commons.config.JsonFileProperties;
 import com.seomse.commons.utils.ExceptionUtil;
@@ -6,19 +6,19 @@ import com.seomse.commons.utils.time.Times;
 import com.seomse.commons.utils.time.YmdUtil;
 import io.runon.stock.trading.Stock;
 import io.runon.stock.trading.Stocks;
-import io.runon.stock.trading.data.management.StockDailyOutParam;
 import io.runon.stock.trading.path.StockPathLastTime;
 import io.runon.stock.trading.path.StockPathLastTimeCandle;
 import io.runon.stock.trading.path.StockPaths;
+import io.runon.trading.TradingConfig;
 import io.runon.trading.TradingTimes;
-import io.runon.trading.data.csv.CsvCandle;
 import io.runon.trading.data.csv.CsvTimeFile;
 import io.runon.trading.data.file.FileLineOut;
 import io.runon.trading.data.file.PathTimeLine;
+import io.runon.trading.data.file.TimeLines;
 import io.runon.trading.data.file.TimeName;
-import io.runon.trading.technical.analysis.candle.Candles;
-import io.runon.trading.technical.analysis.candle.TradeCandle;
 import lombok.extern.slf4j.Slf4j;
+
+import java.time.ZoneId;
 
 
 /**
@@ -28,82 +28,29 @@ import lombok.extern.slf4j.Slf4j;
  * @author macle
  */
 @Slf4j
-public class SpotDailyCandleOut {
-
-    protected final KoreainvestmentApi koreainvestmentApi;
-    protected final KoreainvestmentPeriodDataApi periodDataApi;
-
-    private  String [] exchanges = {
-            "KOSPI"
-            , "KOSDAQ"
-    };
-
-    private final StockDailyOutParam stockDailyOutParam = new StockDailyOutParam() {
-        @Override
-        public String[] getLines(Stock stock, String beginYmd, String endYmd) {
-            String text = periodDataApi.getPeriodDataJsonText(stock.getSymbol(),"D", beginYmd, endYmd, true);
-            TradeCandle [] candles = KoreainvestmentPeriodDataApi.getCandles(text);
-            return CsvCandle.lines(candles);
-        }
-
-        @Override
-        public void sleep() {
-            koreainvestmentApi.candleOutSleep();
-        }
-
-        @Override
-        public PathTimeLine getPathTimeLine() {
-            return PathTimeLine.CSV;
-        }
-
-        @Override
-        public StockPathLastTime getStockPathLastTime() {
-            return StockPathLastTime.CANDLE;
-        }
-
-        @Override
-        public String[] getExchanges() {
-            return exchanges;
-        }
-
-        @Override
-        public JsonFileProperties getJsonFileProperties() {
-            return koreainvestmentApi.getJsonFileProperties();
-        }
-
-        @Override
-        public String getDeletedPropertiesKey() {
-            return "delisted_stocks_candle_1d";
-        }
-    };
+public class SpotDailyOut {
+    protected final StockDailyOutParam param;
+    protected final StockPathLastTime stockPathLastTime;
 
 
-    public SpotDailyCandleOut(KoreainvestmentApi koreainvestmentApi){
-        this.koreainvestmentApi = koreainvestmentApi;
-        this.periodDataApi = koreainvestmentApi.getPeriodDataApi();
+    public SpotDailyOut(StockDailyOutParam param){
 
-    }
-
-    public SpotDailyCandleOut(){
-        this.koreainvestmentApi = KoreainvestmentApi.getInstance();
-        this.periodDataApi = koreainvestmentApi.getPeriodDataApi();
+        this.param = param;
+        stockPathLastTime = param.getStockPathLastTime();
     }
 
 
+    private ZoneId zoneId = TradingConfig.DEFAULT_TIME_ZONE_ID;
 
-    private final StockPathLastTime stockPathLastTime = new StockPathLastTimeCandle();
-
-    public void setExchanges(String[] exchanges) {
-        this.exchanges = exchanges;
+    public void setZoneId(ZoneId zoneId) {
+        this.zoneId = zoneId;
     }
 
-    public void outKor(){
+
+    public void out(){
         //전체 종목 일봉 내리기
         //KONEX 는 제외
-        String [] exchanges = {
-                "KOSPI"
-                , "KOSDAQ"
-        };
+        String [] exchanges = param.getExchanges();
 
         Stock [] stocks = Stocks.getStocks(exchanges);
 
@@ -121,18 +68,14 @@ public class SpotDailyCandleOut {
             }
         }
     }
-    
+
     //상폐된 주식 캔들 내리기
-    public void outKorDelisted(){
-        String [] exchanges = {
-                "KOSPI"
-                , "KOSDAQ"
-        };
+    public void outDelisted(){
+        String [] exchanges = param.getExchanges();
 
+        JsonFileProperties jsonFileProperties = param.getJsonFileProperties();
 
-        JsonFileProperties jsonFileProperties = koreainvestmentApi.getJsonFileProperties();
-
-        String delistedYmd = jsonFileProperties.getString("delisted_stocks_candle_1d","19900101");
+        String delistedYmd = jsonFileProperties.getString(param.getDeletedPropertiesKey(),"19900101");
 
         String nowYmd = YmdUtil.now(TradingTimes.KOR_ZONE_ID);
 
@@ -149,7 +92,7 @@ public class SpotDailyCandleOut {
             }
         }
 
-        jsonFileProperties.set("delisted_stocks_candle_1d", nowYmd);
+        jsonFileProperties.set(param.getDeletedPropertiesKey(), nowYmd);
 
     }
 
@@ -162,7 +105,6 @@ public class SpotDailyCandleOut {
 
         String nowYmd = YmdUtil.now(TradingTimes.KOR_ZONE_ID);
         int nowYmdNum = Integer.parseInt(nowYmd);
-        KoreainvestmentPeriodDataApi periodDataApi = koreainvestmentApi.getPeriodDataApi();
 
         //초기 데이터는 상장 년원일
         String nextYmd ;
@@ -195,7 +137,6 @@ public class SpotDailyCandleOut {
 
         boolean isFirst = true;
 
-
         log.debug("start stock: " + stock);
 
         int maxYmd = nowYmdNum;
@@ -203,6 +144,9 @@ public class SpotDailyCandleOut {
         if(stock.getDelistedYmd() != null){
             maxYmd = stock.getDelistedYmd();
         }
+
+        PathTimeLine pathTimeLine = param.getPathTimeLine();
+
         //최대100건
         for(;;){
 
@@ -217,51 +161,28 @@ public class SpotDailyCandleOut {
                 endYmd = Integer.toString(maxYmd);
             }
 
-            String text = periodDataApi.getPeriodDataJsonText(stock.getSymbol(),"D", nextYmd, endYmd, true);
-            TradeCandle [] candles = KoreainvestmentPeriodDataApi.getCandles(text);
-
-            String [] lines = CsvCandle.lines(candles);
+            String [] lines = param.getLines(stock, nextYmd, endYmd);
 
             if(isFirst) {
 
-                FileLineOut.outBackPartChange(PathTimeLine.CSV, lines, filesDirPath, timeNameType, TradingTimes.KOR_ZONE_ID);
+                FileLineOut.outBackPartChange(pathTimeLine, lines, filesDirPath, timeNameType, TradingTimes.KOR_ZONE_ID);
                 isFirst = false;
             }else{
-                FileLineOut.outNewLines(PathTimeLine.CSV, lines, filesDirPath, timeNameType, TradingTimes.KOR_ZONE_ID);
+                FileLineOut.outNewLines(pathTimeLine, lines, filesDirPath, timeNameType, TradingTimes.KOR_ZONE_ID);
             }
 
             if(endYmdNum >= maxYmd){
                 break;
             }
 
-            if(candles.length == 0){
+            if(lines.length == 0){
                 nextYmd = YmdUtil.getYmd(endYmd, 1);
             }else{
-                nextYmd = YmdUtil.getYmd(Candles.getMaxYmd(candles, TradingTimes.KOR_ZONE_ID),1);
+                nextYmd = YmdUtil.getYmd(TimeLines.getMaxYmd(param.getPathTimeLine(), lines, zoneId),1);
             }
 
-            koreainvestmentApi.candleOutSleep();
+            param.sleep();
         }
-    }
-
-    public static void main(String[] args) {
-
-//        jsonFileProperties.set("delisted_stocks_ymd","20240501");
-        String [] exchanges = {
-                "KOSPI"
-                , "KOSDAQ"
-        };
-
-        Stock [] stocks = Stocks.getDelistedStocks(exchanges, "20240503", "20240503");
-
-        for(Stock stock : stocks){
-            System.out.println(stock);
-        }
-        System.out.println(stocks.length);
-
-//        SpotDailyCandleOut spotDailyCandleOut = new SpotDailyCandleOut();
-//
-//        KoreainvestmentApi.getInstance();
     }
 
 }

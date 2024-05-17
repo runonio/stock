@@ -5,10 +5,10 @@ import com.seomse.commons.parallel.ParallelArrayWork;
 import io.runon.stock.trading.data.StockData;
 import io.runon.stock.trading.data.StockDataManager;
 import io.runon.stock.trading.data.StockLong;
+import io.runon.stock.trading.exception.StockNotSupportedException;
 import io.runon.stock.trading.path.StockPathLastTime;
-import io.runon.stock.trading.path.StockPaths;
+import io.runon.trading.CountryCode;
 import io.runon.trading.TradingConfig;
-import io.runon.trading.data.csv.CsvTimeFile;
 
 import java.nio.file.FileSystems;
 import java.util.Arrays;
@@ -52,9 +52,7 @@ public class Stocks {
             ids[i] = stocks[i].getStockId();
         }
         return ids;
-
     }
-
 
     public static void sortUseLastTimeParallel(Stock [] stocks, String interval, StockPathLastTime stockPathLastTime){
 
@@ -81,8 +79,8 @@ public class Stocks {
         for (int i = 0; i <sortStocks.length ; i++) {
             stocks[i] = sortStocks[i].getStock();
         }
-
     }
+
 
 
 

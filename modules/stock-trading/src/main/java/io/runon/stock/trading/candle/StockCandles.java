@@ -1,16 +1,11 @@
 package io.runon.stock.trading.candle;
 
-import com.seomse.commons.parallel.ParallelArrayJob;
-import com.seomse.commons.parallel.ParallelArrayWork;
 import io.runon.stock.trading.Stock;
 import io.runon.stock.trading.Stocks;
 import io.runon.stock.trading.data.StockLong;
 import io.runon.stock.trading.path.StockPaths;
-import io.runon.stock.trading.path.StockPathLastTimeCandle;
-
 import io.runon.trading.CountryCode;
 import io.runon.trading.CountryUtils;
-import io.runon.trading.TradingConfig;
 import io.runon.trading.data.DataPathTimeRange;
 import io.runon.trading.data.csv.CsvTimeFile;
 import io.runon.trading.data.file.Files;
@@ -75,13 +70,6 @@ public class StockCandles {
             stocks[i] = sortStocks[i].getStock();
         }
     }
-
-    public static void sortUseLastTimeParallel(Stock [] stocks, String interval){
-        Stocks.sortUseLastTimeParallel(stocks,interval, new StockPathLastTimeCandle());
-    }
-
-
-
 
     public static DataPathTimeRange getSpotCandleTimeRange(String stockId, String interval){
 

@@ -1,5 +1,7 @@
 package io.runon.stock.trading;
 
+import io.runon.stock.trading.exception.StockNotSupportedException;
+import io.runon.trading.CountryCode;
 import io.runon.trading.TradingTimes;
 
 import java.time.ZoneId;
@@ -40,6 +42,17 @@ public class Exchanges {
             default -> TradingTimes.UTC_ZONE_ID;
         };
 
+    }
+
+    public static String [] getDefaultExchanges(CountryCode countryCode){
+        if(countryCode == CountryCode.KOR){
+            return new String[]{
+                    "KOSPI"
+                    , "KOSDAQ"
+            };
+        }else{
+            throw new StockNotSupportedException("undefined country: " + countryCode);
+        }
     }
 
 }
