@@ -5,6 +5,7 @@ import com.seomse.commons.http.HttpApiResponse;
 import com.seomse.commons.utils.time.YmdUtil;
 import io.runon.stock.securities.firm.api.kor.koreainvestment.exception.KoreainvestmentApiException;
 import io.runon.trading.closed.days.ClosedDaysCallback;
+import io.runon.trading.technical.analysis.candle.TradeCandle;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -98,6 +99,56 @@ public class KoreainvestmentMarketApi implements ClosedDaysCallback {
         list.clear();
 
         return days;
+    }
+
+
+    public String getIndexDataJsonText(String indexCode, String period , String ymd){
+
+
+        String fid_input_iscd;
+        if(indexCode.equals("KOSPI")){
+            fid_input_iscd = "0001";
+        }else if(indexCode.equals("KOSDAQ")){
+            fid_input_iscd = "1001";
+        }else if(indexCode.equals("KPI200")){
+            fid_input_iscd = "2001";
+        }else{
+            throw new KoreainvestmentApiException("index code error (KOSPI, KOSDAQ, KPI200)  " + indexCode);
+        }
+        
+        koreainvestmentApi.updateAccessToken();
+        String url = "/uapi/domestic-stock/v1/quotations/inquire-index-daily-price";
+        Map<String, String> requestHeaderMap = koreainvestmentApi.computeIfAbsenttPropertySingleMap(url,"tr_id","FHPUP02120000");
+
+        String query = "?fid_period_div_code=" + period +"&fid_cond_mrkt_div_code=U&fid_input_iscd=" + fid_input_iscd +"&fid_input_date_1=" +ymd ;
+
+        HttpApiResponse response =  koreainvestmentApi.getHttpGet().getResponse(url + query, requestHeaderMap);
+        if(response.getResponseCode() != 200){
+            throw new KoreainvestmentApiException("code:" + response.getResponseCode() +", " + response.getMessage() +", indexCode: " + indexCode +", ymd: " + ymd);
+        }
+
+        return response.getMessage();
+    }
+
+    public TradeCandle [] getIndexDailyCandles(String indexCode, String beginYmd, String endYmd){
+        //100일씩줌
+
+        String callYmd = YmdUtil.getYmd(beginYmd,98);
+        if(YmdUtil.compare(callYmd,endYmd) > 0){
+            callYmd = endYmd;
+        }
+
+        String jsonText = getIndexDataJsonText(indexCode, "D", callYmd);
+
+        JSONObject object = new JSONObject(jsonText);
+        JSONArray array = object.getJSONArray("output2");
+
+        for (int i = array.length() -1; i > -1 ; i--) {
+
+        }
+
+
+        return null;
     }
 
 

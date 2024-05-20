@@ -24,4 +24,9 @@ public class StockDataApi implements StockData{
     public Stock[] getStocks(String[] exchanges, String standardYmd) {
         return new Stock[0];
     }
+
+    @Override
+    public Stock[] getDelistedStocks(String[] exchanges, String beginYmd, String endYmd) {
+        return new Stock[0];
+    }
 }

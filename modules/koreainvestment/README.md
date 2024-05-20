@@ -12,6 +12,8 @@
 # 개발환경
 - open jdk 17
 
+
+
 # communication
 ### blog, homepage
 - [runon.io](https://runon.io)
@@ -32,7 +34,6 @@
   - https://open.kakao.com/o/g6vzOKqb
   - 참여코드: runon
 
-  
 
 ## main developer
 - macle

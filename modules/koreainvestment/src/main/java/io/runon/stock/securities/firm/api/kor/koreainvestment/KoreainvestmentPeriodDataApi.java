@@ -2,15 +2,16 @@ package io.runon.stock.securities.firm.api.kor.koreainvestment;
 
 import com.seomse.commons.http.HttpApiResponse;
 import com.seomse.commons.utils.time.Times;
+import com.seomse.commons.utils.time.YmdUtil;
 import io.runon.stock.securities.firm.api.kor.koreainvestment.exception.KoreainvestmentApiException;
-import io.runon.trading.LockType;
-import io.runon.trading.PriceChangeType;
-import io.runon.trading.TradingTimes;
+import io.runon.trading.*;
 import io.runon.trading.technical.analysis.candle.TradeCandle;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -68,7 +69,7 @@ public class KoreainvestmentPeriodDataApi {
      * @param ymd 결제일자
      * @return 결과값 json
      */
-    public String getDailyCreditBalanceJson(String symbol, String ymd){
+    public String getDailyCreditLoanJson(String symbol, String ymd){
 
         koreainvestmentApi.updateAccessToken();
         String url = "/uapi/domestic-stock/v1/quotations/daily-credit-balance";
@@ -79,16 +80,104 @@ public class KoreainvestmentPeriodDataApi {
         if(response.getResponseCode() != 200){
             throw new KoreainvestmentApiException("token make fail code:" + response.getResponseCode() +", " + response.getMessage());
         }
-
         return response.getMessage();
-
     }
+
+
+    public CreditLoanDaily[] getCreditLoanDailies(String symbol, String beginYmd, String endYmd){
+
+
+        List<CreditLoanDaily> list = new ArrayList<>();
+
+
+        String nextBeginYmd = beginYmd;
+
+        int endYmdNum = Integer.parseInt(endYmd);
+
+        for(;;){
+
+            int beginYmdNum = Integer.parseInt(nextBeginYmd);
+
+            String callYmd = YmdUtil.getYmd(nextBeginYmd, 30);
+            if(YmdUtil.compare(callYmd, endYmd) > 0){
+                callYmd = endYmd;
+            }
+
+            String jsonText = getDailyCreditLoanJson(symbol, callYmd);
+
+            JSONObject object = new JSONObject(jsonText);
+            String code = object.getString("rt_cd");
+            if(!code.equals("0")){
+                if(!object.isNull("msg1")){
+                    throw new KoreainvestmentApiException("rt_cd: " + code + ", message: " + object.getString("msg1"));
+                }else{
+                    throw new KoreainvestmentApiException("rt_cd: " + code);
+                }
+            }
+
+            JSONArray array = object.getJSONArray("output");
+            int length = array.length();
+            for (int i = length -1; i > -1 ; i--) {
+
+                CreditLoanDaily creditLoanDaily = new CreditLoanDaily();
+
+                JSONObject row = array.getJSONObject(i);
+
+                int ymd = Integer.parseInt(row.getString("deal_date"));
+
+                if(ymd < beginYmdNum){
+                    continue;
+                }
+
+                if(ymd > endYmdNum){
+                    break;
+                }
+
+
+                creditLoanDaily.setTradeYmd(ymd);
+                creditLoanDaily.setPaymentYmd(Integer.parseInt(row.getString("stlm_date")));
+
+                creditLoanDaily.setLoanNewQuantity(new BigDecimal(row.getString("whol_loan_new_stcn")));
+                creditLoanDaily.setLoanRepaymentQuantity(new BigDecimal(row.getString("whol_loan_rdmp_stcn")));
+                creditLoanDaily.setLoanBalanceQuantity(new BigDecimal(row.getString("whol_loan_rmnd_stcn")));
+
+                creditLoanDaily.setLoanNewAmount(new BigDecimal(row.getString("whol_loan_new_amt")));
+                creditLoanDaily.setLoanRepaymentAmount(new BigDecimal(row.getString("whol_loan_rdmp_amt")));
+                creditLoanDaily.setLoanBalanceAmount(new BigDecimal(row.getString("whol_loan_rmnd_amt")));
+
+                creditLoanDaily.setLoanBalanceRate(new BigDecimal(row.getString("whol_loan_rmnd_rate")));
+                creditLoanDaily.setLoanTradeRate(new BigDecimal(row.getString("whol_loan_gvrt")));
+
+                creditLoanDaily.setClose(new BigDecimal(row.getString("stck_prpr")));
+                creditLoanDaily.setOpen(new BigDecimal(row.getString("stck_oprc")));
+                creditLoanDaily.setHigh(new BigDecimal(row.getString("stck_hgpr")));
+                creditLoanDaily.setLow(new BigDecimal(row.getString("stck_lwpr")));
+                creditLoanDaily.setVolume(new BigDecimal(row.getString("acml_vol")));
+
+                list.add(creditLoanDaily);
+
+            }
+
+            if(YmdUtil.compare(callYmd, endYmd) >= 0){
+                break;
+            }
+
+            nextBeginYmd = YmdUtil.getYmd(callYmd,1);
+        }
+        if(list.size() == 0){
+            return CreditLoans.EMPTY_DAILY_ARRAY;
+        }
+
+
+
+        return list.toArray(new CreditLoanDaily[0]);
+    }
+
 
     public TradeCandle [] getCandles(String symbol, String period, String beginYmd, String endYmd, boolean isRevisePrice){
         String jsonText = getPeriodDataJsonText(symbol, period, beginYmd, endYmd, isRevisePrice);
         return getCandles(jsonText);
     }
-
 
     public static TradeCandle [] getCandles(String jsonText){
 
@@ -122,7 +211,6 @@ public class KoreainvestmentPeriodDataApi {
             }
 
             String ymd = row.getString("stck_bsop_date");
-
 
             TradeCandle tradeCandle = new TradeCandle();
             tradeCandle.setOpenTime(Times.getTime(dateFormat, ymd +" 09:00", TradingTimes.KOR_ZONE_ID));
@@ -191,6 +279,4 @@ public class KoreainvestmentPeriodDataApi {
 
         return candles;
     }
-
-
 }

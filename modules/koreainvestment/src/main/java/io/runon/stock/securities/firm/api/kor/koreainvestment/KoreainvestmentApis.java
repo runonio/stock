@@ -14,6 +14,7 @@ public class KoreainvestmentApis {
     public static void korStocksDailyCandleOut() {
         SpotDailyCandleOut candleOut = new SpotDailyCandleOut();
         candleOut.outKor();
+        candleOut.outKorDelisted();
     }
 
 }

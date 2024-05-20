@@ -7,35 +7,36 @@ import io.runon.trading.data.file.PathTimeLine;
 import io.runon.trading.technical.analysis.candle.TradeCandle;
 import lombok.extern.slf4j.Slf4j;
 
-
 /**
- * 현물 일봉 캔들 내리기
- * 한국 투자증권은 아직 분봉과거치를 지원하지 않음
- * 올해 지원예정 중이라고 하였음
+ * 일별 개별 신용정보 내리기
  * @author macle
  */
 @Slf4j
-public class SpotDailyCandleOut extends KoreainvestmentDailyOut{
+public class SpotDailyCreditLoanOut extends KoreainvestmentDailyOut{
 
-
-    public SpotDailyCandleOut(){
-        super(StockPathLastTime.CANDLE, PathTimeLine.CSV);
+    public SpotDailyCreditLoanOut(){
+        super(StockPathLastTime.CREDIT_LOAN, PathTimeLine.JSON);
     }
 
 
     @Override
     public String[] getLines(Stock stock, String beginYmd, String endYmd) {
         String text = periodDataApi.getPeriodDataJsonText(stock.getSymbol(),"D", beginYmd, endYmd, true);
-        TradeCandle [] candles = KoreainvestmentPeriodDataApi.getCandles(text);
+        TradeCandle[] candles = KoreainvestmentPeriodDataApi.getCandles(text);
         return CsvCandle.lines(candles);
     }
 
     @Override
     public int getNextDay() {
-        return 100;
+        return 30;
     }
 
     public String getDeletedPropertiesKey() {
         return "delisted_stocks_candle_1d";
     }
+
+
+
+
+
 }

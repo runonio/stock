@@ -65,6 +65,8 @@ CREATE TABLE stock
     shares_outstanding   NUMERIC NULL,
     is_listing           boolean NOT NULL DEFAULT true,
     listed_ymd           INTEGER NULL,
+    delisted_ymd         INTEGER NULL,
+    delist_reason        VARCHAR NULL,
     founding_ymd         INTEGER NULL,
     updated_at           TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
@@ -90,10 +92,10 @@ comment on table stock is '주식';
          comment on column stock.shares_outstanding is '유통주식수';
          comment on column stock.is_listing is '상장여부';
          comment on column stock.listed_ymd is '상장년월일';
+         comment on column stock.delisted_ymd is '상장폐지년월일';
+         comment on column stock.delist_reason is '상장폐지사유';
          comment on column stock.founding_ymd is '창립년월일';
          comment on column stock.updated_at is '업데이트일시';
-
-
 
 
 CREATE TABLE issue_shares_history

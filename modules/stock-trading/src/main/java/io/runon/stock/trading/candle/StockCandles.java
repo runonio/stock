@@ -1,14 +1,11 @@
 package io.runon.stock.trading.candle;
 
-import com.seomse.commons.config.Config;
-import com.seomse.commons.parallel.ParallelArrayJob;
-import com.seomse.commons.parallel.ParallelArrayWork;
 import io.runon.stock.trading.Stock;
 import io.runon.stock.trading.Stocks;
 import io.runon.stock.trading.data.StockLong;
+import io.runon.stock.trading.path.StockPaths;
 import io.runon.trading.CountryCode;
 import io.runon.trading.CountryUtils;
-import io.runon.trading.TradingConfig;
 import io.runon.trading.data.DataPathTimeRange;
 import io.runon.trading.data.csv.CsvTimeFile;
 import io.runon.trading.data.file.Files;
@@ -25,7 +22,7 @@ public class StockCandles {
 
     public static int getSpotCandleDirsCount(CountryCode countryCode){
 
-        String dirPath = getStockSpotCandlePath(countryCode);
+        String dirPath = StockPaths.getSpotCandlePath(countryCode);
 
         File file = new File(dirPath);
 
@@ -51,7 +48,7 @@ public class StockCandles {
 
     public static void sortUseLastOpenTime(Stock[] stocks, CountryCode countryCode, String interval){
 
-        String dirPath =  getStockSpotCandlePath(countryCode);
+        String dirPath =  StockPaths.getSpotCandlePath(countryCode);
         String fileSeparator = FileSystems.getDefault().getSeparator();
 
         StockLong[] sortStocks = new StockLong[stocks.length];
@@ -62,7 +59,7 @@ public class StockCandles {
             StockLong stockLong = new StockLong();
             stockLong.setStock(stock);
             String filesDirPath = dirPath+fileSeparator+stock.getStockId()+fileSeparator+interval;
-            stockLong.setNum(CsvTimeFile.getLastOpenTime(filesDirPath));
+            stockLong.setNum(CsvTimeFile.getLastTime(filesDirPath));
             sortStocks[i] = stockLong;
 
         }
@@ -74,102 +71,17 @@ public class StockCandles {
         }
     }
 
-    public static void sortUseLastOpenTimeParallel(Stock [] stocks, CountryCode countryCode, String interval){
-
-        String dirPath =  getStockSpotCandlePath(countryCode);
-        String fileSeparator = FileSystems.getDefault().getSeparator();
-        StockLong[] sortStocks = new StockLong[stocks.length];
-        for (int i = 0; i <sortStocks.length ; i++) {
-            Stock stock = stocks[i];
-            sortStocks[i] = new StockLong();
-            sortStocks[i].setStock(stock);
-        }
-
-        ParallelArrayWork<StockLong> work = stockLong -> {
-            String filesDirPath = dirPath+fileSeparator+stockLong.getStock().getStockId()+fileSeparator+interval;
-            stockLong.setNum(CsvTimeFile.getLastOpenTime(filesDirPath));
-        };
-
-        ParallelArrayJob<StockLong> parallelArrayJob = new ParallelArrayJob<>(sortStocks, work);
-        parallelArrayJob.setThreadCount(TradingConfig.getTradingThreadCount());
-
-        parallelArrayJob.runSync();
-
-        Arrays.sort(sortStocks, StockLong.SORT);
-        for (int i = 0; i <sortStocks.length ; i++) {
-            stocks[i] = sortStocks[i].getStock();
-        }
-
-    }
-
-
-
-    @SuppressWarnings("ConstantValue")
-    public static String getStockSpotCandlePath(){
-        String nullCode = null;
-        return getStockSpotCandlePath(nullCode);
-    }
-
-    public static String getStockSpotCandlePath(CountryCode countryCode){
-        return getStockSpotCandlePath(countryCode.toString());
-    }
-
-    /**
-     * 주식 캔들은 종목수가 많아서 국가별로 따로 관리할 수 있는 기능을 추가 한다. (용량분산)
-     * 한국 종목만 3천개가 넘고, 미국까지 은 2만개가량의 종목 정보가 저장될 수 있다.
-     * @param countryCode 국가코드
-     * @return 캔들 폴더 경로
-     */
-    public static String getStockSpotCandlePath(String countryCode){
-
-
-        String fileSeparator = FileSystems.getDefault().getSeparator();
-
-        String spotCandleDirPath = null;
-
-        if(countryCode != null && !countryCode.isEmpty()) {
-            spotCandleDirPath = Config.getConfig("stock.spot.candle.dir.path." + countryCode);
-            //대소문자 인식용
-            if(spotCandleDirPath == null){
-                spotCandleDirPath = Config.getConfig("stock.spot.candle.dir.path." + countryCode.toLowerCase());
-            }
-            if(spotCandleDirPath == null){
-                spotCandleDirPath = Config.getConfig("stock.spot.candle.dir.path." + countryCode.toUpperCase());
-            }
-        }
-
-        //국가별로 다르게 설정할 수 잇음
-        //국내만 3천개의 종목이 넘고 미국은 만개의종목이 넘으므로 기본경로는 국가 코드가 들어가게 한다.
-        if (spotCandleDirPath == null) {
-
-            if(countryCode == null){
-                spotCandleDirPath = Config.getConfig("trading.data.path", TradingConfig.getTradingDataPath()) + fileSeparator + "stock" + fileSeparator +"spot" + fileSeparator +"candle";
-            }else{
-                countryCode = countryCode.toUpperCase();
-                spotCandleDirPath = Config.getConfig("trading.data.path", TradingConfig.getTradingDataPath()) + fileSeparator + "stock" + fileSeparator  +countryCode + fileSeparator+"spot" + fileSeparator +"candle";
-            }
-        }
-
-        return spotCandleDirPath;
-    }
-
-    public static String getStockSpotCandleFilesPath(String stockId, String interval){
-        String fileSeparator = FileSystems.getDefault().getSeparator();
-        return  getStockSpotCandlePath(Stocks.getCountryCode(stockId))+fileSeparator+stockId+fileSeparator+interval;
-    }
-
-
-
     public static DataPathTimeRange getSpotCandleTimeRange(String stockId, String interval){
 
         String countryCode = Stocks.getCountryCode(stockId);
 
 
-        DataPathTimeRange dataPathTimeRange= Files.getTimeRange(new File(getStockSpotCandleFilesPath(stockId, interval)));
+        DataPathTimeRange dataPathTimeRange= Files.getTimeRange(new File(StockPaths.getSpotCandleFilesPath(stockId, interval)));
 
         if(dataPathTimeRange == null){
             return null;
         }
+
         dataPathTimeRange.setZoneId(CountryUtils.getZoneId(countryCode));
         return dataPathTimeRange;
     }

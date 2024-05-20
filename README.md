@@ -7,20 +7,48 @@
 
 초기시작은 위프로젝트에서 시작되었으며 새로 리뉴얼 합니다.
 
-# stock-data
+# 신규작업목록
+- 종목별 신용정보
+- 종목별 대차잔고 정보
+- 종목별 공매도 정보
+- 종목별 매매동향 정보 (외국인, 투신, 프로그램 ) 상승할때는 프로그램이 시장가로 계속 사는 현상이 나타남
+- 시장 증시 자금추이
+- 시장 신용잔고, 신용거래 체결 
+- 종목별 제무재표
 
-주식 분석에 필요한 데이터룰 내려받은 파일을 활용하는 형태와 Public Api 를 활용하는 유틸성 프로젝트 입니다.
 
-데이터를 분석에 필요한 객체들로 변환시켜주는 작업, 데이터를 빠르게 읽어오는 작업 등이 해당됩니다.
+## 신용정보(일별) json 데이터
+trade_ymd 매매일자
+payment_ymd 결제일자
+loan_new_count 융자 신규 주식수
+loan_repayment_count 융자 상환 주식수
+loan_balance_count 융자 잔고 주식수
+loan_new_amount 융자 신규 금액
+loan_repayment_amount 융자 상환 금액
+loan_balance_amount 융자 잔고 금액
+loan_balance_rate 융자 잔고 비율
+loan_trade_rate 융자 공여율
+close 종가
+open 시가
+high 고가
+low 저가
+volume 누적거래량
+## 대차잔고 json 데이터
 
-# stock-ds
-stock data service
+## 공매도 정보 json 데이터
 
-- Relational Database Service
-- Redis
-- 기타 빅데이터 처리 시스템
+## 매매동향 정보 json 데이터
 
-위 서비스들은 사용자 단에서 직접 접근하는 경우는 없습니다. 직접 접근이 가능한 관련도가 깊은 개발자들이 사용하는 프로젝트이며 분석에 필요한 표준화된 데이터 구조로 변환시키는 작업을 합니다
+
+# 시장 데이터
+## 증시 자금 추이
+
+# Hidden Markov model
+관련 모델 적용 연구해보기
+
+https://ko.wikipedia.org/wiki/%EC%9D%80%EB%8B%89_%EB%A7%88%EB%A5%B4%EC%BD%94%ED%94%84_%EB%AA%A8%ED%98%95
+
+https://en.wikipedia.org/wiki/Hidden_Markov_model
 
 # 데이터 구조
 
