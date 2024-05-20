@@ -7,11 +7,9 @@ import com.seomse.commons.utils.time.YmdUtil;
 import io.runon.stock.trading.Stock;
 import io.runon.stock.trading.Stocks;
 import io.runon.stock.trading.path.StockPathLastTime;
-import io.runon.stock.trading.path.StockPathLastTimeCandle;
 import io.runon.stock.trading.path.StockPaths;
 import io.runon.trading.TradingConfig;
 import io.runon.trading.TradingTimes;
-import io.runon.trading.data.csv.CsvTimeFile;
 import io.runon.trading.data.file.FileLineOut;
 import io.runon.trading.data.file.PathTimeLine;
 import io.runon.trading.data.file.TimeLines;
@@ -111,7 +109,9 @@ public class SpotDailyOut {
 
         String filesDirPath = StockPaths.getSpotCandleFilesPath(stock.getStockId(),"1d");
 
-        long lastTime = CsvTimeFile.getLastTime(filesDirPath);
+        PathTimeLine pathTimeLine = param.getPathTimeLine();
+
+        long lastTime = pathTimeLine.getLastTime(filesDirPath);
 
         if(lastTime > -1){
             nextYmd = YmdUtil.getYmd(lastTime, TradingTimes.KOR_ZONE_ID);
@@ -145,7 +145,6 @@ public class SpotDailyOut {
             maxYmd = stock.getDelistedYmd();
         }
 
-        PathTimeLine pathTimeLine = param.getPathTimeLine();
 
         //최대100건
         for(;;){
@@ -154,7 +153,7 @@ public class SpotDailyOut {
                 break;
             }
 
-            String endYmd = YmdUtil.getYmd(nextYmd, 100);
+            String endYmd = YmdUtil.getYmd(nextYmd, param.getNextDay());
 
             int endYmdNum =  Integer.parseInt(endYmd);
             if(endYmdNum > maxYmd){

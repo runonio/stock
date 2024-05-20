@@ -1,15 +1,10 @@
 package io.runon.stock.securities.firm.api.kor.koreainvestment;
 
-import com.seomse.commons.utils.ExceptionUtil;
-import com.seomse.commons.utils.time.YmdUtil;
 import io.runon.stock.trading.Stock;
-import io.runon.stock.trading.Stocks;
 import io.runon.stock.trading.path.StockPathLastTime;
-import io.runon.stock.trading.path.StockPathLastTimeCandle;
-import io.runon.stock.trading.path.StockPathLastTimeCreditLoan;
-import io.runon.stock.trading.path.StockPaths;
-import io.runon.trading.TradingTimes;
-import io.runon.trading.data.json.JsonTimeFile;
+import io.runon.trading.data.csv.CsvCandle;
+import io.runon.trading.data.file.PathTimeLine;
+import io.runon.trading.technical.analysis.candle.TradeCandle;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -17,63 +12,30 @@ import lombok.extern.slf4j.Slf4j;
  * @author macle
  */
 @Slf4j
-public class SpotDailyCreditLoanOut {
-    protected final KoreainvestmentApi koreainvestmentApi;
-
-
-    public SpotDailyCreditLoanOut(KoreainvestmentApi koreainvestmentApi){
-        this.koreainvestmentApi = koreainvestmentApi;
-    }
+public class SpotDailyCreditLoanOut extends KoreainvestmentDailyOut{
 
     public SpotDailyCreditLoanOut(){
-        this.koreainvestmentApi = KoreainvestmentApi.getInstance();
+        super(StockPathLastTime.CREDIT_LOAN, PathTimeLine.JSON);
     }
 
 
-    private final StockPathLastTime stockPathLastTime = new StockPathLastTimeCreditLoan();
+    @Override
+    public String[] getLines(Stock stock, String beginYmd, String endYmd) {
+        String text = periodDataApi.getPeriodDataJsonText(stock.getSymbol(),"D", beginYmd, endYmd, true);
+        TradeCandle[] candles = KoreainvestmentPeriodDataApi.getCandles(text);
+        return CsvCandle.lines(candles);
+    }
 
-    public void outKor(){
-        String [] exchanges = {
-                "KOSPI"
-                , "KOSDAQ"
-        };
+    @Override
+    public int getNextDay() {
+        return 30;
+    }
 
-        Stock[] stocks = Stocks.getStocks(exchanges);
-        Stocks.sortUseLastTimeParallel(stocks,"1d", stockPathLastTime);
-
-        for(Stock stock : stocks){
-            try {
-                //같은 데이터를 호출하면 호출 제한이 걸리는 경우가 있다 전체 캔들을 내릴때는 예외처리를 강제해서 멈추지 않는 로직을 추가
-                out(stock);
-            }catch (Exception e){
-                try{
-                    Thread.sleep(5000L);
-                }catch (Exception ignore){}
-                log.error(ExceptionUtil.getStackTrace(e) +"\n" + stock);
-            }
-        }
-
+    public String getDeletedPropertiesKey() {
+        return "delisted_stocks_candle_1d";
     }
 
 
-    public void out(Stock stock){
-
-        String nowYmd = YmdUtil.now(TradingTimes.KOR_ZONE_ID);
-        int nowYmdNum = Integer.parseInt(nowYmd);
-        KoreainvestmentPeriodDataApi periodDataApi = koreainvestmentApi.getPeriodDataApi();
-
-        //초기 데이터는 상장 년원일
-        String nextYmd ;
-
-        String filesDirPath = StockPaths.getSpotCreditLoanFilesPath(stock.getStockId(),"1d");
-
-        long lastTime = JsonTimeFile.getLastTime(filesDirPath);
-
-
-
-
-
-    }
 
 
 

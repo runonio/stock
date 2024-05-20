@@ -20,7 +20,7 @@ public interface StockDailyOutParam {
 
     String [] getExchanges();
 
-
+    int getNextDay();
 
     JsonFileProperties getJsonFileProperties();
 

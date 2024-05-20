@@ -66,7 +66,7 @@ public class KoreainvestmentApi {
 
     private long sleepTime = Config.getLong("stock.securities.firm.api.sleep.time", 70L);
 
-    private long candleOutSleep = Config.getLong("stock.securities.firm.api.candle.out.time", 1000L);
+    private long periodSleep = Config.getLong("stock.securities.firm.api.period.out.time", 1000L);
 
     private final ClosedDaysFileOut closedDaysFileOut;
 
@@ -264,9 +264,9 @@ public class KoreainvestmentApi {
         }catch (Exception ignore){}
     }
 
-    public void candleOutSleep(){
+    public void periodSleep(){
         try {
-            Thread.sleep(candleOutSleep);
+            Thread.sleep(periodSleep);
         }catch (Exception ignore){}
     }
 
@@ -274,7 +274,7 @@ public class KoreainvestmentApi {
         return jsonFileProperties;
     }
 
-    public void setCandleOutSleep(long candleOutSleep) {
-        this.candleOutSleep = candleOutSleep;
+    public void setPeriodSleep(long periodSleep) {
+        this.periodSleep = periodSleep;
     }
 }

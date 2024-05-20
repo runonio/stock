@@ -12,7 +12,7 @@ public class StockDailyCreditBalance {
         KoreainvestmentApi api = KoreainvestmentApi.getInstance();
 
         KoreainvestmentPeriodDataApi periodDataApi = api.getPeriodDataApi();
-        String text = periodDataApi.getDailyCreditLoanJson("005930","20240508");
+        String text = periodDataApi.getDailyCreditLoanJson("005930","20240521");
 
         System.out.println( text);
     }

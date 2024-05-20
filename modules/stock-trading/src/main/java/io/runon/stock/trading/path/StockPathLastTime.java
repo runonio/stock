@@ -7,8 +7,11 @@ import io.runon.stock.trading.Stock;
  */
 public interface StockPathLastTime {
 
-
+    //캔들
     StockPathLastTime CANDLE = new StockPathLastTimeCandle();
+
+    //신용정보
+    StockPathLastTime CREDIT_LOAN = new StockPathLastTimeCreditLoan();
 
     long getLastTime(Stock stock, String interval);
 
