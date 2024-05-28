@@ -2,9 +2,9 @@ package io.runon.stock.securities.firm.api.kor.koreainvestment;
 
 import io.runon.stock.trading.Stock;
 import io.runon.stock.trading.path.StockPathLastTime;
-import io.runon.trading.data.csv.CsvCandle;
+import io.runon.trading.CreditLoanDaily;
+import io.runon.trading.data.TradingLines;
 import io.runon.trading.data.file.PathTimeLine;
-import io.runon.trading.technical.analysis.candle.TradeCandle;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -21,9 +21,9 @@ public class SpotDailyCreditLoanOut extends KoreainvestmentDailyOut{
 
     @Override
     public String[] getLines(Stock stock, String beginYmd, String endYmd) {
-        String text = periodDataApi.getPeriodDataJsonText(stock.getSymbol(),"D", beginYmd, endYmd, true);
-        TradeCandle[] candles = KoreainvestmentPeriodDataApi.getCandles(text);
-        return CsvCandle.lines(candles);
+
+        CreditLoanDaily[] array = periodDataApi.getCreditLoanDailies(stock.getSymbol(), beginYmd, endYmd);
+        return TradingLines.getLines(array);
     }
 
     @Override
@@ -32,11 +32,7 @@ public class SpotDailyCreditLoanOut extends KoreainvestmentDailyOut{
     }
 
     public String getDeletedPropertiesKey() {
-        return "delisted_stocks_candle_1d";
+        return "delisted_stocks_credit_loan_1d";
     }
-
-
-
-
 
 }

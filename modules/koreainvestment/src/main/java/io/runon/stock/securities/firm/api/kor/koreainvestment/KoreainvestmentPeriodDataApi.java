@@ -93,6 +93,7 @@ public class KoreainvestmentPeriodDataApi {
         String nextBeginYmd = beginYmd;
 
         int endYmdNum = Integer.parseInt(endYmd);
+        String dateFormat = "yyyyMMdd hh:mm";
 
         for(;;){
 
@@ -123,18 +124,21 @@ public class KoreainvestmentPeriodDataApi {
 
                 JSONObject row = array.getJSONObject(i);
 
-                int ymd = Integer.parseInt(row.getString("deal_date"));
+                String tradeYmd = row.getString("deal_date");
 
-                if(ymd < beginYmdNum){
+                int tradeYmdInt = Integer.parseInt(tradeYmd);
+
+                if(tradeYmdInt < beginYmdNum){
                     continue;
                 }
 
-                if(ymd > endYmdNum){
+                if(tradeYmdInt > endYmdNum){
                     break;
                 }
 
+                creditLoanDaily.setTime(Times.getTime(dateFormat, tradeYmd +" 09:00", TradingTimes.KOR_ZONE_ID));
 
-                creditLoanDaily.setTradeYmd(ymd);
+                creditLoanDaily.setTradeYmd(tradeYmdInt);
                 creditLoanDaily.setPaymentYmd(Integer.parseInt(row.getString("stlm_date")));
 
                 creditLoanDaily.setLoanNewQuantity(new BigDecimal(row.getString("whol_loan_new_stcn")));

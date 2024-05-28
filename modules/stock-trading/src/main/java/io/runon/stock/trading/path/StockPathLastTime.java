@@ -15,4 +15,7 @@ public interface StockPathLastTime {
 
     long getLastTime(Stock stock, String interval);
 
+    String getFilesDirPath(Stock stock, String interval);
+
+    String getLastTimeFilePath(String interval);
 }
