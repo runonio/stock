@@ -36,6 +36,9 @@ public class SpotDailyOut {
     protected final StockDailyOutParam param;
     protected final StockPathLastTime stockPathLastTime;
 
+    //장중에 수집하는경우 마지막 라인의 변화를 체크하는 옵션
+    //공매도나 대차잔고등 일별집계가 끝나는 데이터는 falst로 설정
+    protected boolean isLastLineCheck = true;
 
     public SpotDailyOut(StockDailyOutParam param){
 
@@ -51,6 +54,9 @@ public class SpotDailyOut {
     }
     private final Map<String, StockYmd> lastYmdMap = new HashMap<>();
 
+    public void setLastLineCheck(boolean lastLineCheck) {
+        isLastLineCheck = lastLineCheck;
+    }
 
     public void setLastYmdMap(Stock [] stocks){
 
@@ -178,7 +184,12 @@ public class SpotDailyOut {
         }
 
         if(lastTime > -1){
+
             nextYmd = YmdUtil.getYmd(lastTime, TradingTimes.KOR_ZONE_ID);
+            if(!isLastLineCheck){
+                // 마지막일자를 체크하지 않으면 마지막 저장 날짜의 다음날짜를 호출한다.
+                nextYmd = YmdUtil.getYmd(nextYmd, 1);
+            }
 
             if(stock.getDelistedYmd() != null){
                 int lastYmdInt = Integer.parseInt(nextYmd);
@@ -211,6 +222,7 @@ public class SpotDailyOut {
         for(;;){
 
             if(YmdUtil.compare(nextYmd, nowYmd) > 0){
+                param.sleep();
                 break;
             }
 
@@ -223,7 +235,7 @@ public class SpotDailyOut {
 
             String [] lines = param.getLines(stock, nextYmd, endYmd);
 
-            if(isFirst) {
+            if(isLastLineCheck && isFirst) {
 
                 FileLineOut.outBackPartChange(pathTimeLine, lines, filesDirPath, timeNameType, TradingTimes.KOR_ZONE_ID);
                 isFirst = false;
@@ -242,6 +254,7 @@ public class SpotDailyOut {
             }
 
             if(endYmdNum >= maxYmd){
+                param.sleep();
                 break;
             }
 

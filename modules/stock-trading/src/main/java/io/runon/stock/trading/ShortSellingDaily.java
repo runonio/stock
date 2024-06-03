@@ -14,6 +14,10 @@ import java.math.BigDecimal;
 @Data
 public class ShortSellingDaily {
     public static final ShortSellingDaily [] EMPTY_ARRAY = new ShortSellingDaily[0];
+
+    Long t ;
+
+
     int ymd;
 
     //전체수량
@@ -73,6 +77,15 @@ public class ShortSellingDaily {
 
         return true;
     }
+
+    public long getTime(){
+        return t;
+    }
+
+    public void setTime(long time){
+        this.t = time;
+    }
+
 
     public static ShortSellingDaily make(String jsonStr){
         return new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create().fromJson(jsonStr, ShortSellingDaily.class);

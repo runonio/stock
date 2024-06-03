@@ -5,6 +5,8 @@ import io.runon.stock.trading.ShortSellingDaily;
 import io.runon.stock.trading.StockDailyData;
 import io.runon.stock.trading.StockLoanDaily;
 
+import java.util.List;
+
 /**
  * RDS 에 저장된 일별
  * 일별 대차(대주 정보)
@@ -34,6 +36,12 @@ public class RdsDaily {
 
         JdbcObjects.insertOrUpdate(stockDailyData, false);
 
+    }
+
+    public static List<StockDailyData> getDailyDataList(String dataKey, String stockId, String beginYmd, String endYmd){
+
+        String where = "stock_id='" + stockId +"' and data_key='" + dataKey +"' and ymd >= " + beginYmd +" and ymd <= " +endYmd;
+        return  JdbcObjects.getObjList(StockDailyData.class, where,"ymd asc");
     }
 
 }

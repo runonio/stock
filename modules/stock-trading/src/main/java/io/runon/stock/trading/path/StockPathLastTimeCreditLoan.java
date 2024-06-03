@@ -7,9 +7,10 @@ import io.runon.trading.data.json.JsonTimeFile;
 import java.nio.file.FileSystems;
 
 /**
+ * 신용
  * @author macle
  */
-public class StockPathLastTimeCreditLoan  implements StockPathLastTime{
+public class StockPathLastTimeCreditLoan implements StockPathLastTime{
     @Override
     public long getLastTime(Stock stock, String interval) {
         String filesDirPath = StockPaths.getSpotCreditLoanFilesPath(stock.getStockId(),interval);
