@@ -1,7 +1,6 @@
 package io.runon.stock.trading;
 
-import com.google.gson.FieldNamingPolicy;
-import com.google.gson.GsonBuilder;
+import io.runon.trading.TradingGson;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -19,6 +18,7 @@ public class StockLoanDaily {
     public static final StockLoanDaily [] EMPTY_ARRAY = new StockLoanDaily[0];
     public static final Comparator<StockLoanDaily> SORT = Comparator.comparingInt(o -> o.ymd);
 
+    Long t ;
 
     int ymd;
 
@@ -40,12 +40,42 @@ public class StockLoanDaily {
 
     //대차(대추) 잔고
     BigDecimal loanBalance;
-    @Override
-    public String toString(){
-        return new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).setPrettyPrinting().create().toJson(this);
+    public static StockLoanDaily make(String jsonStr, Stock stock){
+
+        StockLoanDaily stockLoanDaily = make(jsonStr);
+        if(stockLoanDaily.t == null){
+            stockLoanDaily.t = Stocks.getDailyOpenTime(stock, stockLoanDaily.ymd);
+        }
+
+        return stockLoanDaily;
     }
 
     public static StockLoanDaily make(String jsonStr){
-        return new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create().fromJson(jsonStr, StockLoanDaily.class);
+
+        return TradingGson.LOWER_CASE_WITH_UNDERSCORES.fromJson(jsonStr, StockLoanDaily.class);
     }
+
+
+    public String outTimeLineJsonText(Stock stock){
+        if(t == null){
+           t = Stocks.getDailyOpenTime(stock, ymd);
+        }
+
+        return TradingGson.LOWER_CASE_WITH_UNDERSCORES.toJson(this);
+    }
+
+    @Override
+    public String toString(){
+        return TradingGson.LOWER_CASE_WITH_UNDERSCORES_PRETTY.toJson(this);
+    }
+
+
+    public long getTime(){
+        return t;
+    }
+
+    public void setTime(long time){
+        this.t = time;
+    }
+
 }

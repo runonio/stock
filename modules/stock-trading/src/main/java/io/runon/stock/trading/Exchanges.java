@@ -1,5 +1,6 @@
 package io.runon.stock.trading;
 
+import com.seomse.commons.exception.UndefinedException;
 import io.runon.stock.trading.exception.StockNotSupportedException;
 import io.runon.trading.CountryCode;
 import io.runon.trading.TradingTimes;
@@ -53,6 +54,16 @@ public class Exchanges {
         }else{
             throw new StockNotSupportedException("undefined country: " + countryCode);
         }
+    }
+
+    public static String getOpenTimeYm(String exchange){
+        return switch (exchange) {
+            case "KOSPI", "KOSDAQ", "KONEX" -> "0900";
+//            case "NYSE", "NASDAQ", "NYSE_AMEX", "CME", "CBOT", "NYMEX", "COMEX", "CFD" -> TradingTimes.USA_ZONE_ID;
+//            case "SGX" -> TradingTimes.SGP_ZONE_ID;
+//            case "NSE" -> TradingTimes.INR_ZONE_ID;
+            default -> throw new UndefinedException();
+        };
     }
 
 }

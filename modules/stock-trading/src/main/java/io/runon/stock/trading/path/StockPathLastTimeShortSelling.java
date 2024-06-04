@@ -7,27 +7,25 @@ import io.runon.trading.data.json.JsonTimeFile;
 import java.nio.file.FileSystems;
 
 /**
- * 신용
+ * 공매도
  * @author macle
  */
-public class StockPathLastTimeCreditLoan implements StockPathLastTime{
+public class StockPathLastTimeShortSelling implements StockPathLastTime{
     @Override
     public long getLastTime(Stock stock, String interval) {
-        String filesDirPath = StockPaths.getSpotCreditLoanFilesPath(stock.getStockId(),interval);
+        String filesDirPath = StockPaths.getShortSellingFilesPath(stock.getStockId(),interval);
         return JsonTimeFile.getLastTime(filesDirPath);
     }
 
     @Override
     public String getFilesDirPath(Stock stock, String interval) {
-        return StockPaths.getSpotCreditLoanFilesPath(stock.getStockId(),interval);
+        return StockPaths.getShortSellingFilesPath(stock.getStockId(), interval);
     }
 
     @Override
     public String getLastTimeFilePath(String interval) {
         String fileSeparator = FileSystems.getDefault().getSeparator();
-        return StockPaths.getSpotCreditLoanPath(CountryCode.KOR)+fileSeparator+"credit_loan_last_" + interval;
 
+        return StockPaths.getShortSellingPath(CountryCode.KOR)+fileSeparator+"short_selling_last_" + interval;
     }
-
-
 }

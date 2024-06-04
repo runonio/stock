@@ -47,10 +47,45 @@ public class StockPaths {
     public static String getSpotCreditLoanPath(String countryCode){
         return getSpotDirPath(countryCode, "stock.spot.credit.loan.dir.path", "credit_loan");
     }
-
+    //신용
     public static String getSpotCreditLoanFilesPath(String stockId, String interval){
         String fileSeparator = FileSystems.getDefault().getSeparator();
-        return  getSpotCreditLoanPath(Stocks.getCountryCode(stockId))+fileSeparator+stockId+fileSeparator+interval;
+        return getSpotCreditLoanPath(Stocks.getCountryCode(stockId))+fileSeparator+stockId+fileSeparator+interval;
+    }
+
+    //대주
+    public static String getStockLoanFilesPath(String stockId, String interval){
+        String fileSeparator = FileSystems.getDefault().getSeparator();
+        String countryCode = Stocks.getCountryCode(stockId);
+        return getStockLoanPath((countryCode)) + fileSeparator + stockId + fileSeparator + interval;
+    }
+
+    //대주
+    public static String getStockLoanPath(CountryCode countryCode){
+        return getStockLoanPath(countryCode.toString());
+    }
+
+    //대주
+    public static String getStockLoanPath(String countryCode){
+        return getSpotDirPath(countryCode, "stock.loan.dir.path", "stock_loan");
+    }
+
+
+
+    public static String getShortSellingFilesPath(String stockId, String interval){
+        String fileSeparator = FileSystems.getDefault().getSeparator();
+        String countryCode = Stocks.getCountryCode(stockId);
+        return getShortSellingPath((countryCode)) + fileSeparator + stockId + fileSeparator + interval;
+    }
+
+    //공매도
+    public static String getShortSellingPath(CountryCode countryCode){
+        return getShortSellingPath(countryCode.toString());
+    }
+
+    //공매도
+    public static String getShortSellingPath(String countryCode){
+        return getSpotDirPath(countryCode, "stock.short.selling.dir.path", "short_selling");
     }
 
 

@@ -46,4 +46,5 @@ public class StockDailyData {
         }
         return true;
     }
+
 }

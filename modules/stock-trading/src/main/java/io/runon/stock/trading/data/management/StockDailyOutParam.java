@@ -26,4 +26,7 @@ public interface StockDailyOutParam {
 
     String getDeletedPropertiesKey();
 
+
+
+
 }

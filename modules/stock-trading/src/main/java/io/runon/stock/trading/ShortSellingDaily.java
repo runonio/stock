@@ -2,6 +2,7 @@ package io.runon.stock.trading;
 
 import com.google.gson.FieldNamingPolicy;
 import com.google.gson.GsonBuilder;
+import io.runon.trading.TradingGson;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -14,6 +15,10 @@ import java.math.BigDecimal;
 @Data
 public class ShortSellingDaily {
     public static final ShortSellingDaily [] EMPTY_ARRAY = new ShortSellingDaily[0];
+
+    Long t ;
+
+
     int ymd;
 
     //전체수량
@@ -74,8 +79,35 @@ public class ShortSellingDaily {
         return true;
     }
 
+    public long getTime(){
+        return t;
+    }
+
+    public void setTime(long time){
+        this.t = time;
+    }
+
+
     public static ShortSellingDaily make(String jsonStr){
         return new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create().fromJson(jsonStr, ShortSellingDaily.class);
+    }
+
+    public static ShortSellingDaily make(String jsonStr, Stock stock){
+
+        ShortSellingDaily daily = make(jsonStr);
+        if(daily.t == null){
+            daily.t = Stocks.getDailyOpenTime(stock, daily.ymd);
+        }
+
+        return daily;
+    }
+
+    public String outTimeLineJsonText(Stock stock){
+        if(t == null){
+            t = Stocks.getDailyOpenTime(stock, ymd);
+        }
+
+        return TradingGson.LOWER_CASE_WITH_UNDERSCORES.toJson(this);
     }
 
 }
