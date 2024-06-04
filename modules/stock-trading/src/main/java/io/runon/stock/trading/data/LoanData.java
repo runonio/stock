@@ -2,6 +2,8 @@ package io.runon.stock.trading.data;
 
 import io.runon.stock.trading.Stock;
 import io.runon.stock.trading.StockLoanDaily;
+import io.runon.stock.trading.ShortSellingDaily;
+
 
 /**
  * 부채 관련 데이터 정리
@@ -15,5 +17,6 @@ public interface LoanData {
 
     StockLoanDaily[] getStockLoanDailies(Stock stock, String beginYmd, String endYmd);
 
+    ShortSellingDaily [] getShortSellingDailies(Stock stock, String beginYmd, String endYmd);
 
 }

@@ -13,6 +13,13 @@ public interface StockPathLastTime {
     //신용정보
     StockPathLastTime CREDIT_LOAN = new StockPathLastTimeCreditLoan();
 
+    //대주 정보
+    StockPathLastTime STOCK_LOAN = new StockPathLastTimeLoan();
+    
+    //공매도
+    StockPathLastTime SHORT_SELLING = new StockPathLastTimeShortSelling();
+    
+
     long getLastTime(Stock stock, String interval);
 
     String getFilesDirPath(Stock stock, String interval);

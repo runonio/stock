@@ -1,19 +1,21 @@
 package io.runon.stock.trading.data.management;
 
 import com.seomse.commons.config.JsonFileProperties;
+import io.runon.stock.trading.ShortSellingDaily;
 import io.runon.stock.trading.Stock;
-import io.runon.stock.trading.StockLoanDaily;
 import io.runon.stock.trading.data.LoanData;
 import io.runon.stock.trading.data.StockDataManager;
 import io.runon.stock.trading.path.StockPathLastTime;
 import io.runon.trading.data.file.PathTimeLine;
 
 /**
+ * 공매도
  * @author macle
  */
-public class KorSpotDailyStockLoanOut extends KorSpotDailyOut{
-    public KorSpotDailyStockLoanOut() {
-        super(StockPathLastTime.STOCK_LOAN, PathTimeLine.JSON);
+public class KorSpotDailyShortSellingOut  extends KorSpotDailyOut{
+
+    public KorSpotDailyShortSellingOut() {
+        super(StockPathLastTime.SHORT_SELLING, PathTimeLine.JSON);
     }
 
     @Override
@@ -22,7 +24,8 @@ public class KorSpotDailyStockLoanOut extends KorSpotDailyOut{
         StockDataManager dataManager = StockDataManager.getInstance();
         LoanData loanData = dataManager.getLoanData();
 
-        StockLoanDaily[] dailies = loanData.getStockLoanDailies(stock, beginYmd, endYmd);
+        ShortSellingDaily[] dailies = loanData.getShortSellingDailies(stock, beginYmd, endYmd);
+
         String [] lines = new String[dailies.length];
         for (int i = 0; i <lines.length ; i++) {
             lines[i] = dailies[i].outTimeLineJsonText(stock);
@@ -50,6 +53,6 @@ public class KorSpotDailyStockLoanOut extends KorSpotDailyOut{
 
     @Override
     public String getDeletedPropertiesKey() {
-        return "delisted_stocks_loan_1d";
+        return "delisted_stocks_short_selling_1d";
     }
 }

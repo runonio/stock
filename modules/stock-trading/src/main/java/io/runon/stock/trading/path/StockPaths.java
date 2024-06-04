@@ -71,6 +71,24 @@ public class StockPaths {
     }
 
 
+
+    public static String getShortSellingFilesPath(String stockId, String interval){
+        String fileSeparator = FileSystems.getDefault().getSeparator();
+        String countryCode = Stocks.getCountryCode(stockId);
+        return getShortSellingPath((countryCode)) + fileSeparator + stockId + fileSeparator + interval;
+    }
+
+    //공매도
+    public static String getShortSellingPath(CountryCode countryCode){
+        return getShortSellingPath(countryCode.toString());
+    }
+
+    //공매도
+    public static String getShortSellingPath(String countryCode){
+        return getSpotDirPath(countryCode, "stock.short.selling.dir.path", "short_selling");
+    }
+
+
     public static String getSpotDirPath(String countryCode, String configKey, String dirName){
         String fileSeparator = FileSystems.getDefault().getSeparator();
 
