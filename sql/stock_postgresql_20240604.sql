@@ -314,7 +314,7 @@ comment on table currencies is '통화_환율';
          comment on column currencies.updated_at is '업데이트일시';
 
 
-CREATE TABLE stock_market_daily
+CREATE TABLE daily_data
 (
     data_key             VARCHAR NOT NULL,
     ymd                  INTEGER NOT NULL,
@@ -325,9 +325,12 @@ CREATE TABLE stock_market_daily
 
 
 
-comment on table stock_market_daily is '시장일별데이터';
-        comment on column stock_market_daily.data_key is '데이터키';
-         comment on column stock_market_daily.ymd is '년월일';
-         comment on column stock_market_daily.data_value is '데이터값';
-         comment on column stock_market_daily.updated_at is '업데이트일시';
+comment on table daily_data is '일별데이터';
+        comment on column daily_data.data_key is '데이터키';
+         comment on column daily_data.ymd is '년월일';
+         comment on column daily_data.data_value is '데이터값';
+         comment on column daily_data.updated_at is '업데이트일시';
+
+
+
 

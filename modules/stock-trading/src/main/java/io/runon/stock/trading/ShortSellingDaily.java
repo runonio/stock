@@ -1,7 +1,5 @@
 package io.runon.stock.trading;
 
-import com.google.gson.FieldNamingPolicy;
-import com.google.gson.GsonBuilder;
 import io.runon.trading.TradingGson;
 import lombok.Data;
 
@@ -40,7 +38,7 @@ public class ShortSellingDaily {
 
     @Override
     public String toString(){
-        return new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).setPrettyPrinting().create().toJson(this);
+        return TradingGson.LOWER_CASE_WITH_UNDERSCORES_PRETTY.toJson(this);
     }
 
     /**
@@ -89,7 +87,7 @@ public class ShortSellingDaily {
 
 
     public static ShortSellingDaily make(String jsonStr){
-        return new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create().fromJson(jsonStr, ShortSellingDaily.class);
+        return TradingGson.LOWER_CASE_WITH_UNDERSCORES.fromJson(jsonStr, ShortSellingDaily.class);
     }
 
     public static ShortSellingDaily make(String jsonStr, Stock stock){
