@@ -1,5 +1,6 @@
-package io.runon.stock.trading;
+package io.runon.stock.trading.market;
 
+import io.runon.stock.trading.Stocks;
 import io.runon.trading.CountryCode;
 import io.runon.trading.TradingGson;
 import lombok.Data;
@@ -12,10 +13,10 @@ import java.util.Comparator;
  * @author macle
  */
 @Data
-public class StockMarketFundDaily {
+public class MarketFundDaily {
 
-    public static final StockMarketFundDaily [] EMPTY_ARRAY = new StockMarketFundDaily[0];
-    public static final Comparator<StockMarketFundDaily> SORT = Comparator.comparingInt(o -> o.ymd);
+    public static final MarketFundDaily[] EMPTY_ARRAY = new MarketFundDaily[0];
+    public static final Comparator<MarketFundDaily> SORT = Comparator.comparingInt(o -> o.ymd);
 
     Long t ;
 
@@ -54,20 +55,19 @@ public class StockMarketFundDaily {
     }
 
 
-    public static StockMarketFundDaily make(String jsonStr, CountryCode countryCode){
-        StockMarketFundDaily daily = TradingGson.LOWER_CASE_WITH_UNDERSCORES.fromJson(jsonStr, StockMarketFundDaily.class);
+    public static MarketFundDaily make(String jsonStr, CountryCode countryCode){
+        MarketFundDaily daily = TradingGson.LOWER_CASE_WITH_UNDERSCORES.fromJson(jsonStr, MarketFundDaily.class);
         if(daily.t == null){
             daily.t = Stocks.getDailyOpenTime(countryCode, Integer.toString(daily.ymd));
         }
 
-        return TradingGson.LOWER_CASE_WITH_UNDERSCORES.fromJson(jsonStr, StockMarketFundDaily.class);
+        return daily;
     }
 
 
-
-    public String outTimeLineJsonText(Stock stock){
+    public String outTimeLineJsonText(CountryCode countryCode){
         if(t == null){
-            t = Stocks.getDailyOpenTime(stock, ymd);
+            t = Stocks.getDailyOpenTime(countryCode, Integer.toString(ymd));
         }
 
         return TradingGson.LOWER_CASE_WITH_UNDERSCORES.toJson(this);
