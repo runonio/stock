@@ -17,7 +17,6 @@ public class KorAllStockSpotDailyOut {
         SpotDailyCreditLoanOut creditLoanOut = new SpotDailyCreditLoanOut();
         creditLoanOut.outKor();
         creditLoanOut.outKorDelisted();
-
         //매매동향
 
         //대주

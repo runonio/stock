@@ -235,6 +235,9 @@ public class KoreainvestmentApi {
             }
 
             map = makeSingleMap(key,value);
+
+            urlRequestPropertyMap.put(urlKey, map);
+
             return map;
         }
     }

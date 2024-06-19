@@ -12,15 +12,10 @@ import java.text.SimpleDateFormat;
 import java.util.TimeZone;
 
 /**
- * 파일처리 관련 유틸성 클래스
  * @author macle
  */
 @Data
 public class AccessToken {
-//    {
-//    "access_token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ0b2tlbiIsImF1ZCI6ImI2YTMwOWM1LWMzYjMtNDI1NC05ZjEwLTFlNmEwNGJiMTU1NSIsImlzcyI6InVub2d3IiwiZXhwIjoxNzEwMTc3NTI3LCJpYXQiOjE3MTAwOTExMjcsImp0aSI6IlBTVDc0NTNRNTRtNVhLZmJmbHNvRldiZnVnYU1acWtFckVReiJ9.S1Rfw3d36N1nqhmofTKIh39k9Sw9mGUlrWcmOoUGEnfSnxJc4duusTtZz711YdN9o9cYIcfr6h7lqqtbnakYow",
-//    "access_token_token_expired":"2024-03-12 02:18:47",
-//    "token_type":"Bearer","expires_in":86400}
 
     public AccessToken(){
 

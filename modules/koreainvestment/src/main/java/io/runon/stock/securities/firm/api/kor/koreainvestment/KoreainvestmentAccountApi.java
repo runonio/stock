@@ -1,7 +1,7 @@
 package io.runon.stock.securities.firm.api.kor.koreainvestment;
 
 import com.seomse.commons.http.HttpApiResponse;
-import io.runon.stock.securities.firm.api.kor.koreainvestment.exception.KoreainvestmentApiException;
+import io.runon.stock.trading.exception.StockApiException;
 import org.json.JSONObject;
 
 import java.math.BigDecimal;
@@ -30,12 +30,10 @@ public class KoreainvestmentAccountApi {
 
     /**
      * apiportal.koreainvestment.com/apiservice/apiservice-domestic-stock#L_66c61080-674f-4c91-a0cc-db5e64e9a5e6
-     *
      * requenst
      * CANO	종합계좌번호	String	Y	8	계좌번호 체계(8-2)의 앞 8자리
      * ACNT_PRDT_CD	계좌상품코드	String	Y	2	계좌번호 체계(8-2)의 뒤 2자리
      * AFHR_FLPR_YN	시간외단일가여부	String	Y	1	N : 기본값, Y : 시간외단일가
-     *
      * OFL_YN	오프라인여부	String	Y	1	공란(Default)
      * INQR_DVSN	조회구분	String	Y	2	01 : 대출일별 02 : 종목별
      * UNPR_DVSN	단가구분	String	Y	2	01 : 기본값
@@ -48,7 +46,6 @@ public class KoreainvestmentAccountApi {
      * 이전 조회 Output CTX_AREA_FK100 값 : 다음페이지 조회시(2번째부터)
      * CTX_AREA_NK100	연속조회키100	String	Y	100	공란 : 최초 조회시
      * 이전 조회 Output CTX_AREA_NK100 값 : 다음페이지 조회시(2번째부터
-     *
      * response
      * rt_cd	성공 실패 여부	String	Y	1	0 : 성공
      * 0 이외의 값 : 실패
@@ -143,7 +140,7 @@ public class KoreainvestmentAccountApi {
 
         HttpApiResponse response =  koreainvestmentApi.getHttpGet().getResponse(url + query, requestHeaderMap);
         if(response.getResponseCode() != 200){
-            throw new KoreainvestmentApiException("token make fail code:" + response.getResponseCode() +", " + response.getMessage());
+            throw new StockApiException("token make fail code:" + response.getResponseCode() +", " + response.getMessage());
         }
         return response.getMessage();
     }
@@ -196,7 +193,7 @@ public class KoreainvestmentAccountApi {
 
         HttpApiResponse response =  koreainvestmentApi.getHttpGet().getResponse(url + query, requestHeaderMap);
         if(response.getResponseCode() != 200){
-            throw new KoreainvestmentApiException("token make fail code:" + response.getResponseCode() +", " + response.getMessage());
+            throw new StockApiException("token make fail code:" + response.getResponseCode() +", " + response.getMessage());
         }
         return response.getMessage();
     }

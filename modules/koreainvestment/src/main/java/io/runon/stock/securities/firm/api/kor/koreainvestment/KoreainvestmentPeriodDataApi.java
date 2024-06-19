@@ -3,7 +3,7 @@ package io.runon.stock.securities.firm.api.kor.koreainvestment;
 import com.seomse.commons.http.HttpApiResponse;
 import com.seomse.commons.utils.time.Times;
 import com.seomse.commons.utils.time.YmdUtil;
-import io.runon.stock.securities.firm.api.kor.koreainvestment.exception.KoreainvestmentApiException;
+import io.runon.stock.trading.exception.StockApiException;
 import io.runon.trading.*;
 import io.runon.trading.technical.analysis.candle.TradeCandle;
 import org.json.JSONArray;
@@ -57,7 +57,7 @@ public class KoreainvestmentPeriodDataApi {
 
         HttpApiResponse response =  koreainvestmentApi.getHttpGet().getResponse(url + query, requestHeaderMap);
         if(response.getResponseCode() != 200){
-            throw new KoreainvestmentApiException("code:" + response.getResponseCode() +", " + response.getMessage() +", symbol: " + symbol +", beginYmd: " + beginYmd);
+            throw new StockApiException("code:" + response.getResponseCode() +", " + response.getMessage() +", symbol: " + symbol +", beginYmd: " + beginYmd);
         }
 
         return response.getMessage();
@@ -78,7 +78,7 @@ public class KoreainvestmentPeriodDataApi {
         String query = "?fid_cond_mrkt_div_code=J&fid_cond_scr_div_code=20476&fid_input_iscd=" + symbol +"&fid_input_date_1=" +ymd ;
         HttpApiResponse response =  koreainvestmentApi.getHttpGet().getResponse(url + query, requestHeaderMap);
         if(response.getResponseCode() != 200){
-            throw new KoreainvestmentApiException("token make fail code:" + response.getResponseCode() +", " + response.getMessage());
+            throw new StockApiException("token make fail code:" + response.getResponseCode() +", " + response.getMessage());
         }
         return response.getMessage();
     }
@@ -110,9 +110,9 @@ public class KoreainvestmentPeriodDataApi {
             String code = object.getString("rt_cd");
             if(!code.equals("0")){
                 if(!object.isNull("msg1")){
-                    throw new KoreainvestmentApiException("rt_cd: " + code + ", message: " + object.getString("msg1"));
+                    throw new StockApiException("rt_cd: " + code + ", message: " + object.getString("msg1"));
                 }else{
-                    throw new KoreainvestmentApiException("rt_cd: " + code);
+                    throw new StockApiException("rt_cd: " + code);
                 }
             }
 
@@ -189,16 +189,15 @@ public class KoreainvestmentPeriodDataApi {
         String code = object.getString("rt_cd");
         if(!code.equals("0")){
             if(!object.isNull("msg1")){
-                throw new KoreainvestmentApiException("rt_cd: " + code + ", message: " + object.getString("msg1"));
+                throw new StockApiException("rt_cd: " + code + ", message: " + object.getString("msg1"));
             }else{
-                throw new KoreainvestmentApiException("rt_cd: " + code);
+                throw new StockApiException("rt_cd: " + code);
             }
         }
 
         JSONArray array = object.getJSONArray("output2");
 
         String dateFormat = "yyyyMMdd hh:mm";
-
 
         int length = array.length();
 
@@ -283,4 +282,41 @@ public class KoreainvestmentPeriodDataApi {
 
         return candles;
     }
+
+    //매매동향 (기관 외국인, ) 이베스트는 투신 사모펀드 등 다양하게 제공하지만 한국 투자증권은 기관계 정도만 제공함 우선 한투를 이용하고 관련 데이터의 상세한 분석이 필요할때 활용
+    //    apiportal.koreainvestment.com/apiservice/apiservice-domestic-stock-quotations2#L_e27baf2f-6ec0-4029-b4fd-4c873f340478
+    // 프로그램 매매
+    //종목별 매수합, 매도합 ( 체결강도 계산), 기존 켄들 데이터에 업데이트 로직필요함
+
+
+//
+//    //apiportal.koreainvestment.com/apiservice/apiservice-domestic-stock-Manalysis#L_0cc848c0-4928-4b89-bca4-62df430e4a45
+//    public String getDailyMarketInvestorJson(String market, String symbol, String ymd){
+/////uapi/domestic-stock/v1/quotations/inquire-investor-daily-by-market
+////        Format
+//
+//        market = market.toUpperCase();
+//        if(market.equals("KOSPI")){
+//            market = "KSP";
+//        }else if(market.equals("KOSDAQ")){
+//            market ="KSQ";
+//        }
+//
+//        koreainvestmentApi.updateAccessToken();
+//        String url = "uapi/domestic-stock/v1/quotations/inquire-investor-daily-by-market";
+//        Map<String, String> requestHeaderMap = koreainvestmentApi.computeIfAbsenttPropertySingleMap(url,"tr_id","FHPTJ04040000");
+//
+//
+//        String query = "?FID_COND_MRKT_DIV_CODE=U&FID_INPUT_ISCD=" + symbol +"&FID_INPUT_DATE_1=" + ymd +"&FID_INPUT_ISCD_1=" +market;
+//
+//        HttpApiResponse response =  koreainvestmentApi.getHttpGet().getResponse(url + query, requestHeaderMap);
+//        if(response.getResponseCode() != 200){
+//            throw new KoreainvestmentApiException("code:" + response.getResponseCode() +", " + response.getMessage() +", symbol: " + symbol +", market: " + beginYmd);
+//        }
+//
+//        return response.getMessage();
+//
+//    }
+
+
 }
