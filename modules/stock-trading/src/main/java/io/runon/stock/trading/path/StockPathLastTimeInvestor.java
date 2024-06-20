@@ -5,12 +5,10 @@ import io.runon.trading.CountryCode;
 import io.runon.trading.data.json.JsonTimeFile;
 
 import java.nio.file.FileSystems;
-
 /**
- * 대주
- * @author macle
+ * 보유종목과 수량정보
  */
-public class StockPathLastTimeLoan implements StockPathLastTime{
+public class StockPathLastTimeInvestor  implements StockPathLastTime{
     @Override
     public long getLastTime(Stock stock, String interval) {
         return JsonTimeFile.getLastTime(getFilesDirPath(stock,interval));
@@ -18,13 +16,13 @@ public class StockPathLastTimeLoan implements StockPathLastTime{
 
     @Override
     public String getFilesDirPath(Stock stock, String interval) {
-        return StockPaths.getStockLoanFilesPath(stock.getStockId(), interval);
+        return StockPaths.getInvestorFilesPath(stock.getStockId(), interval);
     }
 
     @Override
     public String getLastTimeFilePath(String interval) {
         String fileSeparator = FileSystems.getDefault().getSeparator();
-        return StockPaths.getStockLoanPath(CountryCode.KOR)+fileSeparator+"stock_loan_last_" + interval;
+        return StockPaths.getStockLoanPath(CountryCode.KOR)+fileSeparator+"stock_investor_last_" + interval;
 
     }
 }

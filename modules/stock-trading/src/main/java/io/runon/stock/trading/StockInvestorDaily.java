@@ -1,5 +1,6 @@
 package io.runon.stock.trading;
 
+import io.runon.stock.trading.data.management.StockOutTimeLineJson;
 import io.runon.trading.TradingGson;
 import lombok.Data;
 
@@ -11,7 +12,7 @@ import java.util.Comparator;
  * @author macle
  */
 @Data
-public class StockInvestorDaily {
+public class StockInvestorDaily implements StockOutTimeLineJson {
 
     public static final StockInvestorDaily [] EMPTY_ARRAY = new StockInvestorDaily[0];
     public static final Comparator<StockInvestorDaily> SORT = Comparator.comparingInt(o -> o.ymd);
@@ -19,6 +20,9 @@ public class StockInvestorDaily {
     Long t ;
 
     int ymd;
+
+    BigDecimal close;
+    BigDecimal change;
 
     //사모펀드
     BigDecimal privateFund;
@@ -31,6 +35,7 @@ public class StockInvestorDaily {
     //보험
     BigDecimal insurance;
     BigDecimal insurancePrice;
+
     //투자신탁(투신)
     BigDecimal investmentTrust;
     BigDecimal investmentTrustPrice;
@@ -97,6 +102,7 @@ public class StockInvestorDaily {
     }
 
 
+    @Override
     public String outTimeLineJsonText(Stock stock){
         if(t == null){
             t = Stocks.getDailyOpenTime(stock, ymd);

@@ -12,8 +12,7 @@ import java.nio.file.FileSystems;
 public class StockPathLastTimeCandle implements StockPathLastTime{
     @Override
     public long getLastTime(Stock stock, String interval) {
-        String filesDirPath = StockPaths.getSpotCandleFilesPath(stock.getStockId(),interval);
-        return CsvTimeFile.getLastTime(filesDirPath);
+        return CsvTimeFile.getLastTime(getFilesDirPath(stock,interval));
     }
 
     @Override

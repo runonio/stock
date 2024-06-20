@@ -1,5 +1,6 @@
 package io.runon.stock.trading;
 
+import io.runon.stock.trading.data.management.StockOutTimeLineJson;
 import io.runon.trading.TradingGson;
 import lombok.Data;
 
@@ -11,7 +12,7 @@ import java.math.BigDecimal;
  * @author macle
  */
 @Data
-public class ShortSellingDaily {
+public class ShortSellingDaily implements StockOutTimeLineJson {
     public static final ShortSellingDaily [] EMPTY_ARRAY = new ShortSellingDaily[0];
 
     Long t ;
@@ -99,7 +100,7 @@ public class ShortSellingDaily {
 
         return daily;
     }
-
+    @Override
     public String outTimeLineJsonText(Stock stock){
         if(t == null){
             t = Stocks.getDailyOpenTime(stock, ymd);

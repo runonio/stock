@@ -64,9 +64,9 @@ public class KoreainvestmentApi {
 
     private boolean isActual ;
 
-    private long sleepTime = Config.getLong("stock.securities.firm.api.sleep.time", 70L);
+    private long sleepTime = Config.getLong("stock.securities.firm.kor.koreainvestment.sleep.time", 70L);
 
-    private long periodSleep = Config.getLong("stock.securities.firm.api.period.out.time", 1000L);
+    private long periodSleep = Config.getLong("stock.securities.firm.kor.koreainvestment.period.out.time", 1000L);
 
     private final ClosedDaysFileOut closedDaysFileOut;
 

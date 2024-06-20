@@ -31,12 +31,16 @@ public class LsApi {
 
     final HttpApi  httpPost;
 
-    private final LsInvestorApi investorApi;
+    private final LsPeriodDataApi periodDataApi;
 
     private final Object trCodeLock = new Object();
 
     private final Map<String, Map<String, String>> trCodeRequestPropertyMap = new HashMap<>();
-    
+
+
+    private long periodSleep = Config.getLong("stock.securities.firm.kor.ls.period.out.time", 1000L);
+
+
     private LsApi(){
 
         String jsonPropertiesName = "securities_firm_kor_ls.json";
@@ -55,7 +59,7 @@ public class LsApi {
         httpPost.setDefaultRequestProperty(makeRequestProperty());
         httpPost.setDefaultAddress(domain);
 
-        investorApi = new LsInvestorApi(this);
+        periodDataApi = new LsPeriodDataApi(this);
 
     }
 
@@ -109,11 +113,26 @@ public class LsApi {
         }
     }
 
-    public LsInvestorApi getInvestorApi() {
-        return investorApi;
+    public LsPeriodDataApi getPeriodDataApi() {
+        return periodDataApi;
     }
 
     public HttpApi getHttpPost() {
         return httpPost;
+    }
+
+    public JsonFileProperties getJsonFileProperties() {
+        return jsonFileProperties;
+    }
+
+    public void periodSleep(){
+        try {
+            Thread.sleep(periodSleep);
+        }catch (Exception ignore){}
+    }
+
+
+    public void setPeriodSleep(long periodSleep) {
+        this.periodSleep = periodSleep;
     }
 }

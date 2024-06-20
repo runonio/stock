@@ -89,6 +89,23 @@ public class StockPaths {
     }
 
 
+    public static String getInvestorFilesPath(String stockId, String interval){
+        String fileSeparator = FileSystems.getDefault().getSeparator();
+        String countryCode = Stocks.getCountryCode(stockId);
+        return getInvestorPath((countryCode)) + fileSeparator + stockId + fileSeparator + interval;
+    }
+
+    //공매도
+    public static String getInvestorPath(CountryCode countryCode){
+        return getInvestorPath(countryCode.toString());
+    }
+
+    public static String getInvestorPath(String countryCode){
+        return getSpotDirPath(countryCode, "stock.investor.dir.path", "investor");
+    }
+
+
+
     public static String getSpotDirPath(String countryCode, String configKey, String dirName){
         String fileSeparator = FileSystems.getDefault().getSeparator();
 

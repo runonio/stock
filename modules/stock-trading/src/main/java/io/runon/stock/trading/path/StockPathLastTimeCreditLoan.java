@@ -13,8 +13,7 @@ import java.nio.file.FileSystems;
 public class StockPathLastTimeCreditLoan implements StockPathLastTime{
     @Override
     public long getLastTime(Stock stock, String interval) {
-        String filesDirPath = StockPaths.getSpotCreditLoanFilesPath(stock.getStockId(),interval);
-        return JsonTimeFile.getLastTime(filesDirPath);
+        return JsonTimeFile.getLastTime(getFilesDirPath(stock,interval));
     }
 
     @Override

@@ -1,5 +1,6 @@
 package io.runon.stock.trading;
 
+import io.runon.stock.trading.data.management.StockOutTimeLineJson;
 import io.runon.trading.TradingGson;
 import lombok.Data;
 
@@ -13,7 +14,7 @@ import java.util.Comparator;
  * @author macle
  */
 @Data
-public class StockLoanDaily {
+public class StockLoanDaily implements StockOutTimeLineJson {
 
     public static final StockLoanDaily [] EMPTY_ARRAY = new StockLoanDaily[0];
     public static final Comparator<StockLoanDaily> SORT = Comparator.comparingInt(o -> o.ymd);
@@ -56,6 +57,7 @@ public class StockLoanDaily {
     }
 
 
+    @Override
     public String outTimeLineJsonText(Stock stock){
         if(t == null){
            t = Stocks.getDailyOpenTime(stock, ymd);

@@ -25,13 +25,7 @@ public class KorSpotDailyShortSellingOut  extends KorSpotDailyOut{
         LoanData loanData = dataManager.getLoanData();
 
         ShortSellingDaily[] dailies = loanData.getShortSellingDailies(stock, beginYmd, endYmd);
-
-        String [] lines = new String[dailies.length];
-        for (int i = 0; i <lines.length ; i++) {
-            lines[i] = dailies[i].outTimeLineJsonText(stock);
-        }
-
-        return lines;
+        return StockOutTimeLineJson.getLines(stock,dailies);
     }
 
     @Override

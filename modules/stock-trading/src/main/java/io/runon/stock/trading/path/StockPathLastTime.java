@@ -18,7 +18,9 @@ public interface StockPathLastTime {
     
     //공매도
     StockPathLastTime SHORT_SELLING = new StockPathLastTimeShortSelling();
-    
+
+    StockPathLastTime INVESTOR = new StockPathLastTimeInvestor();
+
 
     long getLastTime(Stock stock, String interval);
 
