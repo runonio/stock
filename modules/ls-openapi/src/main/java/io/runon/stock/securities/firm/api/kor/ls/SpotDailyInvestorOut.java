@@ -1,7 +1,7 @@
 package io.runon.stock.securities.firm.api.kor.ls;
 
 import io.runon.stock.trading.Stock;
-import io.runon.stock.trading.StockInvestorDaily;
+import io.runon.stock.trading.daily.StockInvestorDaily;
 import io.runon.stock.trading.data.management.StockOutTimeLineJson;
 import io.runon.stock.trading.path.StockPathLastTime;
 import io.runon.trading.data.file.PathTimeLine;
@@ -13,6 +13,7 @@ import io.runon.trading.data.file.PathTimeLine;
 public class SpotDailyInvestorOut extends LsDailyOut{
     public SpotDailyInvestorOut() {
         super(StockPathLastTime.INVESTOR, PathTimeLine.JSON);
+        dailyOut.setServiceName("ls_investor");
     }
 
     @Override

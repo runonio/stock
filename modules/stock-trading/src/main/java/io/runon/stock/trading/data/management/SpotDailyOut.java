@@ -9,6 +9,7 @@ import io.runon.stock.trading.Stock;
 import io.runon.stock.trading.StockYmd;
 import io.runon.stock.trading.Stocks;
 import io.runon.stock.trading.path.StockPathLastTime;
+import io.runon.trading.CountryCode;
 import io.runon.trading.TradingConfig;
 import io.runon.trading.TradingTimes;
 import io.runon.trading.data.TextLong;
@@ -36,9 +37,13 @@ public class SpotDailyOut {
     protected final StockDailyOutParam param;
     protected final StockPathLastTime stockPathLastTime;
 
+    protected CountryCode countryCode = TradingConfig.getDefaultCountryCode();
+
     //장중에 수집하는경우 마지막 라인의 변화를 체크하는 옵션
     //공매도나 대차잔고등 일별집계가 끝나는 데이터는 falst로 설정
     protected boolean isLastLineCheck = true;
+
+    protected String serviceName;
 
     public SpotDailyOut(StockDailyOutParam param){
 
@@ -46,6 +51,13 @@ public class SpotDailyOut {
         stockPathLastTime = param.getStockPathLastTime();
     }
 
+    public void setServiceName(String serviceName) {
+        this.serviceName = serviceName;
+    }
+
+    public void setCountryCode(CountryCode countryCode) {
+        this.countryCode = countryCode;
+    }
 
     private ZoneId zoneId = TradingConfig.DEFAULT_TIME_ZONE_ID;
 
@@ -62,7 +74,7 @@ public class SpotDailyOut {
 
         Map<String, Stock> stockMap = Stocks.makeMap(stocks);
 
-        String filePath = param.getStockPathLastTime().getLastTimeFilePath("1d");
+        String filePath = param.getStockPathLastTime().getLastTimeFilePath(countryCode,"1d");
         if(FileUtil.isFile(filePath)){
             TextLong [] idTimes = JsonTimeFile.getLastTimeLines(filePath);
 
@@ -104,7 +116,7 @@ public class SpotDailyOut {
             idTimes[index++] = idTime;
         }
 
-        String filePath = param.getStockPathLastTime().getLastTimeFilePath("1d");
+        String filePath = param.getStockPathLastTime().getLastTimeFilePath(countryCode,"1d");
         JsonTimeFile.updateLastTimeLines(idTimes, filePath, TextLong.SORT_DESC);
     }
 
@@ -210,8 +222,11 @@ public class SpotDailyOut {
 
         boolean isFirst = true;
 
-        log.debug("start stock: " + stock);
-
+        if(serviceName == null) {
+            log.debug("start stock: " + stock);
+        }else{
+            log.debug(serviceName + " start stock: " + stock);
+        }
         int maxYmd = nowYmdNum;
 
         if(stock.getDelistedYmd() != null){

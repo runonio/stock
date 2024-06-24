@@ -1,4 +1,4 @@
-package io.runon.stock.trading.rds;
+package io.runon.stock.trading.daily;
 /**
  * @author macle
  */

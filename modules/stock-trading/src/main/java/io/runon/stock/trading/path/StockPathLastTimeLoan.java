@@ -22,7 +22,7 @@ public class StockPathLastTimeLoan implements StockPathLastTime{
     }
 
     @Override
-    public String getLastTimeFilePath(String interval) {
+    public String getLastTimeFilePath(CountryCode countryCode, String interval) {
         String fileSeparator = FileSystems.getDefault().getSeparator();
         return StockPaths.getStockLoanPath(CountryCode.KOR)+fileSeparator+"stock_loan_last_" + interval;
 

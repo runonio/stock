@@ -3,6 +3,7 @@ package io.runon.stock.securities.firm.api.kor.koreainvestment;
 import com.seomse.commons.http.HttpApiResponse;
 import com.seomse.commons.utils.time.Times;
 import com.seomse.commons.utils.time.YmdUtil;
+import io.runon.stock.trading.daily.ProgramDaily;
 import io.runon.stock.trading.exception.StockApiException;
 import io.runon.trading.*;
 import io.runon.trading.technical.analysis.candle.TradeCandle;
@@ -57,6 +58,8 @@ public class KoreainvestmentPeriodDataApi {
 
         HttpApiResponse response =  koreainvestmentApi.getHttpGet().getResponse(url + query, requestHeaderMap);
         if(response.getResponseCode() != 200){
+
+
             throw new StockApiException("code:" + response.getResponseCode() +", " + response.getMessage() +", symbol: " + symbol +", beginYmd: " + beginYmd);
         }
 
@@ -283,40 +286,116 @@ public class KoreainvestmentPeriodDataApi {
         return candles;
     }
 
-    //매매동향 (기관 외국인, ) 이베스트는 투신 사모펀드 등 다양하게 제공하지만 한국 투자증권은 기관계 정도만 제공함 우선 한투를 이용하고 관련 데이터의 상세한 분석이 필요할때 활용
-    //    apiportal.koreainvestment.com/apiservice/apiservice-domestic-stock-quotations2#L_e27baf2f-6ec0-4029-b4fd-4c873f340478
-    // 프로그램 매매
-    //종목별 매수합, 매도합 ( 체결강도 계산), 기존 켄들 데이터에 업데이트 로직필요함
+    public String getProgramTradingDataDailyJsonText(String symbol, String ymd){
+        koreainvestmentApi.updateAccessToken();
+        String url = "/uapi/domestic-stock/v1/quotations/program-trade-by-stock-daily";
+        Map<String, String> requestHeaderMap = koreainvestmentApi.computeIfAbsenttPropertySingleMap(url,"tr_id","FHPPG04650200");
+
+        String query = "?fid_cond_mrkt_div_code=J&fid_input_iscd=" + symbol +"&fid_input_date_1=" +ymd ;
+        HttpApiResponse response =  koreainvestmentApi.getHttpGet().getResponse(url + query, requestHeaderMap);
+        if(response.getResponseCode() != 200){
+            throw new StockApiException("token make fail code:" + response.getResponseCode() +", " + response.getMessage());
+        }
+        return response.getMessage();
+    }
 
 
-//
-//    //apiportal.koreainvestment.com/apiservice/apiservice-domestic-stock-Manalysis#L_0cc848c0-4928-4b89-bca4-62df430e4a45
-//    public String getDailyMarketInvestorJson(String market, String symbol, String ymd){
-/////uapi/domestic-stock/v1/quotations/inquire-investor-daily-by-market
-////        Format
-//
-//        market = market.toUpperCase();
-//        if(market.equals("KOSPI")){
-//            market = "KSP";
-//        }else if(market.equals("KOSDAQ")){
-//            market ="KSQ";
-//        }
-//
-//        koreainvestmentApi.updateAccessToken();
-//        String url = "uapi/domestic-stock/v1/quotations/inquire-investor-daily-by-market";
-//        Map<String, String> requestHeaderMap = koreainvestmentApi.computeIfAbsenttPropertySingleMap(url,"tr_id","FHPTJ04040000");
-//
-//
-//        String query = "?FID_COND_MRKT_DIV_CODE=U&FID_INPUT_ISCD=" + symbol +"&FID_INPUT_DATE_1=" + ymd +"&FID_INPUT_ISCD_1=" +market;
-//
-//        HttpApiResponse response =  koreainvestmentApi.getHttpGet().getResponse(url + query, requestHeaderMap);
-//        if(response.getResponseCode() != 200){
-//            throw new KoreainvestmentApiException("code:" + response.getResponseCode() +", " + response.getMessage() +", symbol: " + symbol +", market: " + beginYmd);
-//        }
-//
-//        return response.getMessage();
-//
-//    }
+    public ProgramDaily[] getProgramDailies(String symbol, String beginYmd, String endYmd){
+        List<ProgramDaily> list = new ArrayList<>();
 
 
+        String nextBeginYmd = beginYmd;
+
+        int endYmdNum = Integer.parseInt(endYmd);
+        String dateFormat = "yyyyMMdd hh:mm";
+
+        for(;;) {
+
+            int beginYmdNum = Integer.parseInt(nextBeginYmd);
+
+            String callYmd = YmdUtil.getYmd(nextBeginYmd, 30);
+            if (YmdUtil.compare(callYmd, endYmd) > 0) {
+                callYmd = endYmd;
+            }
+
+
+            String jsonText = getProgramTradingDataDailyJsonText(symbol, callYmd);
+
+            JSONObject object = new JSONObject(jsonText);
+            String code = object.getString("rt_cd");
+            if (!code.equals("0")) {
+                if (!object.isNull("msg1")) {
+                    throw new StockApiException("rt_cd: " + code + ", message: " + object.getString("msg1"));
+                } else {
+                    throw new StockApiException("rt_cd: " + code);
+                }
+            }
+
+            JSONArray array = object.getJSONArray("output");
+            int length = array.length();
+            for (int i = length - 1; i > -1; i--) {
+                JSONObject row = array.getJSONObject(i);
+
+                String tradeYmd = row.getString("stck_bsop_date");
+
+                int tradeYmdInt = Integer.parseInt(tradeYmd);
+
+                if(tradeYmdInt < beginYmdNum){
+                    continue;
+                }
+
+                if(tradeYmdInt > endYmdNum){
+                    break;
+                }
+
+                ProgramDaily daily = new ProgramDaily();
+
+                daily.setTime(Times.getTime(dateFormat, tradeYmd +" 09:00", TradingTimes.KOR_ZONE_ID));
+                daily.setYmd(tradeYmdInt);
+                daily.setClose(row.getBigDecimal("stck_clpr"));
+                daily.setVolume(row.getBigDecimal("acml_vol"));
+                daily.setTradingPrice(row.getBigDecimal("acml_tr_pbmn"));
+                daily.setChange(row.getBigDecimal("prdy_vrss"));
+
+                daily.setSellVolume(row.getBigDecimal("whol_smtn_seln_vol"));
+                daily.setSellPrice(row.getBigDecimal("whol_smtn_seln_tr_pbmn"));
+
+                daily.setBuyVolume(row.getBigDecimal("whol_smtn_shnu_vol"));
+                daily.setBuyPrice(row.getBigDecimal("whol_smtn_shnu_tr_pbmn"));
+
+                daily.setNetBuyVolume(row.getBigDecimal("whol_smtn_ntby_qty"));
+                daily.setNetBuyPrice(row.getBigDecimal("whol_smtn_ntby_tr_pbmn"));
+
+                daily.setNetBuyChangeVolume(row.getBigDecimal("whol_ntby_vol_icdc"));
+                daily.setNetBuyChangePrice(row.getBigDecimal("whol_ntby_tr_pbmn_icdc2"));
+                list.add(daily);
+
+            }
+
+            if(YmdUtil.compare(callYmd, endYmd) >= 0){
+                break;
+            }
+
+            nextBeginYmd = YmdUtil.getYmd(callYmd,1);
+        }
+
+        if(list.size() == 0){
+            return ProgramDaily.EMPTY_ARRAY;
+        }
+        return list.toArray(new ProgramDaily[0]);
+    }
+
+    public String getVolumePowerDailyJsonText(String symbol, String beginYmd, String endYmd){
+        koreainvestmentApi.updateAccessToken();
+        String url = "/uapi/domestic-stock/v1/quotations/inquire-daily-trade-volume";
+        Map<String, String> requestHeaderMap = koreainvestmentApi.computeIfAbsenttPropertySingleMap(url,"tr_id","FHKST03010800");
+
+        String query = "?fid_cond_mrkt_div_code=J&fid_input_iscd=" + symbol +"&fid_input_date_1=" +beginYmd +"&fid_input_date_2=" + endYmd +"&fid_period_div_code=D";
+        HttpApiResponse response =  koreainvestmentApi.getHttpGet().getResponse(url + query, requestHeaderMap);
+        if(response.getResponseCode() != 200){
+            throw new StockApiException("token make fail code:" + response.getResponseCode() +", " + response.getMessage());
+        }
+        return response.getMessage();
+
+    }
 }

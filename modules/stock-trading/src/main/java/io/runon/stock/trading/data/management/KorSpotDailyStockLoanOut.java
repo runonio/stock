@@ -2,7 +2,7 @@ package io.runon.stock.trading.data.management;
 
 import com.seomse.commons.config.JsonFileProperties;
 import io.runon.stock.trading.Stock;
-import io.runon.stock.trading.StockLoanDaily;
+import io.runon.stock.trading.daily.StockLoanDaily;
 import io.runon.stock.trading.data.LoanData;
 import io.runon.stock.trading.data.StockDataManager;
 import io.runon.stock.trading.path.StockPathLastTime;
@@ -14,6 +14,7 @@ import io.runon.trading.data.file.PathTimeLine;
 public class KorSpotDailyStockLoanOut extends KorSpotDailyOut{
     public KorSpotDailyStockLoanOut() {
         super(StockPathLastTime.STOCK_LOAN, PathTimeLine.JSON);
+        dailyOut.setServiceName("stock_loan");
     }
 
     @Override

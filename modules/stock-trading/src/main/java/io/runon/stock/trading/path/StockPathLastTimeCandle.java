@@ -22,9 +22,9 @@ public class StockPathLastTimeCandle implements StockPathLastTime{
     }
 
     @Override
-    public String getLastTimeFilePath(String interval) {
+    public String getLastTimeFilePath(CountryCode countryCode, String interval) {
         String fileSeparator = FileSystems.getDefault().getSeparator();
-        return StockPaths.getSpotCandlePath(CountryCode.KOR)+fileSeparator+"candle_last_" + interval;
+        return StockPaths.getSpotCandlePath(countryCode)+fileSeparator+"candle_last_" + interval;
     }
 
 

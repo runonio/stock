@@ -1,17 +1,12 @@
 package io.runon.stock.securities.firm.api.kor.ls;
 
 import com.seomse.commons.http.HttpApiResponse;
+import io.runon.stock.trading.daily.StockInvestorDaily;
 import io.runon.stock.trading.exception.StockApiException;
-import io.runon.stock.trading.StockInvestorDaily;
-import io.runon.trading.CreditLoanDaily;
-import io.runon.trading.technical.analysis.candle.TradeCandle;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -25,10 +20,15 @@ public class LsPeriodDataApi {
         this.lsApi = lsApi;
     }
 
+    public String getInvestorDailyJson(String symbol, String beginYmd, String endYmd
+    ){
+        return getInvestorDailyJson(symbol, beginYmd, endYmd, 0);
+    }
+
     //최대 250건
-    public String getInvestorDailyJson(String symbol, String beginYmd, String endYmd){
+    public String getInvestorDailyJson(String symbol, String beginYmd, String endYmd, int reTryCount){
         lsApi.updateAccessToken();
-         String url = "/stock/frgr-itt";
+        String url = "/stock/frgr-itt";
         Map<String, String> requestHeaderMap = lsApi.computeIfAbsenttTrCodeMap("t1717");
 
         JSONObject paramObject = new JSONObject();
@@ -43,13 +43,18 @@ public class LsPeriodDataApi {
         HttpApiResponse response =  lsApi.getHttpPost().getResponse(url , requestHeaderMap, jsonObject.toString());
 
         if(response.getResponseCode() != 200){
-            throw new StockApiException("fail code:" + response.getResponseCode() +", " + response.getMessage());
+            if(reTryCount < 1 && lsApi.isAccessTokenUpdate(response)){
+                return getInvestorDailyJson(symbol, beginYmd, endYmd, reTryCount+1);
+                //토큰 에러일경우 재시도 LS증권 api에서 토큰애러가 나타나는 문제 발견
+            }
+
+            throw new StockApiException("fail code:" + response.getResponseCode() +", " + response.getMessage() +", stock symbol: " + symbol+", beginYmd: " + beginYmd + ", endYmd: " + endYmd);
         }
 
         return response.getMessage();
     }
 
-    public StockInvestorDaily [] getInvestorDailies(String symbol, String beginYmd, String endYmd){
+    public StockInvestorDaily[] getInvestorDailies(String symbol, String beginYmd, String endYmd){
 
         String jsonText = getInvestorDailyJson(symbol, beginYmd, endYmd);
 
@@ -137,12 +142,4 @@ public class LsPeriodDataApi {
         return dailies;
     }
 
-    public static void main(String[] args) {
-        LsApi api = LsApi.getInstance();
-        StockInvestorDaily [] dailies  = api.getPeriodDataApi().getInvestorDailies("005930","20240101","20240618");
-        for(StockInvestorDaily daily : dailies){
-            System.out.println(daily);
-        }
-
-    }
 }

@@ -1,8 +1,8 @@
 package io.runon.stock.trading.data.management;
 
 import com.seomse.commons.config.JsonFileProperties;
-import io.runon.stock.trading.ShortSellingDaily;
 import io.runon.stock.trading.Stock;
+import io.runon.stock.trading.daily.ShortSellingDaily;
 import io.runon.stock.trading.data.LoanData;
 import io.runon.stock.trading.data.StockDataManager;
 import io.runon.stock.trading.path.StockPathLastTime;
@@ -16,6 +16,7 @@ public class KorSpotDailyShortSellingOut  extends KorSpotDailyOut{
 
     public KorSpotDailyShortSellingOut() {
         super(StockPathLastTime.SHORT_SELLING, PathTimeLine.JSON);
+        dailyOut.setServiceName("short_selling");
     }
 
     @Override

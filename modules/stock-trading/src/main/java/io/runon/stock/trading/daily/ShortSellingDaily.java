@@ -1,5 +1,7 @@
-package io.runon.stock.trading;
+package io.runon.stock.trading.daily;
 
+import io.runon.stock.trading.Stock;
+import io.runon.stock.trading.Stocks;
 import io.runon.stock.trading.data.management.StockOutTimeLineJson;
 import io.runon.trading.TradingGson;
 import lombok.Data;

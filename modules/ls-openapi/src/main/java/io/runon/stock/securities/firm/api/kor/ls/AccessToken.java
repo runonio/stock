@@ -95,8 +95,14 @@ public class AccessToken {
 
         long expiresIn = tokenObject.get("expires_in").getAsLong()*1000L;
 
-        //토큰 갱신시간 여유를 위해  2분정도는 유효시간을 줄임
-        accessToken.expiredTime = requestTime + expiresIn - Times.MINUTE_2;
+        if(expiresIn > Times.HOUR_6){
+            //토근 제한시간이 도지 않았음에도 만료되는 현상 발견
+            //초큰 최대 교체 시간을 6시간으로 설정
+            expiresIn = Times.HOUR_6;
+        }
+
+        //토큰 갱신시간 여유를 위해 1분정도전에는 갱신받음
+        accessToken.expiredTime = requestTime + expiresIn - Times.MINUTE_10;
 
         return accessToken;
     }

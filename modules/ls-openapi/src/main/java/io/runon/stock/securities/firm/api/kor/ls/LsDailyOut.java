@@ -22,6 +22,7 @@ public abstract class LsDailyOut  extends KorSpotDailyOut {
 
     public LsDailyOut(StockPathLastTime stockPathLastTime, PathTimeLine pathTimeLine) {
         super(stockPathLastTime, pathTimeLine);
+
     }
 
     public void setExchanges(String[] exchanges) {

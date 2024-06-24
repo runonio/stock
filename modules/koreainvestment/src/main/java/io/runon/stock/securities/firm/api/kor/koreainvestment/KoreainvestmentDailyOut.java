@@ -24,6 +24,7 @@ public abstract class KoreainvestmentDailyOut extends KorSpotDailyOut {
 
     public KoreainvestmentDailyOut(StockPathLastTime stockPathLastTime, PathTimeLine pathTimeLine){
         super(stockPathLastTime, pathTimeLine);
+
     }
 
 

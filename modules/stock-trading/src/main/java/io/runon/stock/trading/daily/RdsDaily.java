@@ -1,10 +1,8 @@
-package io.runon.stock.trading.rds;
+package io.runon.stock.trading.daily;
 
 import com.seomse.jdbc.JdbcQuery;
 import com.seomse.jdbc.objects.JdbcObjects;
-import io.runon.stock.trading.ShortSellingDaily;
 import io.runon.stock.trading.StockDailyData;
-import io.runon.stock.trading.StockLoanDaily;
 import io.runon.trading.data.DailyData;
 
 import java.util.List;

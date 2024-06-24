@@ -5,7 +5,12 @@ import com.seomse.commons.config.Config;
 import com.seomse.commons.config.JsonFileProperties;
 import com.seomse.commons.config.JsonFilePropertiesManager;
 import com.seomse.commons.http.HttpApi;
+import com.seomse.commons.http.HttpApiResponse;
+import com.seomse.commons.utils.ExceptionUtil;
 import com.seomse.commons.utils.time.Times;
+import io.runon.stock.trading.exception.StockApiException;
+import lombok.extern.slf4j.Slf4j;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,6 +19,7 @@ import java.util.Map;
  * ls증권 open api
  * @author macle
  */
+@Slf4j
 public class LsApi {
     private static class Singleton {
         private static final LsApi instance = new LsApi();
@@ -78,6 +84,7 @@ public class LsApi {
 
     public void updateAccessToken(){
         synchronized (accessTokenLock) {
+
             if(accessToken != null && accessToken.isValid()){
                 return;
             }
@@ -90,6 +97,33 @@ public class LsApi {
             jsonFileProperties.set("last_access_token", tokenObject);
 
         }
+    }
+
+
+    public boolean isAccessTokenUpdate(HttpApiResponse response){
+        try {
+            String message = response.getMessage();
+            JSONObject object = new JSONObject(message);
+            String rspCd = object.getString("rsp_cd");
+
+            if(rspCd.equals("IGW00121")) {
+                periodSleep();
+                synchronized (accessTokenLock) {
+
+                    accessToken = AccessToken.make();
+                    String authorization = accessToken.getAuthorization();
+                    httpPost.setRequestProperty("authorization", accessToken.getAuthorization());
+
+                    JsonObject tokenObject = accessToken.getJsonObject();
+                    jsonFileProperties.set("last_access_token", tokenObject);
+                }
+
+                return true;
+            }
+        }catch (Exception e){
+            return false;
+        }
+        return false;
     }
 
 
