@@ -3,7 +3,7 @@ package io.runon.stock.securities.firm.api.kor.koreainvestment;
 import com.seomse.commons.callback.StrCallback;
 import com.seomse.commons.http.HttpApiResponse;
 import com.seomse.commons.utils.time.YmdUtil;
-import io.runon.stock.securities.firm.api.kor.koreainvestment.exception.KoreainvestmentApiException;
+import io.runon.stock.trading.exception.StockApiException;
 import io.runon.trading.closed.days.ClosedDaysCallback;
 import io.runon.trading.technical.analysis.candle.TradeCandle;
 import org.json.JSONArray;
@@ -35,7 +35,7 @@ public class KoreainvestmentMarketApi implements ClosedDaysCallback {
         String query = "?BASS_DT="+ baseYmd +"&CTX_AREA_NK=&CTX_AREA_FK=" ;
         HttpApiResponse response =  koreainvestmentApi.getHttpGet().getResponse(url + query, requestHeaderMap);
         if(response.getResponseCode() != 200){
-            throw new KoreainvestmentApiException("token make fail code:" + response.getResponseCode() +", " + response.getMessage());
+            throw new StockApiException("token make fail code:" + response.getResponseCode() +", " + response.getMessage());
         }
 
         return response.getMessage();
@@ -113,7 +113,7 @@ public class KoreainvestmentMarketApi implements ClosedDaysCallback {
         }else if(indexCode.equals("KPI200")){
             fid_input_iscd = "2001";
         }else{
-            throw new KoreainvestmentApiException("index code error (KOSPI, KOSDAQ, KPI200)  " + indexCode);
+            throw new StockApiException("index code error (KOSPI, KOSDAQ, KPI200)  " + indexCode);
         }
         
         koreainvestmentApi.updateAccessToken();
@@ -124,7 +124,7 @@ public class KoreainvestmentMarketApi implements ClosedDaysCallback {
 
         HttpApiResponse response =  koreainvestmentApi.getHttpGet().getResponse(url + query, requestHeaderMap);
         if(response.getResponseCode() != 200){
-            throw new KoreainvestmentApiException("code:" + response.getResponseCode() +", " + response.getMessage() +", indexCode: " + indexCode +", ymd: " + ymd);
+            throw new StockApiException("code:" + response.getResponseCode() +", " + response.getMessage() +", indexCode: " + indexCode +", ymd: " + ymd);
         }
 
         return response.getMessage();

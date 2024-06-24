@@ -20,6 +20,7 @@ public class SpotDailyCandleOut extends KoreainvestmentDailyOut{
 
     public SpotDailyCandleOut(){
         super(StockPathLastTime.CANDLE, PathTimeLine.CSV);
+        dailyOut.setServiceName("koreainvestment_candle");
     }
 
 

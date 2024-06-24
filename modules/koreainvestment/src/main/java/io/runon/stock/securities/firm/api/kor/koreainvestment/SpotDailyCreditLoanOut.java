@@ -16,6 +16,7 @@ public class SpotDailyCreditLoanOut extends KoreainvestmentDailyOut{
 
     public SpotDailyCreditLoanOut(){
         super(StockPathLastTime.CREDIT_LOAN, PathTimeLine.JSON);
+        dailyOut.setServiceName("koreainvestment_credit_loan");
     }
 
 

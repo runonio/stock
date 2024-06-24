@@ -3,7 +3,8 @@ package io.runon.stock.securities.firm.api.kor.koreainvestment;
 import com.seomse.commons.http.HttpApiResponse;
 import com.seomse.commons.utils.time.Times;
 import com.seomse.commons.utils.time.YmdUtil;
-import io.runon.stock.securities.firm.api.kor.koreainvestment.exception.KoreainvestmentApiException;
+import io.runon.stock.trading.daily.ProgramDaily;
+import io.runon.stock.trading.exception.StockApiException;
 import io.runon.trading.*;
 import io.runon.trading.technical.analysis.candle.TradeCandle;
 import org.json.JSONArray;
@@ -57,7 +58,9 @@ public class KoreainvestmentPeriodDataApi {
 
         HttpApiResponse response =  koreainvestmentApi.getHttpGet().getResponse(url + query, requestHeaderMap);
         if(response.getResponseCode() != 200){
-            throw new KoreainvestmentApiException("code:" + response.getResponseCode() +", " + response.getMessage() +", symbol: " + symbol +", beginYmd: " + beginYmd);
+
+
+            throw new StockApiException("code:" + response.getResponseCode() +", " + response.getMessage() +", symbol: " + symbol +", beginYmd: " + beginYmd);
         }
 
         return response.getMessage();
@@ -78,7 +81,7 @@ public class KoreainvestmentPeriodDataApi {
         String query = "?fid_cond_mrkt_div_code=J&fid_cond_scr_div_code=20476&fid_input_iscd=" + symbol +"&fid_input_date_1=" +ymd ;
         HttpApiResponse response =  koreainvestmentApi.getHttpGet().getResponse(url + query, requestHeaderMap);
         if(response.getResponseCode() != 200){
-            throw new KoreainvestmentApiException("token make fail code:" + response.getResponseCode() +", " + response.getMessage());
+            throw new StockApiException("token make fail code:" + response.getResponseCode() +", " + response.getMessage());
         }
         return response.getMessage();
     }
@@ -110,9 +113,9 @@ public class KoreainvestmentPeriodDataApi {
             String code = object.getString("rt_cd");
             if(!code.equals("0")){
                 if(!object.isNull("msg1")){
-                    throw new KoreainvestmentApiException("rt_cd: " + code + ", message: " + object.getString("msg1"));
+                    throw new StockApiException("rt_cd: " + code + ", message: " + object.getString("msg1"));
                 }else{
-                    throw new KoreainvestmentApiException("rt_cd: " + code);
+                    throw new StockApiException("rt_cd: " + code);
                 }
             }
 
@@ -189,16 +192,15 @@ public class KoreainvestmentPeriodDataApi {
         String code = object.getString("rt_cd");
         if(!code.equals("0")){
             if(!object.isNull("msg1")){
-                throw new KoreainvestmentApiException("rt_cd: " + code + ", message: " + object.getString("msg1"));
+                throw new StockApiException("rt_cd: " + code + ", message: " + object.getString("msg1"));
             }else{
-                throw new KoreainvestmentApiException("rt_cd: " + code);
+                throw new StockApiException("rt_cd: " + code);
             }
         }
 
         JSONArray array = object.getJSONArray("output2");
 
         String dateFormat = "yyyyMMdd hh:mm";
-
 
         int length = array.length();
 
@@ -282,5 +284,118 @@ public class KoreainvestmentPeriodDataApi {
         }
 
         return candles;
+    }
+
+    public String getProgramTradingDataDailyJsonText(String symbol, String ymd){
+        koreainvestmentApi.updateAccessToken();
+        String url = "/uapi/domestic-stock/v1/quotations/program-trade-by-stock-daily";
+        Map<String, String> requestHeaderMap = koreainvestmentApi.computeIfAbsenttPropertySingleMap(url,"tr_id","FHPPG04650200");
+
+        String query = "?fid_cond_mrkt_div_code=J&fid_input_iscd=" + symbol +"&fid_input_date_1=" +ymd ;
+        HttpApiResponse response =  koreainvestmentApi.getHttpGet().getResponse(url + query, requestHeaderMap);
+        if(response.getResponseCode() != 200){
+            throw new StockApiException("token make fail code:" + response.getResponseCode() +", " + response.getMessage());
+        }
+        return response.getMessage();
+    }
+
+
+    public ProgramDaily[] getProgramDailies(String symbol, String beginYmd, String endYmd){
+        List<ProgramDaily> list = new ArrayList<>();
+
+
+        String nextBeginYmd = beginYmd;
+
+        int endYmdNum = Integer.parseInt(endYmd);
+        String dateFormat = "yyyyMMdd hh:mm";
+
+        for(;;) {
+
+            int beginYmdNum = Integer.parseInt(nextBeginYmd);
+
+            String callYmd = YmdUtil.getYmd(nextBeginYmd, 30);
+            if (YmdUtil.compare(callYmd, endYmd) > 0) {
+                callYmd = endYmd;
+            }
+
+
+            String jsonText = getProgramTradingDataDailyJsonText(symbol, callYmd);
+
+            JSONObject object = new JSONObject(jsonText);
+            String code = object.getString("rt_cd");
+            if (!code.equals("0")) {
+                if (!object.isNull("msg1")) {
+                    throw new StockApiException("rt_cd: " + code + ", message: " + object.getString("msg1"));
+                } else {
+                    throw new StockApiException("rt_cd: " + code);
+                }
+            }
+
+            JSONArray array = object.getJSONArray("output");
+            int length = array.length();
+            for (int i = length - 1; i > -1; i--) {
+                JSONObject row = array.getJSONObject(i);
+
+                String tradeYmd = row.getString("stck_bsop_date");
+
+                int tradeYmdInt = Integer.parseInt(tradeYmd);
+
+                if(tradeYmdInt < beginYmdNum){
+                    continue;
+                }
+
+                if(tradeYmdInt > endYmdNum){
+                    break;
+                }
+
+                ProgramDaily daily = new ProgramDaily();
+
+                daily.setTime(Times.getTime(dateFormat, tradeYmd +" 09:00", TradingTimes.KOR_ZONE_ID));
+                daily.setYmd(tradeYmdInt);
+                daily.setClose(row.getBigDecimal("stck_clpr"));
+                daily.setVolume(row.getBigDecimal("acml_vol"));
+                daily.setTradingPrice(row.getBigDecimal("acml_tr_pbmn"));
+                daily.setChange(row.getBigDecimal("prdy_vrss"));
+
+                daily.setSellVolume(row.getBigDecimal("whol_smtn_seln_vol"));
+                daily.setSellPrice(row.getBigDecimal("whol_smtn_seln_tr_pbmn"));
+
+                daily.setBuyVolume(row.getBigDecimal("whol_smtn_shnu_vol"));
+                daily.setBuyPrice(row.getBigDecimal("whol_smtn_shnu_tr_pbmn"));
+
+                daily.setNetBuyVolume(row.getBigDecimal("whol_smtn_ntby_qty"));
+                daily.setNetBuyPrice(row.getBigDecimal("whol_smtn_ntby_tr_pbmn"));
+
+                daily.setNetBuyChangeVolume(row.getBigDecimal("whol_ntby_vol_icdc"));
+                daily.setNetBuyChangePrice(row.getBigDecimal("whol_ntby_tr_pbmn_icdc2"));
+                list.add(daily);
+
+            }
+
+            if(YmdUtil.compare(callYmd, endYmd) >= 0){
+                break;
+            }
+
+            nextBeginYmd = YmdUtil.getYmd(callYmd,1);
+        }
+
+        if(list.size() == 0){
+            return ProgramDaily.EMPTY_ARRAY;
+        }
+        return list.toArray(new ProgramDaily[0]);
+    }
+
+    public String getVolumePowerDailyJsonText(String symbol, String beginYmd, String endYmd){
+        koreainvestmentApi.updateAccessToken();
+        String url = "/uapi/domestic-stock/v1/quotations/inquire-daily-trade-volume";
+        Map<String, String> requestHeaderMap = koreainvestmentApi.computeIfAbsenttPropertySingleMap(url,"tr_id","FHKST03010800");
+
+        String query = "?fid_cond_mrkt_div_code=J&fid_input_iscd=" + symbol +"&fid_input_date_1=" +beginYmd +"&fid_input_date_2=" + endYmd +"&fid_period_div_code=D";
+        HttpApiResponse response =  koreainvestmentApi.getHttpGet().getResponse(url + query, requestHeaderMap);
+        if(response.getResponseCode() != 200){
+            throw new StockApiException("token make fail code:" + response.getResponseCode() +", " + response.getMessage());
+        }
+        return response.getMessage();
+
     }
 }

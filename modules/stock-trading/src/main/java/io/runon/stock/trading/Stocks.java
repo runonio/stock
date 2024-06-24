@@ -8,7 +8,6 @@ import com.seomse.commons.utils.time.YmdUtil;
 import io.runon.stock.trading.data.StockData;
 import io.runon.stock.trading.data.StockDataManager;
 import io.runon.stock.trading.data.StockLong;
-import io.runon.stock.trading.exception.StockNotSupportedException;
 import io.runon.stock.trading.path.StockPathLastTime;
 import io.runon.trading.CountryCode;
 import io.runon.trading.TradingConfig;
@@ -116,6 +115,23 @@ public class Stocks {
         String codeValue = getCountryCode(stock.getStockId());
 
         CountryCode countryCode = CountryCode.valueOf(getCountryCode(stock));
+//
+//        if(countryCode == CountryCode.KOR){
+//
+//            ZoneId zoneId = TradingTimes.getZoneId(countryCode);
+//
+//            long time = YmdUtil.getTime(ymd, zoneId);
+//
+//            return time + Times.getTimeHm("0900");
+//        }else{
+//            throw new UndefinedException("undefined code: " + codeValue);
+//        }
+        return getDailyOpenTime(countryCode, ymd);
+
+    }
+
+
+    public static long getDailyOpenTime( CountryCode countryCode, String ymd){
 
         if(countryCode == CountryCode.KOR){
 
@@ -125,9 +141,8 @@ public class Stocks {
 
             return time + Times.getTimeHm("0900");
         }else{
-            throw new UndefinedException("undefined code: " + codeValue);
+            throw new UndefinedException("undefined code: " + countryCode.toString());
         }
-
     }
 
 

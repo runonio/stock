@@ -1,7 +1,8 @@
-package io.runon.stock.trading;
+package io.runon.stock.trading.daily;
 
-import com.google.gson.FieldNamingPolicy;
-import com.google.gson.GsonBuilder;
+import io.runon.stock.trading.Stock;
+import io.runon.stock.trading.Stocks;
+import io.runon.stock.trading.data.management.StockOutTimeLineJson;
 import io.runon.trading.TradingGson;
 import lombok.Data;
 
@@ -13,7 +14,7 @@ import java.math.BigDecimal;
  * @author macle
  */
 @Data
-public class ShortSellingDaily {
+public class ShortSellingDaily implements StockOutTimeLineJson {
     public static final ShortSellingDaily [] EMPTY_ARRAY = new ShortSellingDaily[0];
 
     Long t ;
@@ -40,7 +41,7 @@ public class ShortSellingDaily {
 
     @Override
     public String toString(){
-        return new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).setPrettyPrinting().create().toJson(this);
+        return TradingGson.LOWER_CASE_WITH_UNDERSCORES_PRETTY.toJson(this);
     }
 
     /**
@@ -89,7 +90,7 @@ public class ShortSellingDaily {
 
 
     public static ShortSellingDaily make(String jsonStr){
-        return new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create().fromJson(jsonStr, ShortSellingDaily.class);
+        return TradingGson.LOWER_CASE_WITH_UNDERSCORES.fromJson(jsonStr, ShortSellingDaily.class);
     }
 
     public static ShortSellingDaily make(String jsonStr, Stock stock){
@@ -101,7 +102,7 @@ public class ShortSellingDaily {
 
         return daily;
     }
-
+    @Override
     public String outTimeLineJsonText(Stock stock){
         if(t == null){
             t = Stocks.getDailyOpenTime(stock, ymd);

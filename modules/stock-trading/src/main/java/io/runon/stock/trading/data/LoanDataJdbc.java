@@ -1,10 +1,11 @@
 package io.runon.stock.trading.data;
 
-import io.runon.stock.trading.ShortSellingDaily;
 import io.runon.stock.trading.Stock;
 import io.runon.stock.trading.StockDailyData;
-import io.runon.stock.trading.StockLoanDaily;
-import io.runon.stock.trading.rds.RdsDaily;
+import io.runon.stock.trading.daily.RdsDaily;
+import io.runon.stock.trading.daily.ShortSellingDaily;
+import io.runon.stock.trading.daily.StockLoanDaily;
+
 
 import java.util.ArrayList;
 import java.util.List;

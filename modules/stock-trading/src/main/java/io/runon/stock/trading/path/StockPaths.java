@@ -71,7 +71,7 @@ public class StockPaths {
     }
 
 
-
+    //공매도
     public static String getShortSellingFilesPath(String stockId, String interval){
         String fileSeparator = FileSystems.getDefault().getSeparator();
         String countryCode = Stocks.getCountryCode(stockId);
@@ -86,6 +86,37 @@ public class StockPaths {
     //공매도
     public static String getShortSellingPath(String countryCode){
         return getSpotDirPath(countryCode, "stock.short.selling.dir.path", "short_selling");
+    }
+
+    //매매동향 외국인기관
+    public static String getInvestorFilesPath(String stockId, String interval){
+        String fileSeparator = FileSystems.getDefault().getSeparator();
+        String countryCode = Stocks.getCountryCode(stockId);
+        return getInvestorPath((countryCode)) + fileSeparator + stockId + fileSeparator + interval;
+    }
+
+    //매매동향 외국인기관
+    public static String getInvestorPath(CountryCode countryCode){
+        return getInvestorPath(countryCode.toString());
+    }
+    //매매동향 외국인기관
+    public static String getInvestorPath(String countryCode){
+        return getSpotDirPath(countryCode, "stock.investor.dir.path", "investor");
+    }
+
+    public static String getProgramFilesPath(String stockId, String interval) {
+        String fileSeparator = FileSystems.getDefault().getSeparator();
+        String countryCode = Stocks.getCountryCode(stockId);
+        return getProgramPath((countryCode)) + fileSeparator + stockId + fileSeparator + interval;
+
+    }
+
+    public static String getProgramPath(CountryCode countryCode){
+        return getProgramPath(countryCode.toString());
+    }
+
+    public static String getProgramPath(String countryCode){
+        return getSpotDirPath(countryCode, "stock.program.dir.path", "program");
     }
 
 

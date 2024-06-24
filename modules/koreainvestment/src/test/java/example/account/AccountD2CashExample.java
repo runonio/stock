@@ -2,7 +2,7 @@ package example.account;
 
 import com.seomse.commons.config.Config;
 import io.runon.stock.securities.firm.api.kor.koreainvestment.KoreainvestmentApi;
-import io.runon.stock.securities.firm.api.kor.koreainvestment.exception.KoreainvestmentApiException;
+import io.runon.stock.trading.exception.StockApiException;
 
 import java.math.BigDecimal;
 
@@ -17,7 +17,7 @@ public class AccountD2CashExample {
         String accountNumber = Config.getConfig("stock.securities.firm.api.kor.koreainvestment.account.number");
 
         if(accountNumber == null){
-            throw new KoreainvestmentApiException("account number null");
+            throw new StockApiException("account number null");
         }
 
         BigDecimal cash = KoreainvestmentApi.getInstance().getAccountApi().getD2Cash(accountNumber);
