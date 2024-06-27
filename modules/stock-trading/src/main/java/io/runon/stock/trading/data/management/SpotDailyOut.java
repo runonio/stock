@@ -138,6 +138,7 @@ public class SpotDailyOut {
             try {
                 //같은 데이터를 호출하면 호출 제한이 걸리는 경우가 있다 전체 캔들을 내릴때는 예외처리를 강제해서 멈추지 않는 로직을 추가
                 out(stock);
+                param.sleep();
             }catch (Exception e){
                 try{
                     Thread.sleep(5000L);
@@ -233,11 +234,10 @@ public class SpotDailyOut {
             maxYmd = stock.getDelistedYmd();
         }
 
-        //최대100건
+
         for(;;){
 
-            if(YmdUtil.compare(nextYmd, nowYmd) > 0){
-                param.sleep();
+            if (YmdUtil.compare(nextYmd, nowYmd) > 0) {
                 break;
             }
 
@@ -249,6 +249,7 @@ public class SpotDailyOut {
             }
 
             String [] lines = param.getLines(stock, nextYmd, endYmd);
+            param.sleep();
 
             if(isLastLineCheck && isFirst) {
 
@@ -269,7 +270,6 @@ public class SpotDailyOut {
             }
 
             if(endYmdNum >= maxYmd){
-                param.sleep();
                 break;
             }
 
@@ -279,7 +279,7 @@ public class SpotDailyOut {
                 nextYmd = YmdUtil.getYmd(TimeLines.getMaxYmd(param.getPathTimeLine(), lines, zoneId),1);
             }
 
-            param.sleep();
+
         }
     }
 

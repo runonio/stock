@@ -4,6 +4,7 @@ import com.seomse.commons.http.HttpApiResponse;
 import com.seomse.commons.utils.time.Times;
 import com.seomse.commons.utils.time.YmdUtil;
 import io.runon.stock.trading.daily.ProgramDaily;
+import io.runon.stock.trading.daily.VolumePowerDaily;
 import io.runon.stock.trading.exception.StockApiException;
 import io.runon.trading.*;
 import io.runon.trading.technical.analysis.candle.TradeCandle;
@@ -97,12 +98,14 @@ public class KoreainvestmentPeriodDataApi {
 
         int endYmdNum = Integer.parseInt(endYmd);
         String dateFormat = "yyyyMMdd hh:mm";
-
+        outer:
         for(;;){
 
             int beginYmdNum = Integer.parseInt(nextBeginYmd);
 
             String callYmd = YmdUtil.getYmd(nextBeginYmd, 30);
+
+
             if(YmdUtil.compare(callYmd, endYmd) > 0){
                 callYmd = endYmd;
             }
@@ -136,7 +139,7 @@ public class KoreainvestmentPeriodDataApi {
                 }
 
                 if(tradeYmdInt > endYmdNum){
-                    break;
+                    break outer;
                 }
 
                 creditLoanDaily.setTime(Times.getTime(dateFormat, tradeYmd +" 09:00", TradingTimes.KOR_ZONE_ID));
@@ -170,6 +173,9 @@ public class KoreainvestmentPeriodDataApi {
             }
 
             nextBeginYmd = YmdUtil.getYmd(callYmd,1);
+
+            koreainvestmentApi.periodSleep();
+
         }
         if(list.size() == 0){
             return CreditLoans.EMPTY_DAILY_ARRAY;
@@ -308,7 +314,7 @@ public class KoreainvestmentPeriodDataApi {
 
         int endYmdNum = Integer.parseInt(endYmd);
         String dateFormat = "yyyyMMdd hh:mm";
-
+        outer:
         for(;;) {
 
             int beginYmdNum = Integer.parseInt(nextBeginYmd);
@@ -345,7 +351,7 @@ public class KoreainvestmentPeriodDataApi {
                 }
 
                 if(tradeYmdInt > endYmdNum){
-                    break;
+                    break outer;
                 }
 
                 ProgramDaily daily = new ProgramDaily();
@@ -377,6 +383,8 @@ public class KoreainvestmentPeriodDataApi {
             }
 
             nextBeginYmd = YmdUtil.getYmd(callYmd,1);
+
+            koreainvestmentApi.periodSleep();
         }
 
         if(list.size() == 0){
@@ -398,4 +406,49 @@ public class KoreainvestmentPeriodDataApi {
         return response.getMessage();
 
     }
+
+    //최대 100건
+    public VolumePowerDaily []  getVolumePowerDailies(String symbol, String beginYmd, String endYmd){
+        String jsonText = getVolumePowerDailyJsonText(symbol, beginYmd, endYmd);
+        JSONObject object = new JSONObject(jsonText);
+
+        JSONArray array = object.getJSONArray("output2");
+        int length = array.length();
+        String dateFormat = "yyyyMMdd hh:mm";
+
+
+        List<VolumePowerDaily> list = new ArrayList<>();
+
+
+        for (int i = length -1; i > -1 ; i--) {
+
+            JSONObject row = array.getJSONObject(i);
+
+            if(row.isNull("stck_bsop_date")){
+                //상장 이전데이터를 조회할경우
+                return VolumePowerDaily.EMPTY_ARRAY;
+            }
+
+            VolumePowerDaily daily = new VolumePowerDaily();
+            String ymd = row.getString("stck_bsop_date");
+
+            if(ymd.equals("0")){
+                continue;
+            }
+
+            if(ymd.length() != 8){
+                continue;
+            }
+
+            daily.setYmd(Integer.parseInt(ymd));
+            daily.setTime(Times.getTime(dateFormat, ymd +" 09:00", TradingTimes.KOR_ZONE_ID));
+            daily.setSellVolume(row.getBigDecimal("total_seln_qty"));
+            daily.setBuyVolume(row.getBigDecimal("total_shnu_qty"));
+
+            list.add(daily);
+
+        }
+        return list.toArray(new VolumePowerDaily[0]);
+    }
+
 }

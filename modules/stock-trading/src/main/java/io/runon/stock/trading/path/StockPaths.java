@@ -119,6 +119,20 @@ public class StockPaths {
         return getSpotDirPath(countryCode, "stock.program.dir.path", "program");
     }
 
+    public static String getVolumePowerFilesPath(String stockId, String interval){
+        String fileSeparator = FileSystems.getDefault().getSeparator();
+        String countryCode = Stocks.getCountryCode(stockId);
+        return getVolumePowerPath((countryCode)) + fileSeparator + stockId + fileSeparator + interval;
+    }
+
+    public static String getVolumePowerPath(CountryCode countryCode){
+        return getVolumePowerPath(countryCode.toString());
+    }
+
+    public static String getVolumePowerPath(String countryCode){
+        return getSpotDirPath(countryCode, "stock.volume.power.dir.path", "program");
+    }
+
 
     public static String getSpotDirPath(String countryCode, String configKey, String dirName){
         String fileSeparator = FileSystems.getDefault().getSeparator();

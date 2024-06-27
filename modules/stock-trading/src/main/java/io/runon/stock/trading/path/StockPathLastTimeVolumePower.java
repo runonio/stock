@@ -7,10 +7,10 @@ import io.runon.trading.data.json.JsonTimeFile;
 import java.nio.file.FileSystems;
 
 /**
- * 공매도
+ * 주식 분석에 사용하는 경료확인용 유틸성 클래스
  * @author macle
  */
-public class StockPathLastTimeProgram implements StockPathLastTime{
+public class StockPathLastTimeVolumePower implements StockPathLastTime{
     @Override
     public long getLastTime(Stock stock, String interval) {
         return JsonTimeFile.getLastTime(getFilesDirPath(stock,interval));
@@ -18,13 +18,12 @@ public class StockPathLastTimeProgram implements StockPathLastTime{
 
     @Override
     public String getFilesDirPath(Stock stock, String interval) {
-        return StockPaths.getProgramFilesPath(stock.getStockId(), interval);
+        return StockPaths.getVolumePowerFilesPath(stock.getStockId(), interval);
     }
 
     @Override
     public String getLastTimeFilePath(CountryCode countryCode, String interval) {
         String fileSeparator = FileSystems.getDefault().getSeparator();
-        return StockPaths.getProgramPath(countryCode)+fileSeparator+"program_trade_last_" + interval;
-
+        return StockPaths.getVolumePowerPath(countryCode)+fileSeparator+"volume_power_last_" + interval;
     }
 }
