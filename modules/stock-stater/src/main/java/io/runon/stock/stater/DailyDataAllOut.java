@@ -1,10 +1,7 @@
 package io.runon.stock.stater;
 
 import com.seomse.commons.config.Config;
-import io.runon.stock.securities.firm.api.kor.koreainvestment.KoreainvestmentApis;
-import io.runon.stock.securities.firm.api.kor.koreainvestment.SpotDailyCreditLoanOut;
-import io.runon.stock.securities.firm.api.kor.koreainvestment.SpotDailyProgramTradeOut;
-import io.runon.stock.securities.firm.api.kor.koreainvestment.SpotDailyVolumePowerOut;
+import io.runon.stock.securities.firm.api.kor.koreainvestment.*;
 import io.runon.stock.securities.firm.api.kor.ls.SpotDailyInvestorOut;
 import io.runon.stock.trading.data.management.KorSpotDailyShortSellingOut;
 import io.runon.stock.trading.data.management.KorSpotDailyStockLoanOut;
@@ -37,6 +34,11 @@ public class DailyDataAllOut {
             SpotDailyVolumePowerOut volumePowerOut = new SpotDailyVolumePowerOut();
             volumePowerOut.outKor();
             volumePowerOut.outKorDelisted();
+
+            //시장 캔들 (코스피, 코스닥)
+            KorIndexDailyOut korIndexDailyOut = new KorIndexDailyOut();
+            korIndexDailyOut.out();
+
         }).start();
 
 
