@@ -1,9 +1,7 @@
 package io.runon.stock.stater;
 
 import com.seomse.commons.config.Config;
-import io.runon.stock.securities.firm.api.kor.koreainvestment.KoreainvestmentApis;
-import io.runon.stock.securities.firm.api.kor.koreainvestment.SpotDailyCreditLoanOut;
-import io.runon.stock.securities.firm.api.kor.koreainvestment.SpotDailyProgramTradeOut;
+import io.runon.stock.securities.firm.api.kor.koreainvestment.*;
 import io.runon.stock.securities.firm.api.kor.ls.SpotDailyInvestorOut;
 import io.runon.stock.trading.data.management.KorSpotDailyShortSellingOut;
 import io.runon.stock.trading.data.management.KorSpotDailyStockLoanOut;
@@ -27,9 +25,19 @@ public class DailyDataAllOut {
             creditLoanOut.outKor();
             creditLoanOut.outKorDelisted();
 
+            //개별종목 프로그램 매매동향
             SpotDailyProgramTradeOut programTradeOut = new SpotDailyProgramTradeOut();
             programTradeOut.outKor();
             programTradeOut.outKorDelisted();
+
+            //개별종목 체결강도
+            SpotDailyVolumePowerOut volumePowerOut = new SpotDailyVolumePowerOut();
+            volumePowerOut.outKor();
+            volumePowerOut.outKorDelisted();
+
+            //시장 캔들 (코스피, 코스닥)
+            KorIndexDailyOut korIndexDailyOut = new KorIndexDailyOut();
+            korIndexDailyOut.out();
 
         }).start();
 
@@ -57,13 +65,15 @@ public class DailyDataAllOut {
             shortSellingOut.outKorDelisted();
         }).start();
 
+        //시장지수 내리기
+        //
 
+        // 이후 작업목록
+        // 시장별매매동향
+        // 선물 옵션 매매동향
+        // 선물옵션과 같이 분석해야 하지만 선물옵션 정보를 정확히 파악하기위한 사전 지식이 필요함
+        // 선물옵션 코드는 어떻게 관리하는지 6월물 7월물등 월물이 변경되는것, 만기일 처리등에 대한 방안을 적립한후 적용
 
-        //체결강도
-
-        //시장지수
-
-        //시장자금
 
 
     }

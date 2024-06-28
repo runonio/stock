@@ -5,13 +5,13 @@ import io.runon.stock.securities.firm.api.kor.koreainvestment.KoreainvestmentPer
 import org.json.JSONObject;
 
 /**
- * 일별 프로그램 매매동향 내리기
+ * 체결강도 정보
  * @author macle
  */
 public class VolumePowerJsonTextExample {
     public static void main(String[] args) {
         KoreainvestmentPeriodDataApi api = KoreainvestmentApi.getInstance().getPeriodDataApi();
-        String text = api.getVolumePowerDailyJsonText("005930","19990101","20000101");
+        String text = api.getVolumePowerDailyJsonText("005930","20240601","20240625");
 
         JSONObject object = new JSONObject(text);
 

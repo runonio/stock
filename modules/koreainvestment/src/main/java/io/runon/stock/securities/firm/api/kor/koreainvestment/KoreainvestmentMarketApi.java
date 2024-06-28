@@ -2,13 +2,16 @@ package io.runon.stock.securities.firm.api.kor.koreainvestment;
 
 import com.seomse.commons.callback.StrCallback;
 import com.seomse.commons.http.HttpApiResponse;
+import com.seomse.commons.utils.time.Times;
 import com.seomse.commons.utils.time.YmdUtil;
 import io.runon.stock.trading.exception.StockApiException;
+import io.runon.trading.TradingTimes;
 import io.runon.trading.closed.days.ClosedDaysCallback;
 import io.runon.trading.technical.analysis.candle.TradeCandle;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -104,7 +107,6 @@ public class KoreainvestmentMarketApi implements ClosedDaysCallback {
 
     public String getIndexDataJsonText(String indexCode, String period , String ymd){
 
-
         String fid_input_iscd;
         if(indexCode.equals("KOSPI")){
             fid_input_iscd = "0001";
@@ -130,39 +132,82 @@ public class KoreainvestmentMarketApi implements ClosedDaysCallback {
         return response.getMessage();
     }
 
-    public TradeCandle [] getIndexDailyCandles(String indexCode, String beginYmd, String endYmd){
+    public TradeCandle [] getIndexCandles(String indexCode, String beginYmd, String endYmd){
         //100일씩줌
+        String nextBeginYmd = beginYmd;
 
-        String callYmd = YmdUtil.getYmd(beginYmd,98);
-        if(YmdUtil.compare(callYmd,endYmd) > 0){
-            callYmd = endYmd;
+        int endYmdNum = Integer.parseInt(endYmd);
+        String dateFormat = "yyyyMMdd hh:mm";
+
+        List<TradeCandle> list = new ArrayList<>();
+        outer:
+        for(;;){
+            String callYmd = YmdUtil.getYmd(nextBeginYmd,100);
+            if(YmdUtil.compare(callYmd,endYmd) > 0){
+                callYmd = endYmd;
+            }
+            int beginYmdNum = Integer.parseInt(nextBeginYmd);
+
+            String jsonText = getIndexDataJsonText(indexCode, "D", callYmd);
+
+            JSONObject object = new JSONObject(jsonText);
+
+            JSONArray array = object.getJSONArray("output2");
+
+
+            for (int i = array.length() -1; i > -1 ; i--) {
+                JSONObject row = array.getJSONObject(i);
+
+                String ymd = row.getString("stck_bsop_date");
+
+                int ymdInt = Integer.parseInt(ymd);
+
+                if(ymdInt < beginYmdNum){
+                    continue;
+                }
+
+                if(ymdInt > endYmdNum){
+                    break outer;
+                }
+
+
+                TradeCandle tradeCandle = new TradeCandle();
+                tradeCandle.setOpenTime(Times.getTime(dateFormat, ymd +" 09:00", TradingTimes.KOR_ZONE_ID));
+                tradeCandle.setCloseTime(Times.getTime(dateFormat, ymd +" 15:30", TradingTimes.KOR_ZONE_ID));
+
+                tradeCandle.setClose(row.getBigDecimal("bstp_nmix_prpr"));
+                tradeCandle.setChange(row.getBigDecimal("bstp_nmix_prdy_vrss"));
+                tradeCandle.setPrevious();
+
+                tradeCandle.setOpen(row.getBigDecimal("bstp_nmix_oprc"));
+                tradeCandle.setHigh(row.getBigDecimal("bstp_nmix_hgpr"));
+                tradeCandle.setLow(row.getBigDecimal("bstp_nmix_lwpr"));
+
+                tradeCandle.setVolume(row.getBigDecimal("acml_vol"));
+                tradeCandle.setTradingPrice(row.getBigDecimal("acml_tr_pbmn"));
+
+                if(tradeCandle.getVolume().compareTo(BigDecimal.ZERO) == 0){
+                    String nowYmd = YmdUtil.now(TradingTimes.KOR_ZONE_ID);
+                    if(ymd.equals(nowYmd)){
+                        break outer;
+                    }
+                }
+
+                list.add(tradeCandle);
+            }
+
+
+            if(YmdUtil.compare(callYmd, endYmd) >= 0){
+                break;
+            }
+
+            nextBeginYmd = YmdUtil.getYmd(callYmd,1);
+
+            koreainvestmentApi.periodSleep();
         }
 
-        String jsonText = getIndexDataJsonText(indexCode, "D", callYmd);
-
-        JSONObject object = new JSONObject(jsonText);
-        JSONArray array = object.getJSONArray("output2");
-
-        for (int i = array.length() -1; i > -1 ; i--) {
-
-        }
-
-
-        return null;
+        return list.toArray(new TradeCandle[0]);
     }
 
-
-    public static void main(String[] args) {
-        KoreainvestmentApi api = KoreainvestmentApi.getInstance();
-
-        KoreainvestmentMarketApi marketApi = api.getMarketApi();
-//        System.out.println(marketApi.getClosedDaysJson("2022"));
-
-
-        String [] closeDays = marketApi.getClosedDays("20240410" , "20240431");
-        for(String day : closeDays){
-            System.out.println(day);
-        }
-    }
 
 }

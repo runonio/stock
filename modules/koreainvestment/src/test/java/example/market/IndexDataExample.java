@@ -11,7 +11,7 @@ public class IndexDataExample {
         KoreainvestmentApi api = KoreainvestmentApi.getInstance();
         KoreainvestmentMarketApi marketApi = api.getMarketApi();
 
-        System.out.println(marketApi.getIndexDataJsonText("KOSPI","D","19900101"));
+        System.out.println(marketApi.getIndexDataJsonText("KOSPI","D","20240623"));
 
     }
 }

@@ -21,7 +21,10 @@ public interface StockPathLastTime {
     StockPathLastTime SHORT_SELLING = new StockPathLastTimeShortSelling();
 
     StockPathLastTime INVESTOR = new StockPathLastTimeInvestor();
+
     StockPathLastTime PROGRAM = new StockPathLastTimeProgram();
+
+    StockPathLastTime VOLUME_POWER = new StockPathLastTimeVolumePower();
 
 
     long getLastTime(Stock stock, String interval);
