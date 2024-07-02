@@ -219,7 +219,7 @@ public class SpotDailyOut {
             nextYmd = Integer.toString(stock.getListedYmd());
         }
 
-        TimeName.Type timeNameType = TimeName.getCandleType(Times.DAY_1);
+        TimeName.Type timeNameType = TimeName.getDefaultType(Times.DAY_1);
 
         boolean isFirst = true;
 
