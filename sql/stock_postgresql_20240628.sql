@@ -333,4 +333,36 @@ comment on table daily_data is '일별데이터';
 
 
 
+CREATE TABLE time_data
+(
+    data_key             VARCHAR NOT NULL,
+    data_path            VARCHAR NULL,
+    time_zone_id         VARCHAR NULL,
+    data_info            VARCHAR NULL,
+    updated_at           TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (data_key)
+);
 
+
+
+CREATE TABLE time_data_line
+(
+    data_key             VARCHAR NOT NULL,
+    line_time            BIGINT NOT NULL,
+    line_text            VARCHAR NULL,
+    PRIMARY KEY (data_key,line_time)
+);
+
+
+
+comment on table time_data is 'time_data';
+        comment on column time_data.data_key is '데이터키';
+         comment on column time_data.data_path is '데이터경로';
+         comment on column time_data.time_zone_id is '타임존아이디';
+         comment on column time_data.data_info is '데이터정보';
+         comment on column time_data.updated_at is '업데이트일시';
+
+comment on table time_data_line is 'time_data_line';
+        comment on column time_data_line.data_key is '데이터키';
+         comment on column time_data_line.line_time is '라인시간';
+         comment on column time_data_line.line_text is '라인텍스트';
