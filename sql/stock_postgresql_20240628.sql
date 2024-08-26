@@ -16,6 +16,9 @@ CREATE TABLE exchange
 ALTER TABLE exchange
     ADD PRIMARY KEY (exchange);
 
+create index idx_exchange_01
+    on exchange (updated_at desc);
+
 
 
 CREATE TABLE stock_group
@@ -34,19 +37,24 @@ CREATE TABLE stock_group
 ALTER TABLE stock_group
     ADD PRIMARY KEY (stock_group_id);
 
-
+create index idx_stock_group_01
+    on stock_group (updated_at desc);
 
 CREATE TABLE stock_group_map
 (
     stock_group_id             VARCHAR NOT NULL,
     stock_id             VARCHAR NOT NULL,
-    created_at           TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+    created_at           TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at           TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
-
 
 
 ALTER TABLE stock_group_map
     ADD PRIMARY KEY (stock_group_id,stock_id);
+
+
+create index idx_stock_group_map_01
+    on stock_group_map (updated_at desc);
 
 
 
@@ -78,6 +86,11 @@ ALTER TABLE stock
 create index idx_stock_01
     on stock (exchange desc);
 
+
+create index idx_stock_02
+    on stock (updated_at desc);
+
+
 comment on table stock is '주식';
         comment on column stock.stock_id is '주식아이디';
          comment on column stock.exchange is '거래소';
@@ -108,10 +121,12 @@ CREATE TABLE issue_shares_history
     issue_qty            NUMERIC NOT NULL,
     issue_ymd            INTEGER NULL,
     listing_ymd          INTEGER NULL,
+    updated_at           TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (row_no)
 );
 
-
+create index idx_issue_shares_history_01
+    on issue_shares_history (updated_at desc);
 
 comment on table issue_shares_history is '주식발행이력';
         comment on column issue_shares_history.row_no is '로우번호';
@@ -136,6 +151,10 @@ CREATE TABLE stock_daily
 );
 
 
+create index idx_stock_daily_01
+    on stock_daily (updated_at desc);
+
+
 comment on table stock_daily is '주식일별데이터';
         comment on column stock_daily.stock_id is '주식아이디';
          comment on column stock_daily.ymd is '년월일';
@@ -157,6 +176,8 @@ CREATE TABLE stock_api_data
 );
 
 
+create index idx_stock_api_data_01
+    on stock_api_data (updated_at desc);
 
 comment on table stock_api_data is '주식API데이터';
         comment on column stock_api_data.stock_id is '주식아이디';
@@ -206,6 +227,11 @@ CREATE TABLE bonds
     PRIMARY KEY (bond_id)
 );
 
+
+create index idx_bonds_01
+    on bonds (updated_at desc);
+
+
 CREATE TABLE indices
 (
     index_id             VARCHAR NOT NULL,
@@ -219,6 +245,11 @@ CREATE TABLE indices
     updated_at           TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (index_id)
 );
+
+create index idx_indices_01
+    on indices (updated_at desc);
+
+
 
 comment on table bonds is '채권';
         comment on column bonds.bond_id is '채권아이디';
@@ -267,6 +298,10 @@ CREATE TABLE futures
     PRIMARY KEY (futures_id)
 );
 
+create index idx_futures_01
+    on futures (updated_at desc);
+
+
 comment on table futures is '선물';
         comment on column futures.futures_id is '선물아이디';
          comment on column futures.market_type is '시장유형';
@@ -302,6 +337,8 @@ CREATE TABLE currencies
     PRIMARY KEY (currency_id)
 );
 
+create index idx_currencies_01
+    on currencies (updated_at desc);
 
 
 comment on table currencies is '통화_환율';
@@ -323,6 +360,8 @@ CREATE TABLE daily_data
     PRIMARY KEY (data_key,ymd)
 );
 
+create index idx_daily_data_01
+    on daily_data (updated_at desc);
 
 
 comment on table daily_data is '일별데이터';
@@ -333,36 +372,3 @@ comment on table daily_data is '일별데이터';
 
 
 
-CREATE TABLE time_data
-(
-    data_key             VARCHAR NOT NULL,
-    data_path            VARCHAR NULL,
-    time_zone_id         VARCHAR NULL,
-    data_info            VARCHAR NULL,
-    updated_at           TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (data_key)
-);
-
-
-
-CREATE TABLE time_data_line
-(
-    data_key             VARCHAR NOT NULL,
-    line_time            BIGINT NOT NULL,
-    line_text            VARCHAR NULL,
-    PRIMARY KEY (data_key,line_time)
-);
-
-
-
-comment on table time_data is 'time_data';
-        comment on column time_data.data_key is '데이터키';
-         comment on column time_data.data_path is '데이터경로';
-         comment on column time_data.time_zone_id is '타임존아이디';
-         comment on column time_data.data_info is '데이터정보';
-         comment on column time_data.updated_at is '업데이트일시';
-
-comment on table time_data_line is 'time_data_line';
-        comment on column time_data_line.data_key is '데이터키';
-         comment on column time_data_line.line_time is '라인시간';
-         comment on column time_data_line.line_text is '라인텍스트';

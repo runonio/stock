@@ -33,8 +33,6 @@ public class StockModifyPriceSearchExample {
             System.out.println(array[array.length-1]);
             System.out.println(YmdUtil.getYmd(array[array.length-1].getCandle().getOpenTime(), TradingTimes.KOR_ZONE_ID));
 
-            break;
-
         }
 
         System.out.println(keys.size());

@@ -33,15 +33,13 @@ open 시가
 high 고가
 low 저가
 volume 누적거래량
-## 대차잔고 json 데이터
-
-## 공매도 정보 json 데이터
-
-## 매매동향 정보 json 데이터
 
 
-# 시장 데이터
-## 증시 자금 추이
+# 내제가치 계산법
+EPS = ((최근년도 EPS *3) + (전년도 EPS *2) + (전전년도 EPS*1) )/6
+(BPS + EPS*10) / 2
+
+
 
 # Hidden Markov model
 관련 모델 적용 연구해보기
