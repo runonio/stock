@@ -1,4 +1,4 @@
-package io.runon.stock.trading.data.management.db.sync;
+package io.runon.stock.trading.data.management.db;
 
 import com.seomse.commons.config.Config;
 import com.seomse.commons.exception.ConfigException;

@@ -35,7 +35,7 @@ public class StockApiData {
 
     @DateTime
     @Column(name = "updated_at")
-    Long updatedAt;
+    long updatedAt = System.currentTimeMillis();
 
     public boolean equals(StockApiData target){
         try {

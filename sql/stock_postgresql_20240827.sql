@@ -44,7 +44,6 @@ CREATE TABLE stock_group_map
 (
     stock_group_id             VARCHAR NOT NULL,
     stock_id             VARCHAR NOT NULL,
-    created_at           TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at           TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -137,6 +136,7 @@ comment on table issue_shares_history is '주식발행이력';
          comment on column issue_shares_history.issue_qty is '발행주식수증감';
          comment on column issue_shares_history.issue_ymd is '발행년월일';
          comment on column issue_shares_history.listing_ymd is '상장년월일';
+         comment on column issue_shares_history.updated_at is '업데이트일시';
 
 create sequence seq_issue_shares_history;
 
@@ -209,7 +209,7 @@ comment on table stock_group is '주식그룹';
 comment on table stock_group_map is '주식그룹맵';
         comment on column stock_group_map.stock_group_id is '그룹아이디';
          comment on column stock_group_map.stock_id is '주식아이디';
-         comment on column stock_group_map.created_at is '등록일시';
+         comment on column stock_group_map.updated_at is '업데이트일시';
 
 
 

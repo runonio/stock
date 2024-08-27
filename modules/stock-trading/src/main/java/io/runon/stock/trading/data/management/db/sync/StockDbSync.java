@@ -1,8 +1,7 @@
 package io.runon.stock.trading.data.management.db.sync;
 
-import com.seomse.commons.config.Config;
 import com.seomse.commons.utils.ExceptionUtil;
-import com.seomse.jdbc.connection.ConnectionFactory;
+import io.runon.stock.trading.data.management.db.StockJdbc;
 import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Connection;

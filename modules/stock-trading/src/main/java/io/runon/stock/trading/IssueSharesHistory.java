@@ -1,9 +1,6 @@
 package io.runon.stock.trading;
 
-import com.seomse.jdbc.annotation.Column;
-import com.seomse.jdbc.annotation.PrimaryKey;
-import com.seomse.jdbc.annotation.Sequence;
-import com.seomse.jdbc.annotation.Table;
+import com.seomse.jdbc.annotation.*;
 
 import io.runon.trading.data.EqualsNullCheck;
 import lombok.Data;
@@ -18,9 +15,8 @@ import java.math.BigDecimal;
 @Table(name="issue_shares_history")
 public class IssueSharesHistory {
 
-
     @PrimaryKey(seq = 1)
-    @Column(name = "row_no")@Sequence(name ="seq_issue_shares_history")
+    @Column(name = "row_no") @Sequence(name ="seq_issue_shares_history")
     Long rowNo;
 
     @Column(name = "stock_id")
@@ -44,12 +40,15 @@ public class IssueSharesHistory {
     @Column(name = "listing_ymd")
     Integer listingYmd;
 
+    @DateTime
+    @Column(name = "updated_at")
+    long updatedAt = System.currentTimeMillis();
+
     public void setIssueYmd(String issueYmdValue) {
         if(issueYmdValue == null){
             this.issueYmd = null;
             return;
         }
-
         this.issueYmd = Integer.parseInt(issueYmdValue);
     }
 
@@ -58,7 +57,6 @@ public class IssueSharesHistory {
             this.listingYmd = null;
             return;
         }
-
         this.listingYmd = Integer.parseInt(listingYmdValue);
     }
 
@@ -85,9 +83,8 @@ public class IssueSharesHistory {
             }
         }catch(Exception ignore){
             return false;
-
         }
         return true;
     }
-    
+
 }
