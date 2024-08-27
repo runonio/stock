@@ -12,6 +12,7 @@ import io.runon.stock.trading.path.StockPathLastTime;
 import io.runon.trading.CountryCode;
 import io.runon.trading.TradingConfig;
 import io.runon.trading.TradingTimes;
+import io.runon.trading.technical.analysis.candle.TradeCandle;
 
 import java.nio.file.FileSystems;
 import java.time.ZoneId;
@@ -23,6 +24,12 @@ import java.util.Map;
  * @author macle
  */
 public class Stocks {
+
+    public static Stock getStock(CountryCode countryCode, String symbol){
+        StockDataManager stockDataManager = StockDataManager.getInstance();
+        StockData stockData = stockDataManager.getStockData();
+        return stockData.getStock(countryCode.toString() +"_" + symbol);
+    }
 
     public static Stock getStock(String id){
         StockDataManager stockDataManager = StockDataManager.getInstance();
@@ -113,7 +120,6 @@ public class Stocks {
     public static long getDailyOpenTime(Stock stock, String ymd){
 
         String codeValue = getCountryCode(stock.getStockId());
-
         CountryCode countryCode = CountryCode.valueOf(getCountryCode(stock));
 //
 //        if(countryCode == CountryCode.KOR){
@@ -128,6 +134,20 @@ public class Stocks {
 //        }
         return getDailyOpenTime(countryCode, ymd);
 
+    }
+
+    /**
+     * 일봉 위주의 캔들
+     * @param stock
+     * @param beginYmd
+     * @param endYmd
+     * @return
+     */
+    public static TradeCandle [] getDailyCandles(Stock stock, String beginYmd, String endYmd){
+        Stocks.getZoneId(stock);
+
+
+        return null;
     }
 
 

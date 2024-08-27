@@ -1,20 +1,27 @@
 package io.runon.stock.trading;
 
-import com.seomse.jdbc.annotation.Column;
-import com.seomse.jdbc.annotation.DateTime;
-import com.seomse.jdbc.annotation.PrimaryKey;
-import com.seomse.jdbc.annotation.Table;
 import lombok.Data;
+import com.seomse.jdbc.annotation.Column;
+import com.seomse.jdbc.annotation.Table;
+import com.seomse.jdbc.annotation.PrimaryKey;
+import com.seomse.jdbc.annotation.DateTime;
+
 /**
  * @author macle
  */
 @Data
-@Table(name="currencies")
-public class Currencies {
+@Table(name="stock_group")
+public class StockGroup {
 
     @PrimaryKey(seq = 1)
-    @Column(name = "currency_id")
-    String currencyId;
+    @Column(name = "stock_group_id")
+    String stockGroupId;
+
+    @Column(name = "group_type")
+    String groupType;
+
+    @Column(name = "country")
+    String country;
 
     @Column(name = "name_ko")
     String nameKo;
@@ -22,14 +29,8 @@ public class Currencies {
     @Column(name = "name_en")
     String nameEn;
 
-    @Column(name = "candle_path")
-    String candlePath;
-
     @Column(name = "description")
     String description;
-
-    @Column(name = "data_value")
-    String dataValue;
 
     @DateTime
     @Column(name = "updated_at")

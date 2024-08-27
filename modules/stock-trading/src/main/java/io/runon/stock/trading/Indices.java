@@ -41,5 +41,5 @@ public class Indices {
 
     @DateTime
     @Column(name = "updated_at")
-    Long updatedAt;
+    long updatedAt = System.currentTimeMillis();
 }

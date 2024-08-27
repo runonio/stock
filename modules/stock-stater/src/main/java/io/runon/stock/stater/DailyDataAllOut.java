@@ -5,6 +5,7 @@ import io.runon.stock.securities.firm.api.kor.koreainvestment.*;
 import io.runon.stock.securities.firm.api.kor.ls.SpotDailyInvestorOut;
 import io.runon.stock.trading.data.management.KorSpotDailyShortSellingOut;
 import io.runon.stock.trading.data.management.KorSpotDailyStockLoanOut;
+import io.runon.trading.data.api.ApiDataSync;
 
 /**
  * @author macle
@@ -41,7 +42,6 @@ public class DailyDataAllOut {
 
         }).start();
 
-
         new Thread(() -> {
             //이베스트 투자증권에서 실행하는 부분은 다른 thread
             //외국인 기관 매매동향
@@ -50,7 +50,6 @@ public class DailyDataAllOut {
             investorOut.outKorDelisted();
 
         }).start();
-
 
         new Thread(() -> {
             //런온 api 호출부분
@@ -63,6 +62,11 @@ public class DailyDataAllOut {
             KorSpotDailyShortSellingOut shortSellingOut = new KorSpotDailyShortSellingOut();
             shortSellingOut.outKor();
             shortSellingOut.outKorDelisted();
+
+            try{
+                Thread.sleep(10000L);
+            }catch (Exception ignore){}
+            ApiDataSync.candleSyncAll();
         }).start();
 
         //시장지수 내리기

@@ -40,6 +40,6 @@ public class Bonds {
 
     @DateTime
     @Column(name = "updated_at")
-    Long updatedAt;
+    long updatedAt = System.currentTimeMillis();
 
 }

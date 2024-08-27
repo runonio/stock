@@ -32,7 +32,7 @@ public class StockDailyData {
 
     @DateTime
     @Column(name = "updated_at")
-    Long updatedAt;
+    long updatedAt = System.currentTimeMillis();
 
     public boolean equals(StockDailyData target){
         try {
