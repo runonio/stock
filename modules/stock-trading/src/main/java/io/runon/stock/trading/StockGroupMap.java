@@ -4,6 +4,7 @@ import com.seomse.jdbc.annotation.Column;
 import com.seomse.jdbc.annotation.Table;
 import com.seomse.jdbc.annotation.PrimaryKey;
 import com.seomse.jdbc.annotation.DateTime;
+import io.runon.trading.TradingGson;
 import lombok.Data;
 
 /**
@@ -24,4 +25,9 @@ public class StockGroupMap {
     @DateTime
     @Column(name = "updated_at")
     long updatedAt = System.currentTimeMillis();
+
+    @Override
+    public String toString(){
+        return  TradingGson.LOWER_CASE_WITH_UNDERSCORES_PRETTY.toJson(this);
+    }
 }

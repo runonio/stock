@@ -12,6 +12,7 @@ import io.runon.stock.trading.path.StockPathLastTime;
 import io.runon.trading.CountryCode;
 import io.runon.trading.TradingConfig;
 import io.runon.trading.TradingTimes;
+import io.runon.trading.data.Exchanges;
 import io.runon.trading.technical.analysis.candle.TradeCandle;
 
 import java.nio.file.FileSystems;
@@ -136,13 +137,6 @@ public class Stocks {
 
     }
 
-    /**
-     * 일봉 위주의 캔들
-     * @param stock
-     * @param beginYmd
-     * @param endYmd
-     * @return
-     */
     public static TradeCandle [] getDailyCandles(Stock stock, String beginYmd, String endYmd){
         Stocks.getZoneId(stock);
 
