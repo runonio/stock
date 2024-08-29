@@ -1,20 +1,29 @@
 package io.runon.stock.stater;
 
 import com.seomse.commons.config.Config;
+import com.seomse.commons.utils.ExceptionUtil;
 import io.runon.stock.securities.firm.api.kor.koreainvestment.*;
 import io.runon.stock.securities.firm.api.kor.ls.SpotDailyInvestorOut;
 import io.runon.stock.trading.data.management.KorSpotDailyShortSellingOut;
 import io.runon.stock.trading.data.management.KorSpotDailyStockLoanOut;
+import io.runon.stock.trading.data.management.db.sync.StockDbSync;
 import io.runon.trading.data.api.ApiDataSync;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @author macle
  */
-
+@Slf4j
 public class DailyDataAllOut {
 
     public static void out(){
 
+        try {
+            StockDbSync.getInstance().sync();
+
+        }catch (Exception e){
+            log.error(ExceptionUtil.getStackTrace(e));
+        }
         new Thread(() -> {
 
             //한국 투자증권 활용부분

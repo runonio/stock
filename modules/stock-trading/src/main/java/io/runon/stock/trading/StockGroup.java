@@ -1,5 +1,6 @@
 package io.runon.stock.trading;
 
+import io.runon.trading.TradingGson;
 import lombok.Data;
 import com.seomse.jdbc.annotation.Column;
 import com.seomse.jdbc.annotation.Table;
@@ -35,4 +36,9 @@ public class StockGroup {
     @DateTime
     @Column(name = "updated_at")
     long updatedAt = System.currentTimeMillis();
+
+    @Override
+    public String toString(){
+        return  TradingGson.LOWER_CASE_WITH_UNDERSCORES_PRETTY.toJson(this);
+    }
 }

@@ -24,7 +24,10 @@ dependencies {
     implementation group: 'org.json', name: 'json', version: '20240303'
     implementation group: 'com.google.code.gson', name: 'gson', version: '2.10.1'
 
-    implementation group: 'org.postgresql', name: 'postgresql', version: '42.7.3'
+    // jdbc 프로젝트 컨트롤
+//    implementation 'com.seomse.commons:jdbc:1.2.1'
+    implementation project(path: ':jdbc')
+    implementation group: 'com.zaxxer', name: 'HikariCP', version: '5.1.0'
 
     compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.30'
     annotationProcessor 'org.projectlombok:lombok:1.18.30'
