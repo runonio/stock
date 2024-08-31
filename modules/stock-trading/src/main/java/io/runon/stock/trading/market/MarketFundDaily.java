@@ -1,8 +1,8 @@
 package io.runon.stock.trading.market;
 
-import io.runon.stock.trading.Stocks;
 import io.runon.trading.CountryCode;
 import io.runon.trading.TradingGson;
+import io.runon.trading.TradingTimes;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -24,7 +24,6 @@ public class MarketFundDaily {
 
     //투자자 예탁금
     BigDecimal deposit;
-
 
     //장내파생상품 거래 예수금
     BigDecimal derivativesDeposit;
@@ -54,20 +53,18 @@ public class MarketFundDaily {
         this.t = time;
     }
 
-
     public static MarketFundDaily make(String jsonStr, CountryCode countryCode){
         MarketFundDaily daily = TradingGson.LOWER_CASE_WITH_UNDERSCORES.fromJson(jsonStr, MarketFundDaily.class);
         if(daily.t == null){
-            daily.t = Stocks.getDailyOpenTime(countryCode, Integer.toString(daily.ymd));
+            daily.t = TradingTimes.getDailyOpenTime(countryCode, Integer.toString(daily.ymd));
         }
 
         return daily;
     }
 
-
     public String outTimeLineJsonText(CountryCode countryCode){
         if(t == null){
-            t = Stocks.getDailyOpenTime(countryCode, Integer.toString(ymd));
+            t = TradingTimes.getDailyOpenTime(countryCode, Integer.toString(ymd));
         }
 
         return TradingGson.LOWER_CASE_WITH_UNDERSCORES.toJson(this);

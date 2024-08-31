@@ -22,8 +22,6 @@ project(':seomse-commons').projectDir = new File(settingsDir,'../../seomse/seoms
 include ':jdbc'
 project(':jdbc').projectDir = new File(settingsDir,'../../seomse/seomse-commons/modules/jdbc')
 
-
-
 include ':backtesting'
 project(':backtesting').projectDir = new File(settingsDir,'../../runon/trading/modules/backtesting')
 
