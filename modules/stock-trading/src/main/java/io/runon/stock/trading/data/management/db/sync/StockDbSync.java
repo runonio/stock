@@ -117,7 +117,6 @@ public class StockDbSync {
                 log.error(ExceptionUtil.getStackTrace(e));
             }
 
-
         }
 
 

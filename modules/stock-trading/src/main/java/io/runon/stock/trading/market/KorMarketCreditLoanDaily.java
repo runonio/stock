@@ -1,8 +1,8 @@
 package io.runon.stock.trading.market;
 
-import io.runon.stock.trading.Stocks;
 import io.runon.trading.CountryCode;
 import io.runon.trading.TradingGson;
+import io.runon.trading.TradingTimes;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -41,7 +41,7 @@ public class KorMarketCreditLoanDaily {
     public static KorMarketCreditLoanDaily make(String jsonStr, CountryCode countryCode){
         KorMarketCreditLoanDaily daily = TradingGson.LOWER_CASE_WITH_UNDERSCORES.fromJson(jsonStr, KorMarketCreditLoanDaily.class);
         if(daily.t == null){
-            daily.t = Stocks.getDailyOpenTime(countryCode, Integer.toString(daily.ymd));
+            daily.t = TradingTimes.getDailyOpenTime(countryCode, Integer.toString(daily.ymd));
         }
 
         return daily;
@@ -49,7 +49,7 @@ public class KorMarketCreditLoanDaily {
 
     public String outTimeLineJsonText(CountryCode countryCode){
         if(t == null){
-            t = Stocks.getDailyOpenTime(countryCode, Integer.toString(ymd));
+            t = TradingTimes.getDailyOpenTime(countryCode, Integer.toString(ymd));
         }
 
         return TradingGson.LOWER_CASE_WITH_UNDERSCORES.toJson(this);

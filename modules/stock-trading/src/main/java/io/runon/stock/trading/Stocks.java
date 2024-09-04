@@ -1,6 +1,6 @@
 package io.runon.stock.trading;
 
-import com.seomse.commons.exception.UndefinedException;
+import com.seomse.commons.config.Config;
 import com.seomse.commons.parallel.ParallelArrayJob;
 import com.seomse.commons.parallel.ParallelArrayWork;
 import com.seomse.commons.utils.time.Times;
@@ -9,10 +9,12 @@ import io.runon.stock.trading.data.StockData;
 import io.runon.stock.trading.data.StockDataManager;
 import io.runon.stock.trading.data.StockLong;
 import io.runon.stock.trading.path.StockPathLastTime;
+import io.runon.stock.trading.path.StockPaths;
 import io.runon.trading.CountryCode;
 import io.runon.trading.TradingConfig;
 import io.runon.trading.TradingTimes;
 import io.runon.trading.data.Exchanges;
+import io.runon.trading.data.csv.CsvCandle;
 import io.runon.trading.technical.analysis.candle.TradeCandle;
 
 import java.nio.file.FileSystems;
@@ -57,13 +59,10 @@ public class Stocks {
     }
 
     public static Map<String, Stock> makeMap(Stock [] stocks){
-
         Map<String, Stock> map = new HashMap<>();
-
         for(Stock stock : stocks){
             map.put(stock.getStockId(), stock);
         }
-
         return map;
     }
 
@@ -122,45 +121,34 @@ public class Stocks {
 
         String codeValue = getCountryCode(stock.getStockId());
         CountryCode countryCode = CountryCode.valueOf(getCountryCode(stock));
-//
-//        if(countryCode == CountryCode.KOR){
-//
-//            ZoneId zoneId = TradingTimes.getZoneId(countryCode);
-//
-//            long time = YmdUtil.getTime(ymd, zoneId);
-//
-//            return time + Times.getTimeHm("0900");
-//        }else{
-//            throw new UndefinedException("undefined code: " + codeValue);
-//        }
-        return getDailyOpenTime(countryCode, ymd);
 
+        return TradingTimes.getDailyOpenTime(countryCode, ymd);
     }
 
     public static TradeCandle [] getDailyCandles(Stock stock, String beginYmd, String endYmd){
-        Stocks.getZoneId(stock);
+        ZoneId zoneId = Stocks.getZoneId(stock);
 
-
-        return null;
+        long beginTime = YmdUtil.getTime(beginYmd, zoneId);
+        long endTime = YmdUtil.getTime(endYmd, zoneId);
+        String path = StockPaths.getSpotCandleFilesPath(stock.getStockId(), "1d");
+        return CsvCandle.load(path, Times.DAY_1,beginTime, endTime, zoneId);
     }
 
+    public static void main(String[] args) {
+        Config.getConfig("");
 
-    public static long getDailyOpenTime( CountryCode countryCode, String ymd){
+        Stock stock = Stocks.getStock("KOR_005930");
+        String path = StockPaths.getSpotCandleFilesPath(stock.getStockId(), "1d");
 
-        if(countryCode == CountryCode.KOR){
+        System.out.println(stock);
 
-            ZoneId zoneId = TradingTimes.getZoneId(countryCode);
+        TradeCandle [] candles = getDailyCandles(stock, "20240801","20240830");
 
-            long time = YmdUtil.getTime(ymd, zoneId);
 
-            return time + Times.getTimeHm("0900");
-        }else{
-            throw new UndefinedException("undefined code: " + countryCode.toString());
+        for(TradeCandle candle : candles){
+            System.out.println(candle);
         }
     }
-
-
-
 
 
 }
