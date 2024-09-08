@@ -42,10 +42,8 @@ public class StockDbSync {
     private final List<Class<?>> timeTableClassList = new ArrayList<>();
 
     private final String [] sequences = {
-
-
+        "seq_issue_shares_history"
     };
-
 
     private final Object lock = new Object();
 
@@ -74,7 +72,20 @@ public class StockDbSync {
         for(Class<?> tableClass : timeTableClassList){
             timeTablesSync(tableClass);
         }
+        
+        //시퀀스 싱크
+        try(Connection selectConn = StockJdbc.newSyncServerConnection()){
+            for(String sequence : sequences){
+                Long value = JdbcQuery.getResultLong(selectConn, "select last_value from " + sequence);
+                if(value== null){
+                    continue;
+                }
+                JdbcQuery.getResultLong("select setval('" + sequence +"', " +value +")");
+            }
 
+        }catch (Exception e){
+            log.error(ExceptionUtil.getStackTrace(e));
+        }
     }
 
     public void timeTablesSync(Class<?> tableClass){
