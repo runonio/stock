@@ -129,10 +129,12 @@ public class Stocks {
         ZoneId zoneId = Stocks.getZoneId(stock);
 
         long beginTime = YmdUtil.getTime(beginYmd, zoneId);
-        long endTime = YmdUtil.getTime(endYmd, zoneId);
+        long endTime = YmdUtil.getTime(endYmd, zoneId) + Times.DAY_1 ;
         String path = StockPaths.getSpotCandleFilesPath(stock.getStockId(), "1d");
         return CsvCandle.load(path, Times.DAY_1,beginTime, endTime, zoneId);
     }
+
+
 
     public static void main(String[] args) {
         Config.getConfig("");
