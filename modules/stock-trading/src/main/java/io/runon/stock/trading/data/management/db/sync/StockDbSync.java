@@ -8,8 +8,8 @@ import com.seomse.jdbc.PrepareStatementData;
 import com.seomse.jdbc.PrepareStatements;
 import com.seomse.jdbc.annotation.Table;
 import com.seomse.jdbc.objects.JdbcObjects;
+import com.seomse.jdbc.sync.JdbcSync;
 import io.runon.stock.trading.*;
-import io.runon.stock.trading.data.management.db.StockJdbc;
 import io.runon.trading.data.*;
 import io.runon.trading.data.jdbc.TradingJdbc;
 import lombok.extern.slf4j.Slf4j;
@@ -74,7 +74,7 @@ public class StockDbSync {
         }
         
         //시퀀스 싱크
-        try(Connection selectConn = StockJdbc.newSyncServerConnection()){
+        try(Connection selectConn = JdbcSync.newSyncServerConnection()){
             for(String sequence : sequences){
                 Long value = JdbcQuery.getResultLong(selectConn, "select last_value from " + sequence);
                 if(value== null){
@@ -93,7 +93,7 @@ public class StockDbSync {
             Table table = tableClass.getAnnotation(Table.class);
             log.debug("sync table: " + table.name());
 
-            try(Connection selectConn = StockJdbc.newSyncServerConnection()){
+            try(Connection selectConn = JdbcSync.newSyncServerConnection()){
                 GenericCallBack<Object> callBack  = o -> {
 
                     try {

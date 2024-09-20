@@ -19,9 +19,7 @@ import io.runon.trading.technical.analysis.candle.TradeCandle;
 
 import java.nio.file.FileSystems;
 import java.time.ZoneId;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author macle
@@ -62,6 +60,14 @@ public class Stocks {
         Map<String, Stock> map = new HashMap<>();
         for(Stock stock : stocks){
             map.put(stock.getStockId(), stock);
+        }
+        return map;
+    }
+
+    public static Map<String, Stock> makeSymbolMap(Stock [] stocks){
+        Map<String, Stock> map = new HashMap<>();
+        for(Stock stock : stocks){
+            map.put(stock.getSymbol(), stock);
         }
         return map;
     }
@@ -118,10 +124,7 @@ public class Stocks {
     }
 
     public static long getDailyOpenTime(Stock stock, String ymd){
-
-        String codeValue = getCountryCode(stock.getStockId());
         CountryCode countryCode = CountryCode.valueOf(getCountryCode(stock));
-
         return TradingTimes.getDailyOpenTime(countryCode, ymd);
     }
 
@@ -134,6 +137,45 @@ public class Stocks {
         return CsvCandle.load(path, Times.DAY_1,beginTime, endTime, zoneId);
     }
 
+
+    public static Stock [] filterListedStock(Stock [] stocks, String standardYmd){
+        return filterListedStock(stocks, Integer.parseInt(standardYmd));
+    }
+
+    public static Stock [] filterListedStock(Stock [] stocks, int standardYmdInt){
+
+        List<Stock> listedList = new ArrayList<>();
+
+        for(Stock stock : stocks){
+
+            //당시에 상장하지 않은종목
+            if(stock.getListedYmd() != null && stock.getListedYmd() > standardYmdInt){
+                continue;
+            }
+
+            //상폐된 종목
+            if(stock.getDelistedYmd() != null && stock.getDelistedYmd() <= standardYmdInt){
+                continue;
+            }
+
+            if(!stock.isListing){
+                //지금 상장되어 있지 않으면
+                //마지막업데이트 일시를 상장폐지일로 인식한다.
+
+                ZoneId zoneId = Stocks.getZoneId(stock);
+
+                int delYmd = Integer.parseInt(YmdUtil.getYmd(stock.getUpdatedAt(), zoneId));
+                if(delYmd <= standardYmdInt){
+                    continue;
+                }
+            }
+
+
+            listedList.add(stock);
+        }
+
+        return listedList.toArray(new Stock[0]);
+    }
 
 
     public static void main(String[] args) {

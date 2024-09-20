@@ -14,11 +14,12 @@ dependencies {
     implementation project(path: ':seomse-commons')
 
     implementation project(path: ':trading')
-    implementation project(path: ':chart-view')
+
     implementation project(path: ':backtesting')
 
     implementation project(path: ':stock-trading')
 
+    testImplementation project(path: ':chart-view')
 
 //    implementation 'com.seomse.commons:commons:1.6.0'
 
