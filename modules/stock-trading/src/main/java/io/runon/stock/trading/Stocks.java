@@ -15,8 +15,11 @@ import io.runon.trading.TradingConfig;
 import io.runon.trading.TradingTimes;
 import io.runon.trading.data.Exchanges;
 import io.runon.trading.data.csv.CsvCandle;
+import io.runon.trading.data.file.PathTimeLine;
+import io.runon.trading.data.file.TimeFiles;
 import io.runon.trading.technical.analysis.candle.TradeCandle;
 
+import java.math.BigDecimal;
 import java.nio.file.FileSystems;
 import java.time.ZoneId;
 import java.util.*;
@@ -176,6 +179,65 @@ public class Stocks {
 
         return listedList.toArray(new Stock[0]);
     }
+
+
+    public static StockNumber [] getMarketCap(Stock [] stocks){
+        StockNumber [] stockNumbers = new StockNumber[stocks.length];
+        for (int i = 0; i <stockNumbers.length ; i++) {
+            BigDecimal marketCap = getMarketCap(stocks[i]);
+            if(marketCap == null){
+                marketCap = BigDecimal.ZERO;
+            }
+            stockNumbers[i] = new StockNumber(stocks[i], marketCap);
+        }
+
+        Arrays.sort(stockNumbers, StockNumber.SORT_DESC);
+
+        return stockNumbers;
+    }
+
+    public static BigDecimal getMarketCap(Stock stock){
+        Long issuedShares = stock.getIssuedShares();
+        if(issuedShares == null){
+            return BigDecimal.ZERO;
+        }
+
+        TradeCandle lastCandle = getLastCandle1d(stock);
+        if(lastCandle == null){
+            return null;
+        }
+        return new BigDecimal(issuedShares).multiply(lastCandle.getClose());
+    }
+
+    public static TradeCandle getLastCandle1d(Stock stock){
+        PathTimeLine pathTimeLine = PathTimeLine.CSV;
+        String filePath = StockPaths.getSpotCandleFilesPath(stock.getStockId(), "1d");
+        String lastLine = TimeFiles.getLastLine(filePath);
+        if(lastLine == null){
+            return null;
+        }
+        return CsvCandle.make(lastLine, Times.DAY_1);
+    }
+
+
+
+    public static Stock [] getStocks(StockMap stockMap, String [] stockIds){
+
+        List<Stock> list = new ArrayList<>();
+
+        for(String stockId: stockIds){
+            Stock stock = stockMap.getId(stockId);
+            if(stock != null){
+                list.add(stock);
+            }
+        }
+
+        Stock [] stocks = list.toArray(new Stock[0]);
+        list.clear();
+
+        return stocks;
+    }
+
 
 
     public static void main(String[] args) {

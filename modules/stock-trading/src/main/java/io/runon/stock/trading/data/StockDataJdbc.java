@@ -1,5 +1,6 @@
 package io.runon.stock.trading.data;
 
+import com.seomse.jdbc.JdbcQuery;
 import com.seomse.jdbc.QueryUtils;
 import com.seomse.jdbc.objects.JdbcObjects;
 import io.runon.stock.trading.Stock;
@@ -123,5 +124,21 @@ public class StockDataJdbc implements StockData{
         }
 
         return  JdbcObjects.getObjList(Stock.class, where.toString()).toArray(new Stock[0]);
+    }
+
+    @Override
+    public String[] getGroupStockIds(String groupId) {
+        List<String> list = JdbcQuery.getStringList("select stock_id from stock_group_map where stock_group_id='" + groupId + "'");
+        String [] ids = list.toArray(new String[0]);
+        list.clear();
+        return ids;
+    }
+
+    @Override
+    public Stock[] getGroupStocks(String groupId) {
+        List<Stock> list = JdbcObjects.getObjList(Stock.class, "stock_id in (select stock_id from stock_group_map where stock_group_id='"  + groupId + "')");
+        Stock [] stocks = list.toArray(new Stock[0]);
+        list.clear();
+        return stocks;
     }
 }

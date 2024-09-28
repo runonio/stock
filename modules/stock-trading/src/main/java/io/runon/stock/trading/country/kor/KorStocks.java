@@ -1,11 +1,9 @@
 package io.runon.stock.trading.country.kor;
 
-import com.seomse.commons.config.Config;
 import com.seomse.commons.utils.string.Check;
 import com.seomse.commons.utils.time.YmdUtil;
 import com.seomse.jdbc.JdbcQuery;
-import io.runon.stock.trading.Stock;
-import io.runon.stock.trading.Stocks;
+import io.runon.stock.trading.*;
 import io.runon.stock.trading.data.StockData;
 import io.runon.stock.trading.data.StockDataManager;
 import io.runon.trading.TradingTimes;
@@ -28,7 +26,6 @@ public class KorStocks {
     public static Stock [] getGeneralStocks(){
         return getGeneralStocks(YmdUtil.now(TradingTimes.KOR_ZONE_ID));
     }
-
 
     public static Stock [] getGeneralStocks(String standardYmd){
         StockData stockData = StockDataManager.getInstance().getStockData();
@@ -57,15 +54,109 @@ public class KorStocks {
                 continue;
             }
 
-            if(stock.getSymbol().equals("0")){
+            if(!stock.getSymbol().equals("0")){
+                list.add(stock);
+            }
+        }
+        stocks = list.toArray(new Stock[0]);
+        list.clear();
+        return stocks;
+    }
+
+    /**
+     * 대상 etf를 찾기위한 db작업 보조용 메소드
+     * @param inName 이름이 포함하고 있는값 대
+     * @return 중목과 시가총액, 시총이 높은순우로 정렬된값
+     */
+    public static StockNumber[] searchEtfNames(String inName){
+        String [] types ={"ETF"};
+
+        Stock [] stocks = Stocks.getStocks(TARGET_EXCHANGES, types);
+
+        List<Stock> list = new ArrayList<>();
+
+        for(Stock stock : stocks){
+            //한글이름검사
+            String name = stock.getNameKo();
+            if(name == null){
+                continue;
+            }
+
+            if(name.contains(inName)){
+                list.add(stock);
+                continue;
+            }
+            
+            //영문이름검사
+            name = stock.getNameEn();
+            if(name == null){
+                continue;
+            }
+            
+            if(name.contains(inName)){
                 list.add(stock);
             }
         }
 
-
-        stocks = list.toArray(new Stock[0]);
+        StockNumber [] stockNumbers = Stocks.getMarketCap(list.toArray(new Stock[0]));
         list.clear();
-        return stocks;
+
+        return stockNumbers;
+    }
+
+    public static StockNumber[] searchEtfNames(String [] inNames){
+        String [] types ={"ETF"};
+
+        if(inNames == null || inNames.length == 0){
+            return new StockNumber[0];
+        }
+
+        Stock [] stocks = Stocks.getStocks(TARGET_EXCHANGES, types);
+
+        List<Stock> list = new ArrayList<>();
+
+        for(Stock stock : stocks){
+            //한글이름검사
+            String name = stock.getNameKo();
+            if(name == null){
+                continue;
+            }
+            int inCount = 0;
+            for(String inName: inNames) {
+
+                if (name.contains(inName)) {
+                    inCount++;
+                }
+            }
+
+            if(inCount ==  inNames.length) {
+                list.add(stock);
+                continue;
+            }
+
+            //영문이름검사
+            name = stock.getNameEn();
+            if(name == null){
+                continue;
+            }
+            inCount = 0;
+            for(String inName: inNames) {
+
+                if (name.contains(inName)) {
+                    inCount++;
+                }
+            }
+
+            if(inCount ==  inNames.length) {
+                list.add(stock);
+              
+            }
+        }
+
+        StockNumber [] stockNumbers = Stocks.getMarketCap(list.toArray(new Stock[0]));
+        list.clear();
+
+        return stockNumbers;
     }
 
 
@@ -87,7 +178,6 @@ public class KorStocks {
                 JdbcQuery.execute("update stock set stock_type='SPAC' where stock_id='" + stock.getStockId() +"'");
             }
         }
-
         //
     }
 
@@ -138,16 +228,50 @@ public class KorStocks {
         return false;
     }
 
-    public static void main(String[] args) {
-        Config.getConfig("");
-//        StockData stockData = StockDataManager.getInstance().getStockData();
-//
-//
-//        System.out.println(stockData.getAllStocks(TARGET_EXCHANGES).length);
-
-        String name = "미래에셋대우스팩 5호";
-        System.out.println(Check.isNumberIn(name));
+    public static Stock [] getBondLongEtfs(StockMap stockMap){
+        return StockGroups.getGroupStocks(stockMap, "kor_bond_long_etf");
 
     }
+
+
+    public static Stock [] getBondShortEtfs(StockMap stockMap){
+        //etf는 종류별로 동일한 자산을 취급하지 않아야 분산이 가능하므로 정리된 자료를 이용한다.
+        return StockGroups.getGroupStocks(stockMap, "kor_bond_short_etf");
+    }
+
+
+    public static Stock [] getIndexLongEtfs(StockMap stockMap){
+        //etf는 종류별로 동일한 자산을 취급하지 않아야 분산이 가능하므로 정리된 자료를 이용한다.
+        return StockGroups.getGroupStocks(stockMap, "kor_index_long_etf");
+    }
+
+
+    public static Stock [] getIndexShortEtfs(StockMap stockMap){
+        //etf는 종류별로 동일한 자산을 취급하지 않아야 분산이 가능하므로 정리된 자료를 이용한다.
+        return StockGroups.getGroupStocks(stockMap, "kor_index_short_etf");
+    }
+
+    public static Stock [] getCommoditiesLongEtfs(StockMap stockMap){
+        //etf는 종류별로 동일한 자산을 취급하지 않아야 분산이 가능하므로 정리된 자료를 이용한다.
+        return StockGroups.getGroupStocks(stockMap, "kor_commodities_long_etf");
+    }
+
+    public static Stock [] getCommoditiesShortEtfs(StockMap stockMap){
+        //etf는 종류별로 동일한 자산을 취급하지 않아야 분산이 가능하므로 정리된 자료를 이용한다.
+        return StockGroups.getGroupStocks(stockMap, "kor_commodities_short_etf");
+    }
+
+
+    public static Stock [] getCurrenciesLongEtfs(StockMap stockMap){
+        //etf는 종류별로 동일한 자산을 취급하지 않아야 분산이 가능하므로 정리된 자료를 이용한다.
+        return StockGroups.getGroupStocks(stockMap, "kor_currencies_long_etf");
+    }
+
+    public static Stock [] getCurrenciesShortEtfs(StockMap stockMap){
+        //etf는 종류별로 동일한 자산을 취급하지 않아야 분산이 가능하므로 정리된 자료를 이용한다.
+        return StockGroups.getGroupStocks(stockMap, "kor_currencies_short_etf");
+    }
+
+
 
 }

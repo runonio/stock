@@ -34,4 +34,14 @@ public class StockDataApi implements StockData{
     public Stock[] getAllStocks(String[] exchanges, String [] types) {
         return new Stock[0];
     }
+
+    @Override
+    public String[] getGroupStockIds(String groupId) {
+        return new String[0];
+    }
+
+    @Override
+    public Stock[] getGroupStocks(String groupId) {
+        return new Stock[0];
+    }
 }
