@@ -26,7 +26,6 @@ public class KorEtfGroupDataInit {
         //서버에 업데이트 이후에 db sync
         try(Connection selectConn = JdbcSync.newSyncServerConnection()){
             //etf
-            
             //지수
             setIndexLongEtf(selectConn);
             setIndexShortEtf(selectConn);

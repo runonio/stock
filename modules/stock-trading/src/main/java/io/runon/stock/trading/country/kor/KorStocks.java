@@ -18,6 +18,23 @@ import java.util.Map;
  */
 public class KorStocks {
 
+    //투자자별 매매동향
+    public static final int INVESTOR_DAY_GAP = -1;
+
+    //공매도
+    public static final int SHORT_SELLING_DAY_GAP = -2;
+
+    //대차잔고
+    public static final int STOCK_LOAN_DAY_GAP = -1;
+
+    //프로그램 매매는 day 정보 확인필요.
+//    public static final int STOCK_LOAN_DAY_GAP = -1;
+
+    //시장 자산
+    public static final int MARKET_FUND_DAILY_GAP = -1;
+
+    public static final int MARKET_CREDIT_LOAN = -1;
+
     public static final String [] TARGET_EXCHANGES = {
             "KOSPI"
             , "KOSDAQ"
@@ -61,6 +78,18 @@ public class KorStocks {
         stocks = list.toArray(new Stock[0]);
         list.clear();
         return stocks;
+    }
+
+    public static StockMap makeStockMap(String standardYmd){
+        StockData stockData = StockDataManager.getInstance().getStockData();
+        Stock [] stocks ;
+        if(YmdUtil.isNow(standardYmd, TradingTimes.KOR_ZONE_ID)){
+            stocks = stockData.getStocks(TARGET_EXCHANGES);
+        }else{
+            stocks = stockData.getStocks(TARGET_EXCHANGES, standardYmd);
+        }
+
+        return new StockMap(stocks);
     }
 
     /**
@@ -213,7 +242,6 @@ public class KorStocks {
             return true;
         }
 
-
         if(name.endsWith(")") && name.length() > 1){
             int index = name.lastIndexOf("(");
             if(index != -1){
@@ -223,7 +251,6 @@ public class KorStocks {
                 }
             }
         }
-
 
         return false;
     }
