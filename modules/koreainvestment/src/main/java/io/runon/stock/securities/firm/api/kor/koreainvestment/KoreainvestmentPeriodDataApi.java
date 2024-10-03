@@ -4,9 +4,12 @@ import com.seomse.commons.http.HttpApiResponse;
 import com.seomse.commons.utils.time.Times;
 import com.seomse.commons.utils.time.YmdUtil;
 import io.runon.stock.trading.daily.ProgramDaily;
-import io.runon.stock.trading.daily.VolumePowerDaily;
+import io.runon.stock.trading.daily.StockCreditLoanDaily;
 import io.runon.stock.trading.exception.StockApiException;
-import io.runon.trading.*;
+import io.runon.trading.LockType;
+import io.runon.trading.PriceChangeType;
+import io.runon.trading.TradingTimes;
+import io.runon.trading.data.daily.VolumePowerDaily;
 import io.runon.trading.technical.analysis.candle.TradeCandle;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -88,10 +91,10 @@ public class KoreainvestmentPeriodDataApi {
     }
 
 
-    public CreditLoanDaily[] getCreditLoanDailies(String symbol, String beginYmd, String endYmd){
+    public StockCreditLoanDaily[] getCreditLoanDailies(String symbol, String beginYmd, String endYmd){
 
 
-        List<CreditLoanDaily> list = new ArrayList<>();
+        List<StockCreditLoanDaily> list = new ArrayList<>();
 
 
         String nextBeginYmd = beginYmd;
@@ -126,7 +129,7 @@ public class KoreainvestmentPeriodDataApi {
             int length = array.length();
             for (int i = length -1; i > -1 ; i--) {
 
-                CreditLoanDaily creditLoanDaily = new CreditLoanDaily();
+                StockCreditLoanDaily creditLoanDaily = new StockCreditLoanDaily();
 
                 JSONObject row = array.getJSONObject(i);
 
@@ -178,12 +181,12 @@ public class KoreainvestmentPeriodDataApi {
 
         }
         if(list.size() == 0){
-            return CreditLoans.EMPTY_DAILY_ARRAY;
+            return StockCreditLoanDaily.EMPTY_DAILY_ARRAY;
         }
 
 
 
-        return list.toArray(new CreditLoanDaily[0]);
+        return list.toArray(new StockCreditLoanDaily[0]);
     }
 
 

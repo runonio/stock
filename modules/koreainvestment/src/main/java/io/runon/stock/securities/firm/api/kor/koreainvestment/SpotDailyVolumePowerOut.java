@@ -1,10 +1,11 @@
 package io.runon.stock.securities.firm.api.kor.koreainvestment;
 
 import io.runon.stock.trading.Stock;
-import io.runon.stock.trading.daily.VolumePowerDaily;
 import io.runon.stock.trading.data.management.StockOutTimeLineJson;
 import io.runon.stock.trading.path.StockPathLastTime;
+import io.runon.trading.data.daily.VolumePowerDaily;
 import io.runon.trading.data.file.PathTimeLine;
+import io.runon.trading.data.json.JsonOutLine;
 
 /**
  * 일별 체결강도 정보 내리기(매수체결, 매도체결)
@@ -20,8 +21,8 @@ public class SpotDailyVolumePowerOut extends KoreainvestmentDailyOut{
     public String[] getLines(Stock stock, String beginYmd, String endYmd) {
         KoreainvestmentApi api = KoreainvestmentApi.getInstance();
         KoreainvestmentPeriodDataApi periodDataApi = api.getPeriodDataApi();
-        VolumePowerDaily [] dailies = periodDataApi.getVolumePowerDailies(stock.getSymbol(), beginYmd, endYmd);
-        return StockOutTimeLineJson.getLines(stock,dailies);
+        VolumePowerDaily[] dailies = periodDataApi.getVolumePowerDailies(stock.getSymbol(), beginYmd, endYmd);
+        return JsonOutLine.getLines(dailies);
     }
 
     @Override
