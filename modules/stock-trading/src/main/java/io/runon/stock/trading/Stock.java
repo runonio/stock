@@ -69,6 +69,11 @@ public class Stock {
     @DateTime
     @Column(name = "updated_at")
     long updatedAt = System.currentTimeMillis();
+
+    public boolean isListing(){
+        return isListing;
+    }
+
     @Override
     public String toString(){
         return  TradingGson.LOWER_CASE_WITH_UNDERSCORES_PRETTY.toJson(this);

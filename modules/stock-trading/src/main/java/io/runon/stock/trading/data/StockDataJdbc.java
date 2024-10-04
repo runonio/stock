@@ -1,8 +1,10 @@
 package io.runon.stock.trading.data;
 
+import com.seomse.jdbc.JdbcQuery;
 import com.seomse.jdbc.QueryUtils;
 import com.seomse.jdbc.objects.JdbcObjects;
 import io.runon.stock.trading.Stock;
+import io.runon.stock.trading.Stocks;
 import io.runon.stock.trading.exception.StockDataException;
 import io.runon.trading.data.Exchanges;
 
@@ -80,37 +82,13 @@ public class StockDataJdbc implements StockData{
         String where = "exchange in " + QueryUtils.whereIn(exchanges) +
                 " and listed_ymd <=" + standardYmd;
 
-        ZoneId zoneId = Exchanges.getZoneId(exchanges);
 
         List<Stock> stockList = JdbcObjects.getObjList(Stock.class, where);
+        Stock [] stocks = stockList.toArray(new Stock[0]);
 
-        List<Stock> newList = new ArrayList<>();
+        stockList.clear();
 
-
-        int standardYmdInt = Integer.parseInt(standardYmd);
-
-        for(Stock stock : stockList){
-
-            //당시에 상장하지 않은종목
-            if(stock.getListedYmd() != null && stock.getListedYmd() < standardYmdInt){
-                continue;
-            }
-
-            //상폐된 종목
-            if(stock.getDelistedYmd() != null && stock.getDelistedYmd() < standardYmdInt){
-                continue;
-            }
-
-//            if(!stock.getIsListing()){
-//                if(YmdUtil.compare(YmdUtil.getYmd(stock.getUpdatedAt(), zoneId), standardYmd) <= 0){
-//                    continue;
-//                }
-//            }
-
-            newList.add(stock);
-        }
-
-        return  newList.toArray(new Stock[0]);
+        return Stocks.filterListedStock(stocks, standardYmd);
     }
 
     @Override
@@ -123,5 +101,44 @@ public class StockDataJdbc implements StockData{
                 " and delisted_ymd >=" + beginYmd +" and delisted_ymd <= " + endYmd;
 
         return  JdbcObjects.getObjList(Stock.class, where).toArray(new Stock[0]);
+    }
+
+    @Override
+    public Stock[] getAllStocks(String[] exchanges, String [] types) {
+
+        StringBuilder where = new StringBuilder();
+
+        if(exchanges != null){
+            where.append("exchange in ") .append(QueryUtils.whereIn(exchanges));
+        }
+
+        if(types != null){
+            if(!where.isEmpty()){
+                where.append(" and ");
+            }
+            where.append("stock_type in ") .append(QueryUtils.whereIn(types));
+        }
+
+        if(where.isEmpty()){
+            throw new StockDataException("exchange, types null");
+        }
+
+        return  JdbcObjects.getObjList(Stock.class, where.toString()).toArray(new Stock[0]);
+    }
+
+    @Override
+    public String[] getGroupStockIds(String groupId) {
+        List<String> list = JdbcQuery.getStringList("select stock_id from stock_group_map where stock_group_id='" + groupId + "'");
+        String [] ids = list.toArray(new String[0]);
+        list.clear();
+        return ids;
+    }
+
+    @Override
+    public Stock[] getGroupStocks(String groupId) {
+        List<Stock> list = JdbcObjects.getObjList(Stock.class, "stock_id in (select stock_id from stock_group_map where stock_group_id='"  + groupId + "')");
+        Stock [] stocks = list.toArray(new Stock[0]);
+        list.clear();
+        return stocks;
     }
 }

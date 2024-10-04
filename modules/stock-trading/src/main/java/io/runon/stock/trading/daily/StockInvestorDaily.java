@@ -3,6 +3,7 @@ package io.runon.stock.trading.daily;
 import io.runon.stock.trading.Stock;
 import io.runon.stock.trading.Stocks;
 import io.runon.stock.trading.data.management.StockOutTimeLineJson;
+import io.runon.trading.Time;
 import io.runon.trading.TradingGson;
 import lombok.Data;
 
@@ -14,7 +15,7 @@ import java.util.Comparator;
  * @author macle
  */
 @Data
-public class StockInvestorDaily implements StockOutTimeLineJson {
+public class StockInvestorDaily implements StockOutTimeLineJson, Time {
 
     public static final StockInvestorDaily [] EMPTY_ARRAY = new StockInvestorDaily[0];
     public static final Comparator<StockInvestorDaily> SORT = Comparator.comparingInt(o -> o.ymd);
@@ -118,7 +119,7 @@ public class StockInvestorDaily implements StockOutTimeLineJson {
         return TradingGson.LOWER_CASE_WITH_UNDERSCORES_PRETTY.toJson(this);
     }
 
-
+    @Override
     public long getTime(){
         return t;
     }

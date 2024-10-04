@@ -104,8 +104,5 @@ public class StockModifyPriceSearch {
         return map;
     }
 
-    public static void main(String[] args) {
-
-    }
 
 }
