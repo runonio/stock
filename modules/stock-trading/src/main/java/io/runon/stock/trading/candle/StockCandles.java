@@ -1,5 +1,7 @@
 package io.runon.stock.trading.candle;
 
+import com.seomse.commons.utils.time.Times;
+import com.seomse.commons.utils.time.YmdUtil;
 import io.runon.stock.trading.Stock;
 import io.runon.stock.trading.Stocks;
 import io.runon.stock.trading.data.StockLong;
@@ -7,11 +9,14 @@ import io.runon.stock.trading.path.StockPaths;
 import io.runon.trading.CountryCode;
 import io.runon.trading.CountryUtils;
 import io.runon.trading.data.DataPathTimeRange;
+import io.runon.trading.data.csv.CsvCandle;
 import io.runon.trading.data.csv.CsvTimeFile;
 import io.runon.trading.data.file.Files;
+import io.runon.trading.technical.analysis.candle.TradeCandle;
 
 import java.io.File;
 import java.nio.file.FileSystems;
+import java.time.ZoneId;
 import java.util.Arrays;
 
 /**
@@ -19,6 +24,16 @@ import java.util.Arrays;
  * @author macle
  */
 public class StockCandles {
+
+
+    public static TradeCandle[] getDailyCandles(Stock stock, String beginYmd, String endYmd){
+        ZoneId zoneId = Stocks.getZoneId(stock);
+
+        long beginTime = YmdUtil.getTime(beginYmd, zoneId);
+        long endTime = YmdUtil.getTime(endYmd, zoneId) + Times.DAY_1 ;
+        String path = StockPaths.getSpotCandleFilesPath(stock.getStockId(), "1d");
+        return CsvCandle.load(path, Times.DAY_1,beginTime, endTime, zoneId);
+    }
 
     public static int getSpotCandleDirsCount(CountryCode countryCode){
 

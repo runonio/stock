@@ -1,6 +1,5 @@
 package io.runon.stock.trading;
 
-import com.seomse.commons.config.Config;
 import com.seomse.commons.parallel.ParallelArrayJob;
 import com.seomse.commons.parallel.ParallelArrayWork;
 import com.seomse.commons.utils.time.Times;
@@ -131,14 +130,6 @@ public class Stocks {
         return TradingTimes.getDailyOpenTime(countryCode, ymd);
     }
 
-    public static TradeCandle [] getDailyCandles(Stock stock, String beginYmd, String endYmd){
-        ZoneId zoneId = Stocks.getZoneId(stock);
-
-        long beginTime = YmdUtil.getTime(beginYmd, zoneId);
-        long endTime = YmdUtil.getTime(endYmd, zoneId) + Times.DAY_1 ;
-        String path = StockPaths.getSpotCandleFilesPath(stock.getStockId(), "1d");
-        return CsvCandle.load(path, Times.DAY_1,beginTime, endTime, zoneId);
-    }
 
 
     public static Stock [] filterListedStock(Stock [] stocks, String standardYmd){
@@ -238,23 +229,6 @@ public class Stocks {
         return stocks;
     }
 
-
-
-    public static void main(String[] args) {
-        Config.getConfig("");
-
-        Stock stock = Stocks.getStock("KOR_005930");
-        String path = StockPaths.getSpotCandleFilesPath(stock.getStockId(), "1d");
-
-        System.out.println(stock);
-
-        TradeCandle [] candles = getDailyCandles(stock, "20240801","20240830");
-
-
-        for(TradeCandle candle : candles){
-            System.out.println(candle);
-        }
-    }
 
 
 }

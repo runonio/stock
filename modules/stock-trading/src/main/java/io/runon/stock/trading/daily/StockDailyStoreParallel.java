@@ -11,7 +11,7 @@ import io.runon.trading.TradingConfig;
 public class StockDailyStoreParallel {
 
 
-    public static StockDailyStore []  parallelDataSet(Stock [] stocks, int standardYmd, int arrayCount){
+    public static StockDailyStore []  parallelDataSet(Stock [] stocks, int beginYmd, int endYmd){
 
         final StockDailyStore[] array = new StockDailyStore[stocks.length];
         for (int i = 0; i <array.length ; i++) {
@@ -19,7 +19,7 @@ public class StockDailyStoreParallel {
         }
 
         ParallelArrayWork<StockDailyStore> work = dailyAnalysis -> {
-          dailyAnalysis.setData(standardYmd);
+          dailyAnalysis.setData(beginYmd, endYmd);
         };
 
         ParallelArrayJob<StockDailyStore> parallelArrayJob = new ParallelArrayJob<>(array, work);

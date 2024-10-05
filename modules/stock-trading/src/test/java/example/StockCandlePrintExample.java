@@ -5,6 +5,7 @@ import com.seomse.commons.utils.time.Times;
 import com.seomse.commons.utils.time.YmdUtil;
 import io.runon.stock.trading.Stock;
 import io.runon.stock.trading.Stocks;
+import io.runon.stock.trading.candle.StockCandles;
 import io.runon.trading.CountryCode;
 import io.runon.trading.TradingTimes;
 import io.runon.trading.technical.analysis.candle.TradeCandle;
@@ -19,7 +20,7 @@ public class StockCandlePrintExample {
 
         Stock stock = Stocks.getStock(CountryCode.KOR, "453850");
 
-        TradeCandle[] candles = Stocks.getDailyCandles(stock, "20200101", "20240909");
+        TradeCandle[] candles = StockCandles.getDailyCandles(stock, "20200101", "20240909");
 
 
         for (int i =1; i < candles.length; i++) {
