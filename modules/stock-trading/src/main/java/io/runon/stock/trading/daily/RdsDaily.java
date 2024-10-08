@@ -43,12 +43,6 @@ public class RdsDaily {
         return JdbcQuery.getResultOne("select data_value from daily_data where data_key='" + key +"' and ymd=" + ymd);
     }
 
-//
-//    public static void saveKorMarketCreditLoan(KorMarketCreditLoanDaily daily){
-//        final String dataKey ="kor_market_credit_loan";
-//
-//    }
-
 
     public static void save(String dataKey, int ymd, String dataValue){
         String lastDataValue = RdsDaily.getDailyData(dataKey, ymd);
@@ -78,7 +72,6 @@ public class RdsDaily {
 
         return dailyData;
     }
-
 
     public static List<StockDailyData> getDailyDataList(String dataKey, String stockId, String beginYmd, String endYmd){
 

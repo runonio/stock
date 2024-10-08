@@ -413,8 +413,6 @@ CREATE TABLE common_config
 (
     config_key           VARCHAR NOT NULL,
     config_value         VARCHAR NULL,
-    name_ko              VARCHAR NULL,
-    name_en              VARCHAR NULL,
     description          VARCHAR NULL,
     is_del               boolean NOT NULL DEFAULT false,
     updated_at           TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -478,8 +476,6 @@ comment on table category_code is '카테고리코드';
 comment on table common_config is '공통설정';
         comment on column common_config.config_key is '설정키';
          comment on column common_config.config_value is '설정값';
-         comment on column common_config.name_ko is '이름_한글';
-         comment on column common_config.name_en is '이름_영문';
          comment on column common_config.description is 'description';
          comment on column common_config.is_del is '삭제여부';
          comment on column common_config.updated_at is '업데이트일시';

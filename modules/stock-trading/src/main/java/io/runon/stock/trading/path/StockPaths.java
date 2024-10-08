@@ -130,7 +130,7 @@ public class StockPaths {
     }
 
     public static String getVolumePowerPath(String countryCode){
-        return getSpotDirPath(countryCode, "stock.volume.power.dir.path", "program");
+        return getSpotDirPath(countryCode, "stock.volume.power.dir.path", "volume_power");
     }
 
 
@@ -165,5 +165,10 @@ public class StockPaths {
         return dirPath;
     }
 
+
+    public static void main(String [] args){
+        String path =getVolumePowerFilesPath("KOR_010130", "1d");
+        System.out.println(path);
+    }
 
 }

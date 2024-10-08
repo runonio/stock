@@ -30,7 +30,6 @@ import java.util.Map;
 @Slf4j
 public class StockDbSync {
 
-
     private static class Singleton {
         private static final StockDbSync instance = new StockDbSync();
     }
@@ -64,6 +63,9 @@ public class StockDbSync {
         timeTableClassList.add(DailyData.class);
         timeTableClassList.add(StockApiData.class);
         timeTableClassList.add(StockDailyData.class);
+
+        timeTableClassList.add(EventCalendar.class);
+        timeTableClassList.add(EventCalendarItem.class);
     }
 
     public void sync(){

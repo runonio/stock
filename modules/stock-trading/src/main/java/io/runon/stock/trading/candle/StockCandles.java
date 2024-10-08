@@ -25,7 +25,9 @@ import java.util.Arrays;
  */
 public class StockCandles {
 
-
+    public static TradeCandle[] getDailyCandles(Stock stock, int beginYmd, int endYmd){
+        return getDailyCandles(stock, Integer.toString(beginYmd), Integer.toString(endYmd));
+    }
     public static TradeCandle[] getDailyCandles(Stock stock, String beginYmd, String endYmd){
         ZoneId zoneId = Stocks.getZoneId(stock);
 
@@ -59,7 +61,6 @@ public class StockCandles {
 
         return cnt;
     }
-
 
     public static void sortUseLastOpenTime(Stock[] stocks, CountryCode countryCode, String interval){
 
@@ -100,5 +101,4 @@ public class StockCandles {
         dataPathTimeRange.setZoneId(CountryUtils.getZoneId(countryCode));
         return dataPathTimeRange;
     }
-
 }
