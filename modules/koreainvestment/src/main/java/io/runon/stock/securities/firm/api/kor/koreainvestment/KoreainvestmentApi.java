@@ -62,6 +62,8 @@ public class KoreainvestmentApi {
 
     private final KoreainvestmentMarketApi marketApi;
 
+    private final KoreainvestmentFuturesApi futuresApi;
+
     private boolean isActual ;
 
     private long sleepTime = Config.getLong("stock.securities.firm.kor.koreainvestment.sleep.time", 70L);
@@ -108,6 +110,8 @@ public class KoreainvestmentApi {
         periodDataApi = new KoreainvestmentPeriodDataApi(this);
         accountApi = new KoreainvestmentAccountApi(this);
         marketApi = new KoreainvestmentMarketApi(this);
+
+        futuresApi = new KoreainvestmentFuturesApi(this);
 
         closedDaysFileOut = new ClosedDaysFileOut(marketApi, CountryCode.KOR);
     }
@@ -217,6 +221,10 @@ public class KoreainvestmentApi {
 
     public KoreainvestmentMarketApi getMarketApi() {
         return marketApi;
+    }
+
+    public KoreainvestmentFuturesApi getFuturesApi() {
+        return futuresApi;
     }
 
     private final Map<String, Map<String, String>> urlRequestPropertyMap = new HashMap<>();

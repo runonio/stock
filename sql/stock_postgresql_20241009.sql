@@ -401,6 +401,7 @@ CREATE TABLE category_code
     name_ko              VARCHAR NULL,
     name_en              VARCHAR NULL,
     description          VARCHAR NULL,
+    is_del               boolean NOT NULL DEFAULT false,
     updated_at           TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (category_id,code)
 );
@@ -423,37 +424,7 @@ create index idx_common_config_01
     on common_config (updated_at desc);
 
 
-CREATE TABLE event_calendar
-(
-    event_id             VARCHAR NOT NULL,
-    event_time           TIMESTAMP NOT NULL,
-    ymd                  INTEGER NULL,
-    event_type           VARCHAR NULL,
-    name_ko              VARCHAR NULL,
-    name_en              VARCHAR NULL,
-    description          VARCHAR NULL,
-    country              VARCHAR NULL,
-    updated_at           TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (event_id,event_time)
-);
 
-
-create index idx_event_calendar_01
-    on event_calendar (updated_at desc);
-
-
-CREATE TABLE event_calendar_item
-(
-    event_id             VARCHAR NOT NULL,
-    event_time           TIMESTAMP NOT NULL,
-    item_type            VARCHAR NOT NULL,
-    item_id              VARCHAR NOT NULL,
-    updated_at           TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (event_id,event_time,item_type,item_id)
-);
-
-create index idx_event_calendar_item_01
-    on event_calendar_item (updated_at desc);
 
 
 comment on table category is '카테고리';
@@ -471,6 +442,7 @@ comment on table category_code is '카테고리코드';
          comment on column category_code.name_ko is '이름_한글';
          comment on column category_code.name_en is '이름_영문';
          comment on column category_code.description is 'description';
+         comment on column category_code.is_del is '삭제여부';
          comment on column category_code.updated_at is '업데이트일시';
 
 comment on table common_config is '공통설정';
@@ -479,6 +451,46 @@ comment on table common_config is '공통설정';
          comment on column common_config.description is 'description';
          comment on column common_config.is_del is '삭제여부';
          comment on column common_config.updated_at is '업데이트일시';
+
+
+
+
+CREATE TABLE event_calendar
+(
+    event_id             VARCHAR NOT NULL,
+    event_time           TIMESTAMP NOT NULL,
+    ymd                  INTEGER NULL,
+    event_type           VARCHAR NULL,
+    name_ko              VARCHAR NULL,
+    name_en              VARCHAR NULL,
+    description          VARCHAR NULL,
+    country              VARCHAR NULL,
+    updated_at           TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (event_id)
+);
+
+
+create index idx_event_calendar_01
+    on event_calendar (updated_at desc);
+
+create index idx_event_calendar_02
+    on event_calendar (event_time desc);
+
+create index idx_event_calendar_03
+    on event_calendar (ymd desc);
+
+
+CREATE TABLE event_calendar_item
+(
+    event_id             VARCHAR NOT NULL,
+    item_type            VARCHAR NOT NULL,
+    item_id              VARCHAR NOT NULL,
+    updated_at           TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (event_id,item_type,item_id)
+);
+create index idx_event_calendar_item_01
+    on event_calendar_item (updated_at desc);
+
 
 comment on table event_calendar is '이벤트캘린더';
         comment on column event_calendar.event_id is '이벤트아이디';
@@ -493,8 +505,10 @@ comment on table event_calendar is '이벤트캘린더';
 
 comment on table event_calendar_item is '이벤트캘린더영향종목';
         comment on column event_calendar_item.event_id is '이벤트아이디';
-         comment on column event_calendar_item.event_time is '이벤트시간';
          comment on column event_calendar_item.item_type is '종목유형';
          comment on column event_calendar_item.item_id is '종목아이디';
          comment on column event_calendar_item.updated_at is '업데이트일시';
+
+
+
 
