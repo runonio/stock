@@ -47,4 +47,8 @@ public class StockMap {
         idMap.clear();
         symbolMap.clear();
     }
+
+    public int size(){
+        return stocks.length;
+    }
 }

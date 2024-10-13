@@ -7,6 +7,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -66,13 +68,20 @@ public class LsPeriodDataApi {
 
         int length = array.length();
 
-        StockInvestorDaily [] dailies = new StockInvestorDaily[array.length()];
+
+        List<StockInvestorDaily> list = new ArrayList<>();
 
         for (int i = length -1; i > -1 ; i--) {
             JSONObject row = array.getJSONObject(i);
 
             StockInvestorDaily daily = new StockInvestorDaily();
-            daily.setYmd(Integer.parseInt(row.getString("date")));
+
+            String date = row.getString("date");
+            if(date.isEmpty()){
+               continue;
+            }
+
+            daily.setYmd(Integer.parseInt(date));
             daily.setClose(row.getBigDecimal("close"));
             daily.setChange(row.getBigDecimal("change"));
 
@@ -136,10 +145,10 @@ public class LsPeriodDataApi {
             daily.setEtc(row.getBigDecimal("tjj0017_vol"));
             daily.setEtcPrice(row.getBigDecimal("tjj0017_dan"));
 
-            dailies[index++] = daily;
+            list.add(daily);
 
         }
-        return dailies;
+        return list.toArray(new StockInvestorDaily[0]);
     }
 
 }

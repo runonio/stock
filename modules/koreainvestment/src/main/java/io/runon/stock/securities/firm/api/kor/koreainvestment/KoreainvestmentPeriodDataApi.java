@@ -62,8 +62,6 @@ public class KoreainvestmentPeriodDataApi {
 
         HttpApiResponse response =  koreainvestmentApi.getHttpGet().getResponse(url + query, requestHeaderMap);
         if(response.getResponseCode() != 200){
-
-
             throw new StockApiException("code:" + response.getResponseCode() +", " + response.getMessage() +", symbol: " + symbol +", beginYmd: " + beginYmd);
         }
 

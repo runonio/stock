@@ -155,6 +155,10 @@ create index idx_stock_daily_01
     on stock_daily (updated_at desc);
 
 
+create index idx_stock_daily_02
+    on stock_daily (ymd desc);
+
+
 comment on table stock_daily is '주식일별데이터';
         comment on column stock_daily.stock_id is '주식아이디';
          comment on column stock_daily.ymd is '년월일';
@@ -364,11 +368,147 @@ create index idx_daily_data_01
     on daily_data (updated_at desc);
 
 
+create index idx_daily_data_02
+    on daily_data (ymd desc);
+
+
 comment on table daily_data is '일별데이터';
         comment on column daily_data.data_key is '데이터키';
          comment on column daily_data.ymd is '년월일';
          comment on column daily_data.data_value is '데이터값';
          comment on column daily_data.updated_at is '업데이트일시';
+
+CREATE TABLE category
+(
+    category_id          VARCHAR NOT NULL,
+    category_type        VARCHAR NULL,
+    name_ko              VARCHAR NULL,
+    name_en              VARCHAR NULL,
+    description          VARCHAR NULL,
+    is_del               boolean NOT NULL DEFAULT false,
+    updated_at           TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (category_id)
+);
+
+
+create index idx_category_01
+    on category (updated_at desc);
+
+CREATE TABLE category_code
+(
+    category_id          VARCHAR NOT NULL,
+    code                 VARCHAR NOT NULL,
+    name_ko              VARCHAR NULL,
+    name_en              VARCHAR NULL,
+    description          VARCHAR NULL,
+    is_del               boolean NOT NULL DEFAULT false,
+    updated_at           TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (category_id,code)
+);
+
+create index idx_category_code_01
+    on category_code (updated_at desc);
+
+
+CREATE TABLE common_config
+(
+    config_key           VARCHAR NOT NULL,
+    config_value         VARCHAR NULL,
+    description          VARCHAR NULL,
+    is_del               boolean NOT NULL DEFAULT false,
+    updated_at           TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (config_key)
+);
+
+create index idx_common_config_01
+    on common_config (updated_at desc);
+
+
+
+
+
+comment on table category is '카테고리';
+        comment on column category.category_id is '카테고리아이디';
+         comment on column category.category_type is '카테고리유형';
+         comment on column category.name_ko is '이름_한글';
+         comment on column category.name_en is '이름_영문';
+         comment on column category.description is 'description';
+         comment on column category.is_del is '삭제여부';
+         comment on column category.updated_at is '업데이트일시';
+
+comment on table category_code is '카테고리코드';
+        comment on column category_code.category_id is '카테고리아이디';
+         comment on column category_code.code is '코드';
+         comment on column category_code.name_ko is '이름_한글';
+         comment on column category_code.name_en is '이름_영문';
+         comment on column category_code.description is 'description';
+         comment on column category_code.is_del is '삭제여부';
+         comment on column category_code.updated_at is '업데이트일시';
+
+comment on table common_config is '공통설정';
+        comment on column common_config.config_key is '설정키';
+         comment on column common_config.config_value is '설정값';
+         comment on column common_config.description is 'description';
+         comment on column common_config.is_del is '삭제여부';
+         comment on column common_config.updated_at is '업데이트일시';
+
+
+
+
+CREATE TABLE event_calendar
+(
+    event_id             VARCHAR NOT NULL,
+    event_time           TIMESTAMP NOT NULL,
+    ymd                  INTEGER NULL,
+    event_type           VARCHAR NULL,
+    name_ko              VARCHAR NULL,
+    name_en              VARCHAR NULL,
+    description          VARCHAR NULL,
+    country              VARCHAR NULL,
+    updated_at           TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (event_id)
+);
+
+
+create index idx_event_calendar_01
+    on event_calendar (updated_at desc);
+
+create index idx_event_calendar_02
+    on event_calendar (event_time desc);
+
+create index idx_event_calendar_03
+    on event_calendar (ymd desc);
+
+
+CREATE TABLE event_calendar_item
+(
+    event_id             VARCHAR NOT NULL,
+    item_type            VARCHAR NOT NULL,
+    item_id              VARCHAR NOT NULL,
+    updated_at           TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (event_id,item_type,item_id)
+);
+create index idx_event_calendar_item_01
+    on event_calendar_item (updated_at desc);
+
+
+comment on table event_calendar is '이벤트캘린더';
+        comment on column event_calendar.event_id is '이벤트아이디';
+         comment on column event_calendar.event_time is '이벤트시간';
+         comment on column event_calendar.ymd is '년월일';
+         comment on column event_calendar.event_type is '이벤트유형';
+         comment on column event_calendar.name_ko is '이름_한글';
+         comment on column event_calendar.name_en is '이름_영문';
+         comment on column event_calendar.description is 'description';
+         comment on column event_calendar.country is '국가';
+         comment on column event_calendar.updated_at is '업데이트일시';
+
+comment on table event_calendar_item is '이벤트캘린더영향종목';
+        comment on column event_calendar_item.event_id is '이벤트아이디';
+         comment on column event_calendar_item.item_type is '종목유형';
+         comment on column event_calendar_item.item_id is '종목아이디';
+         comment on column event_calendar_item.updated_at is '업데이트일시';
+
 
 
 

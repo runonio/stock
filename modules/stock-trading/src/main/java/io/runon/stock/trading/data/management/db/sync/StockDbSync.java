@@ -12,6 +12,9 @@ import com.seomse.jdbc.sync.JdbcSync;
 import io.runon.stock.trading.*;
 import io.runon.trading.data.*;
 import io.runon.trading.data.jdbc.TradingJdbc;
+import io.runon.trading.system.Category;
+import io.runon.trading.system.CategoryCode;
+import io.runon.trading.system.CommonConfig;
 import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Connection;
@@ -29,7 +32,6 @@ import java.util.Map;
 
 @Slf4j
 public class StockDbSync {
-
 
     private static class Singleton {
         private static final StockDbSync instance = new StockDbSync();
@@ -64,6 +66,15 @@ public class StockDbSync {
         timeTableClassList.add(DailyData.class);
         timeTableClassList.add(StockApiData.class);
         timeTableClassList.add(StockDailyData.class);
+        
+        //이벤트
+        timeTableClassList.add(EventCalendar.class);
+        timeTableClassList.add(EventCalendarItem.class);
+
+        //시스템 관련 테이블 동기화
+        timeTableClassList.add(CommonConfig.class);
+        timeTableClassList.add(Category.class);
+        timeTableClassList.add(CategoryCode.class);
     }
 
     public void sync(){

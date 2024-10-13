@@ -27,13 +27,16 @@ public class KorStocks {
     //대차잔고
     public static final int STOCK_LOAN_DAY_GAP = -1;
 
+    //주식별신용
+    public static final int STOCK_CREDIT_LOAN_DAY_GAP = -1;
+
+
     //프로그램 매매는 day 정보 확인필요.
-//    public static final int STOCK_LOAN_DAY_GAP = -1;
+    public static final int PROGRAM_DAY_GAP = 0;
 
-    //시장 자산
-    public static final int MARKET_FUND_DAILY_GAP = -1;
+    public static final int VOLUME_POWER_DAY_GAP = 0;
 
-    public static final int MARKET_CREDIT_LOAN = -1;
+
 
     public static final String [] TARGET_EXCHANGES = {
             "KOSPI"
@@ -41,17 +44,18 @@ public class KorStocks {
     };
 
     public static Stock [] getGeneralStocks(){
-        return getGeneralStocks(YmdUtil.now(TradingTimes.KOR_ZONE_ID));
+        return getGeneralStocks(null, YmdUtil.now(TradingTimes.KOR_ZONE_ID));
     }
 
-    public static Stock [] getGeneralStocks(String standardYmd){
-        StockData stockData = StockDataManager.getInstance().getStockData();
-        Stock [] stocks ;
+    public static Stock [] getGeneralStocks(Stock [] stocks, String standardYmd){
 
-        if(YmdUtil.isNow(standardYmd, TradingTimes.KOR_ZONE_ID)){
-            stocks = stockData.getStocks(TARGET_EXCHANGES);
-        }else{
-            stocks = stockData.getStocks(TARGET_EXCHANGES, standardYmd);
+        if(stocks == null) {
+            StockData stockData = StockDataManager.getInstance().getStockData();
+            if (YmdUtil.isNow(standardYmd, TradingTimes.KOR_ZONE_ID)) {
+                stocks = stockData.getStocks(TARGET_EXCHANGES);
+            } else {
+                stocks = stockData.getStocks(TARGET_EXCHANGES, standardYmd);
+            }
         }
 
         //주식종료 분석
@@ -298,7 +302,4 @@ public class KorStocks {
         //etf는 종류별로 동일한 자산을 취급하지 않아야 분산이 가능하므로 정리된 자료를 이용한다.
         return StockGroups.getGroupStocks(stockMap, "kor_currencies_short_etf");
     }
-
-
-
 }
