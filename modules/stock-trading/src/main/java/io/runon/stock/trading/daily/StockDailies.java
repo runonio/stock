@@ -81,7 +81,8 @@ public class StockDailies {
         long beginTime = YmdUtil.getTime(beginYmd, zoneId);
         List<StockInvestorDaily> list = new ArrayList<>();
         StrCallback callback = str -> list.add(StockInvestorDaily.make(str, stock));
-        TimeLines.load(filesPath, zoneId,  YmdUtil.getTime(beginYmd, zoneId), YmdUtil.getTime(endYmd,zoneId),TimeName.getDefaultType(Times.DAY_1), TimeLine.JSON,callback);
+        // 0시 0분 0초를 주므로 +1일을 해준다.
+        TimeLines.load(filesPath, zoneId,  YmdUtil.getTime(beginYmd, zoneId), YmdUtil.getTime(endYmd,zoneId) + (Times.DAY_1 - 1L) ,TimeName.getDefaultType(Times.DAY_1), TimeLine.JSON,callback);
         return list.toArray(new StockInvestorDaily[0]);
     }
 
@@ -137,7 +138,7 @@ public class StockDailies {
         long beginTime = YmdUtil.getTime(beginYmd, zoneId);
         List<ShortSellingDaily> list = new ArrayList<>();
         StrCallback callback = str -> list.add(ShortSellingDaily.make(str, stock));
-        TimeLines.load(filesPath, zoneId,  YmdUtil.getTime(beginYmd, zoneId), YmdUtil.getTime(endYmd,zoneId),TimeName.getDefaultType(Times.DAY_1), TimeLine.JSON,callback);
+        TimeLines.load(filesPath, zoneId,  YmdUtil.getTime(beginYmd, zoneId), YmdUtil.getTime(endYmd,zoneId) + (Times.DAY_1 - 1L) ,TimeName.getDefaultType(Times.DAY_1), TimeLine.JSON,callback);
 
         return list.toArray(new ShortSellingDaily[0]);
     }
@@ -193,7 +194,7 @@ public class StockDailies {
         List<ProgramDaily> list = new ArrayList<>();
 
         StrCallback callback = str -> list.add(ProgramDaily.make(str, stock));
-        TimeLines.load(filesPath, zoneId,  YmdUtil.getTime(beginYmd, zoneId), YmdUtil.getTime(endYmd,zoneId),TimeName.getDefaultType(Times.DAY_1), TimeLine.JSON,callback);
+        TimeLines.load(filesPath, zoneId,  YmdUtil.getTime(beginYmd, zoneId), YmdUtil.getTime(endYmd,zoneId) + (Times.DAY_1 - 1L),TimeName.getDefaultType(Times.DAY_1), TimeLine.JSON,callback);
         return list.toArray(new ProgramDaily[0]);
     }
 
@@ -245,7 +246,7 @@ public class StockDailies {
         List<StockLoanDaily> list = new ArrayList<>();
         StrCallback callback = str -> list.add(StockLoanDaily.make(str, stock));
 
-        TimeLines.load(filesPath, zoneId,  YmdUtil.getTime(beginYmd, zoneId), YmdUtil.getTime(endYmd,zoneId),TimeName.getDefaultType(Times.DAY_1), TimeLine.JSON,callback);
+        TimeLines.load(filesPath, zoneId,  YmdUtil.getTime(beginYmd, zoneId), YmdUtil.getTime(endYmd,zoneId) + (Times.DAY_1 - 1L),TimeName.getDefaultType(Times.DAY_1), TimeLine.JSON,callback);
         return list.toArray(new StockLoanDaily[0]);
     }
 
@@ -298,7 +299,7 @@ public class StockDailies {
         List<StockCreditLoanDaily> list = new ArrayList<>();
         StrCallback callback = str -> list.add(StockCreditLoanDaily.make(str));
 
-        TimeLines.load(filesPath, zoneId,  YmdUtil.getTime(beginYmd, zoneId), YmdUtil.getTime(endYmd,zoneId),TimeName.getDefaultType(Times.DAY_1), TimeLine.JSON,callback);
+        TimeLines.load(filesPath, zoneId,  YmdUtil.getTime(beginYmd, zoneId), YmdUtil.getTime(endYmd,zoneId) + (Times.DAY_1 - 1L),TimeName.getDefaultType(Times.DAY_1), TimeLine.JSON,callback);
         return list.toArray(new StockCreditLoanDaily[0]);
     }
     public static StockCreditLoanDaily [] getStockCreditLoan(StockCreditLoanDaily [] lastDailies,Stock stock, int beginYmd, int endYmd){
@@ -352,7 +353,7 @@ public class StockDailies {
         List<VolumePowerDaily> list = new ArrayList<>();
         StrCallback callback = str -> list.add(VolumePowerDaily.make(str));
 
-        TimeLines.load(filesPath, zoneId,  YmdUtil.getTime(beginYmd, zoneId), YmdUtil.getTime(endYmd,zoneId),TimeName.getDefaultType(Times.DAY_1), TimeLine.JSON,callback);
+        TimeLines.load(filesPath, zoneId,  YmdUtil.getTime(beginYmd, zoneId), YmdUtil.getTime(endYmd,zoneId) + (Times.DAY_1 - 1L),TimeName.getDefaultType(Times.DAY_1), TimeLine.JSON,callback);
         return list.toArray(new VolumePowerDaily[0]);
 
     }

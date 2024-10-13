@@ -20,6 +20,7 @@ public class SpotDailyInvestorOut extends LsDailyOut{
     public String[] getLines(Stock stock, String beginYmd, String endYmd) {
         LsApi lsApi = LsApi.getInstance();
         LsPeriodDataApi periodDataApi = lsApi.getPeriodDataApi();
+
         StockInvestorDaily[] dailies = periodDataApi.getInvestorDailies(stock.getSymbol(), beginYmd, endYmd);
         return StockOutTimeLineJson.getLines(stock,dailies);
     }

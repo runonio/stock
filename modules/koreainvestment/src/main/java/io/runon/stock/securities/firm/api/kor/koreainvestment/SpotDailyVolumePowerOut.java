@@ -14,7 +14,7 @@ import io.runon.trading.data.json.JsonOutLine;
 public class SpotDailyVolumePowerOut extends KoreainvestmentDailyOut{
     public SpotDailyVolumePowerOut() {
         super(StockPathLastTime.VOLUME_POWER, PathTimeLine.JSON);
-        dailyOut.setServiceName("koreainvestment_program_trading");
+        dailyOut.setServiceName("koreainvestment_volume_power");
     }
 
     @Override

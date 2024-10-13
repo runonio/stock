@@ -1,6 +1,5 @@
 package io.runon.stock.trading.country.kor;
 
-import io.runon.stock.trading.daily.StockInvestorDaily;
 import io.runon.stock.trading.market.KorMarketCreditLoanDaily;
 import io.runon.stock.trading.market.MarketFundDaily;
 import io.runon.trading.CountryCode;
@@ -17,9 +16,9 @@ import java.util.List;
 public class KorMarketDailies {
 
     //시장 자산
-    public static final int MARKET_FUND_DAILY_GAP = -1;
+    public static final int MARKET_FUND_DAY_GAP = -1;
 
-    public static final int MARKET_CREDIT_LOAN = -1;
+    public static final int MARKET_CREDIT_LOAN_DAY_GAP = -1;
 
     public static MarketFundDaily [] getMarketFund(int beginYmd, int endYmd){
         List<DailyData> list = DailyDataJdbc.getDataList("market_fund", beginYmd, endYmd);
