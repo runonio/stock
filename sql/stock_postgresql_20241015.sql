@@ -510,5 +510,26 @@ comment on table event_calendar_item is '이벤트캘린더영향종목';
          comment on column event_calendar_item.updated_at is '업데이트일시';
 
 
+CREATE TABLE time_text
+(
+    data_key             VARCHAR NOT NULL,
+    time_long            BIGINT NOT NULL,
+    data_value           VARCHAR NULL,
+    updated_at           TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (data_key,time_long)
+);
+
+
+comment on table time_text is '타임텍스트';
+        comment on column time_text.data_key is '데이터키';
+         comment on column time_text.time_long is '타임_long';
+         comment on column time_text.data_value is '데이터값';
+         comment on column time_text.updated_at is '업데이트일시';
+
+create index idx_time_text_01
+    on time_data (updated_at desc);
+
+
+
 
 
