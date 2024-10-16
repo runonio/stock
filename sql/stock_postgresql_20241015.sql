@@ -159,6 +159,11 @@ create index idx_stock_daily_02
     on stock_daily (ymd desc);
 
 
+create index idx_stock_daily_03
+    on stock_daily (data_key, ymd desc);
+
+
+
 comment on table stock_daily is '주식일별데이터';
         comment on column stock_daily.stock_id is '주식아이디';
          comment on column stock_daily.ymd is '년월일';
