@@ -171,9 +171,6 @@ comment on table stock_daily is '주식일별데이터';
          comment on column stock_daily.data_value is '데이터값';
          comment on column stock_daily.updated_at is '업데이트일시';
 
-
-
-
 CREATE TABLE stock_api_data
 (
     stock_id             VARCHAR NOT NULL,
