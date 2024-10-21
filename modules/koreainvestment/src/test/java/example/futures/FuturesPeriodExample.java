@@ -10,7 +10,7 @@ import io.runon.stock.securities.firm.api.kor.koreainvestment.KoreainvestmentFut
 public class FuturesPeriodExample {
     public static void main(String[] args) {
         KoreainvestmentFuturesApi futuresApi = KoreainvestmentApi.getInstance().getFuturesApi();
-        String jsonText =futuresApi.getPeriodFuturesJsonText("JF", "111S06", "D", "20220401","20220524");
+        String jsonText =futuresApi.getPeriodFuturesJsonText("JF", "111S06", "D", "20210401","20211231");
         System.out.println(jsonText);
     }
 }

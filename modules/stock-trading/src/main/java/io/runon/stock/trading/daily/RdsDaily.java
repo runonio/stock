@@ -1,5 +1,7 @@
 package io.runon.stock.trading.daily;
 
+import com.seomse.commons.exception.ReflectiveOperationRuntimeException;
+import com.seomse.commons.utils.DataCheck;
 import com.seomse.jdbc.JdbcQuery;
 import com.seomse.jdbc.objects.JdbcObjects;
 import io.runon.stock.trading.StockDailyData;
@@ -20,10 +22,7 @@ public class RdsDaily {
         stockDailyData.setYmd(loanDaily.getYmd());
         stockDailyData.setDataKey(RdsDataKey.STOCK_LOAN);
         stockDailyData.setDataValue(loanDaily.toString());
-        stockDailyData.setUpdatedAt(System.currentTimeMillis());
-
-
-        JdbcObjects.insertOrUpdate(stockDailyData, false);
+        update(stockDailyData);
 
     }
 
@@ -33,10 +32,7 @@ public class RdsDaily {
         stockDailyData.setYmd(shortSellingDaily.getYmd());
         stockDailyData.setDataKey(RdsDataKey.SHORT_SELLING);
         stockDailyData.setDataValue(shortSellingDaily.toString());
-        stockDailyData.setUpdatedAt(System.currentTimeMillis());
-
-        JdbcObjects.insertOrUpdate(stockDailyData, false);
-
+        update(stockDailyData);
     }
 
     public static String getDailyData(String key, int ymd){
@@ -73,10 +69,33 @@ public class RdsDaily {
         return dailyData;
     }
 
+
     public static List<StockDailyData> getDailyDataList(String dataKey, String stockId, String beginYmd, String endYmd){
 
         String where = "stock_id='" + stockId +"' and data_key='" + dataKey +"' and ymd >= " + beginYmd +" and ymd <= " +endYmd;
         return  JdbcObjects.getObjList(StockDailyData.class, where,"ymd asc");
+    }
+
+    public static boolean update(StockDailyData dailyData){
+        try {
+            String where = JdbcObjects.getCheckWhere(dailyData);
+            StockDailyData lastData = JdbcObjects.getObj(StockDailyData.class, where);
+            if(lastData == null){
+                JdbcObjects.insert(dailyData);
+                return true;
+            }
+
+            if(DataCheck.isEqualsObj(lastData.getDataValue(), dailyData.getDataValue())){
+                return false;
+            }
+
+            dailyData.setUpdatedAt(System.currentTimeMillis());
+            JdbcObjects.update(dailyData, true);
+            return true;
+
+        }catch (ReflectiveOperationException e){
+            throw new ReflectiveOperationRuntimeException(e);
+        }
     }
 
 }

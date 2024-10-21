@@ -12,7 +12,8 @@
 # 개발환경
 - open jdk 17
 
-
+# 한국 투자증권 종목코드
+https://github.com/koreainvestment/open-trading-api/tree/main/stocks_info
 
 # communication
 ### blog, homepage

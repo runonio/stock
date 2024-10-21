@@ -64,6 +64,8 @@ public class StockDbSync {
         //이제 데이터 양이 큰거.
         timeTableClassList.add(IssueSharesHistory.class);
         timeTableClassList.add(DailyData.class);
+        timeTableClassList.add(TimeText.class);
+
         timeTableClassList.add(StockApiData.class);
         timeTableClassList.add(StockDailyData.class);
         

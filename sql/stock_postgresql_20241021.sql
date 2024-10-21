@@ -159,15 +159,17 @@ create index idx_stock_daily_02
     on stock_daily (ymd desc);
 
 
+create index idx_stock_daily_03
+    on stock_daily (data_key, ymd desc);
+
+
+
 comment on table stock_daily is '주식일별데이터';
         comment on column stock_daily.stock_id is '주식아이디';
          comment on column stock_daily.ymd is '년월일';
          comment on column stock_daily.data_key is '데이터키';
          comment on column stock_daily.data_value is '데이터값';
          comment on column stock_daily.updated_at is '업데이트일시';
-
-
-
 
 CREATE TABLE stock_api_data
 (
@@ -281,21 +283,20 @@ comment on table indices is '지수';
 CREATE TABLE futures
 (
     futures_id           VARCHAR NOT NULL,
-    market_type          VARCHAR NOT NULL DEFAULT 'INDEX',
+    underlying_assets_type          VARCHAR NOT NULL DEFAULT 'INDEX',
     exchange             VARCHAR NULL,
     name_ko              VARCHAR NULL,
     name_en              VARCHAR NULL,
     candle_path          VARCHAR NULL,
     currency             VARCHAR NULL,
-    tick_size            VARCHAR NULL,
-    tick_value           VARCHAR NULL,
+    underlying_assets_id            VARCHAR NULL,
+    product_type           VARCHAR NULL,
     symbol               VARCHAR NULL,
-    point_value          VARCHAR NULL,
-    maturity_month       VARCHAR NULL,
-    contract_size        VARCHAR NULL,
-    settlement_type      VARCHAR NULL,
-    settlement_day       VARCHAR NULL,
-    last_rollover_day    VARCHAR NULL,
+    standard_code        VARCHAR NULL,
+    listing_ymd          INTEGER NULL,
+    last_trading_ymd     INTEGER NULL,
+    settlement_ymd       INTEGER NULL,
+    trade_multiplier     NUMERIC NULL,
     description          VARCHAR NULL,
     data_value           VARCHAR NULL,
     updated_at           TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -308,26 +309,23 @@ create index idx_futures_01
 
 comment on table futures is '선물';
         comment on column futures.futures_id is '선물아이디';
-         comment on column futures.market_type is '시장유형';
+         comment on column futures.underlying_assets_type is '기초자산유형';
          comment on column futures.exchange is '거래소';
          comment on column futures.name_ko is '이름_한글';
          comment on column futures.name_en is '이름_영문';
          comment on column futures.candle_path is '캔들경로';
          comment on column futures.currency is '기준통화';
-         comment on column futures.tick_size is '틱크기';
-         comment on column futures.tick_value is '틱가치';
+         comment on column futures.underlying_assets_id is '기초자산아이디';
+         comment on column futures.product_type is '상품유형';
          comment on column futures.symbol is '티커_심볼';
-         comment on column futures.point_value is '포인트가치';
-         comment on column futures.maturity_month is '만기월';
-         comment on column futures.contract_size is '계약단위';
-         comment on column futures.settlement_type is '결제방식';
-         comment on column futures.settlement_day is '결제일';
-         comment on column futures.last_rollover_day is '최종롤오버일';
+         comment on column futures.standard_code is '표준코드';
+         comment on column futures.listing_ymd is '상장년월일';
+         comment on column futures.last_trading_ymd is '최종거래일';
+         comment on column futures.settlement_ymd is '결제일';
+         comment on column futures.trade_multiplier is '거래승수';
          comment on column futures.description is 'description';
          comment on column futures.data_value is '데이터값';
          comment on column futures.updated_at is '업데이트일시';
-
-
 
 CREATE TABLE currencies
 (
@@ -509,6 +507,48 @@ comment on table event_calendar_item is '이벤트캘린더영향종목';
          comment on column event_calendar_item.item_id is '종목아이디';
          comment on column event_calendar_item.updated_at is '업데이트일시';
 
+
+CREATE TABLE time_text
+(
+    data_key             VARCHAR NOT NULL,
+    time_long            BIGINT NOT NULL,
+    data_value           VARCHAR NULL,
+    updated_at           TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (data_key,time_long)
+);
+
+
+comment on table time_text is '타임텍스트';
+        comment on column time_text.data_key is '데이터키';
+         comment on column time_text.time_long is '타임_long';
+         comment on column time_text.data_value is '데이터값';
+         comment on column time_text.updated_at is '업데이트일시';
+
+create index idx_time_text_01
+    on time_data (updated_at desc);
+
+
+
+CREATE TABLE category_key_value
+(
+    category_id          VARCHAR NOT NULL,
+    data_key             VARCHAR NOT NULL,
+    data_value           VARCHAR NULL,
+    updated_at           TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (category_id,data_key)
+);
+
+
+
+comment on table category_key_value is '카테고리key-value';
+        comment on column category_key_value.category_id is '카테고리아이디';
+         comment on column category_key_value.data_key is '데이터키';
+         comment on column category_key_value.data_value is '데이터값';
+         comment on column category_key_value.updated_at is '업데이트일시';
+
+
+create index idx_category_key_value_01
+    on category_key_value (updated_at desc);
 
 
 
