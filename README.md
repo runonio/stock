@@ -35,12 +35,6 @@ low 저가
 volume 누적거래량
 
 
-# 내제가치 계산법
-EPS = ((최근년도 EPS *3) + (전년도 EPS *2) + (전전년도 EPS*1) )/6
-(BPS + EPS*10) / 2
-
-
-
 # Hidden Markov model
 관련 모델 적용 연구해보기
 
