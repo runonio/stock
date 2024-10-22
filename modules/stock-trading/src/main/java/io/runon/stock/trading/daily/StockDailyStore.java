@@ -47,6 +47,11 @@ public class StockDailyStore {
         this.stock = stock;
     }
 
+
+    public void setData(String beginYmd, String endYmd){
+        setData(Integer.parseInt(beginYmd), Integer.parseInt(endYmd));
+    }
+
     public void setData(int beginYmd, int endYmd){
 
         candles = StockDailies.getCandle(candles, stock, beginYmd, endYmd);
