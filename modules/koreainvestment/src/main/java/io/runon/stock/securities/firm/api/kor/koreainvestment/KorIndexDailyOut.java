@@ -20,7 +20,6 @@ public class KorIndexDailyOut {
     private final KoreainvestmentApi api = KoreainvestmentApi.getInstance();
     private final KoreainvestmentMarketApi marketApi = api.getMarketApi();
 
-
     public KorIndexDailyOut(){
 
         dailyLinesOut.setZoneId(TradingTimes.KOR_ZONE_ID);
@@ -39,9 +38,7 @@ public class KorIndexDailyOut {
     public void out(){
         out("KOSPI");
         out("KOSDAQ");
-
     }
-
 
     /**
      * KOSPI , KOSDAQ
@@ -60,6 +57,5 @@ public class KorIndexDailyOut {
 
         dailyLinesOut.out(get, path);
     }
-
 
 }

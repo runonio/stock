@@ -117,6 +117,7 @@ public class KoreainvestmentFiles {
             futures.setSymbol(values[1]);
             futures.setUnderlyingAssetsType("STOCK");
             futures.setFuturesId("KOR_" + futures.getSymbol());
+            futures.setExchange("KRX");
             futures.setStandardCode(values[2]);
             futures.setNameKo(values[3]);
             futures.setUnderlyingAssetsId(values[7]);
@@ -125,6 +126,9 @@ public class KoreainvestmentFiles {
 
         return array;
     }
+
+
+
 
 
     public static void main(String[] args) {
