@@ -9,7 +9,9 @@ import io.runon.trading.CountryCode;
 public interface StockPathLastTime {
 
     //캔들
-    StockPathLastTime CANDLE = new StockPathLastTimeCandle();
+    StockPathLastTime CANDLE_SPOT = new StockPathLastTimeCandleSpot();
+
+    StockPathLastTime CANDLE_FUTURES = new StockPathLastTimeCandleFutures();
 
     //신용정보
     StockPathLastTime CREDIT_LOAN = new StockPathLastTimeCreditLoan();

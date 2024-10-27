@@ -38,6 +38,8 @@ public class LsApi {
     final HttpApi  httpPost;
 
     private final LsPeriodDataApi periodDataApi;
+    private final LsFuturesApi futuresApi;
+
 
     private final Object trCodeLock = new Object();
 
@@ -66,7 +68,7 @@ public class LsApi {
         httpPost.setDefaultAddress(domain);
 
         periodDataApi = new LsPeriodDataApi(this);
-
+        futuresApi = new LsFuturesApi(this);
     }
 
     AccessToken accessToken = null;
@@ -149,6 +151,10 @@ public class LsApi {
 
     public LsPeriodDataApi getPeriodDataApi() {
         return periodDataApi;
+    }
+
+    public LsFuturesApi getFuturesApi() {
+        return futuresApi;
     }
 
     public HttpApi getHttpPost() {

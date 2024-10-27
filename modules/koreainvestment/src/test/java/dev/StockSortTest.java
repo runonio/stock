@@ -3,8 +3,7 @@ package dev;
 import com.seomse.commons.utils.time.TimeUtil;
 import io.runon.stock.trading.Stock;
 import io.runon.stock.trading.Stocks;
-import io.runon.stock.trading.candle.StockCandles;
-import io.runon.stock.trading.path.StockPathLastTimeCandle;
+import io.runon.stock.trading.path.StockPathLastTimeCandleSpot;
 
 /**
  * 주식 캔들 관련 유틸성 클래스
@@ -23,7 +22,7 @@ public class StockSortTest {
         System.out.println(stocks[1]);
 
         long sortBeginTime = System.currentTimeMillis();
-        Stocks.sortUseLastTimeParallel(stocks,"1d", new StockPathLastTimeCandle());
+        Stocks.sortUseLastTimeParallel(stocks,"1d", new StockPathLastTimeCandleSpot());
 
         System.out.println(TimeUtil.getTimeValue(System.currentTimeMillis() - sortBeginTime));
         System.out.println("-------------------------");

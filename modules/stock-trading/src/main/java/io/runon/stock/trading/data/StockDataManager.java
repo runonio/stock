@@ -4,6 +4,7 @@ import com.seomse.commons.config.Config;
 import com.seomse.commons.config.JsonFileProperties;
 import com.seomse.commons.config.JsonFilePropertiesManager;
 import com.seomse.commons.exception.UndefinedException;
+import io.runon.trading.data.DataConnectType;
 
 /**
  * @author macle
@@ -21,7 +22,7 @@ public class StockDataManager {
 
     private final JsonFileProperties jsonFileProperties;
 
-    public final DataConnectType dataConnectType = DataConnectType.valueOf(Config.getConfig("io.runon.stock.data.connect.type","db").toUpperCase());
+    public final DataConnectType dataConnectType = DataConnectType.valueOf(Config.getConfig("io.runon.data.connect.type","db").toUpperCase());
 
     private final StockData stockData;
 
@@ -37,6 +38,7 @@ public class StockDataManager {
         }else{
             //api 클래스들을 구현후에 다시 정의 형식에 의한 예지만 메모성 작성
 //            stockData = new StockDataApi();
+
             throw new UndefinedException();
         }
 

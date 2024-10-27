@@ -14,6 +14,24 @@ import java.nio.file.FileSystems;
 public class StockPaths {
 
 
+    public static String getFuturesCandlePath(){
+        return getFuturesCandlePath((String) null);
+    }
+
+    public static String getFuturesCandlePath(CountryCode countryCode){
+        return getFuturesCandlePath(countryCode.toString());
+    }
+
+    public static String getFuturesCandlePath(String countryCode){
+        return getFuturesDirPath(countryCode, "stock.futures.candle.dir.path", "candle");
+    }
+
+    public static String getFuturesCandleFilesPath(String id, String interval){
+        String fileSeparator = FileSystems.getDefault().getSeparator();
+        return  getFuturesCandlePath(Stocks.getCountryCode(id))+fileSeparator+id+fileSeparator+interval;
+
+    }
+
 
     @SuppressWarnings("ConstantValue")
     public static String getSpotCandlePath(){
@@ -34,6 +52,8 @@ public class StockPaths {
     public static String getSpotCandlePath(String countryCode){
         return getSpotDirPath(countryCode, "stock.spot.candle.dir.path", "candle");
     }
+
+
 
     public static String getSpotCandleFilesPath(String stockId, String interval){
         String fileSeparator = FileSystems.getDefault().getSeparator();
@@ -133,8 +153,16 @@ public class StockPaths {
         return getSpotDirPath(countryCode, "stock.volume.power.dir.path", "volume_power");
     }
 
+    public static String getSpotDirPath(String countryCode, String configKey, String dirName) {
+        return getDirPath(countryCode, "spot", configKey, dirName);
+    }
 
-    public static String getSpotDirPath(String countryCode, String configKey, String dirName){
+    public static String getFuturesDirPath(String countryCode, String configKey, String dirName){
+        return getDirPath(countryCode, "futures", configKey, dirName);
+    }
+
+
+    public static String getDirPath(String countryCode, String dirType, String configKey, String dirName){
         String fileSeparator = FileSystems.getDefault().getSeparator();
 
         String dirPath = null;
@@ -155,10 +183,10 @@ public class StockPaths {
         if (dirPath == null) {
 
             if(countryCode == null){
-                dirPath = TradingConfig.getTradingDataPath() + fileSeparator + "stock" + fileSeparator +"spot" + fileSeparator +dirName;
+                dirPath = TradingConfig.getTradingDataPath() + fileSeparator + "stock" + fileSeparator + dirType + fileSeparator +dirName;
             }else{
                 countryCode = countryCode.toUpperCase();
-                dirPath = TradingConfig.getTradingDataPath() + fileSeparator + "stock" + fileSeparator  +countryCode + fileSeparator+"spot" + fileSeparator +dirName;
+                dirPath = TradingConfig.getTradingDataPath() + fileSeparator + "stock" + fileSeparator  +countryCode + fileSeparator+ dirType + fileSeparator +dirName;
             }
         }
 
@@ -167,8 +195,11 @@ public class StockPaths {
 
 
     public static void main(String [] args){
-        String path =getVolumePowerFilesPath("KOR_010130", "1d");
-        System.out.println(path);
+//        String path =getVolumePowerFilesPath("KOR_010130", "1d");
+//        System.out.println(path);
+
+
+
     }
 
 }

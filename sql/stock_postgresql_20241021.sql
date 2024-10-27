@@ -282,29 +282,33 @@ comment on table indices is '지수';
 
 CREATE TABLE futures
 (
-    futures_id           VARCHAR NOT NULL,
-    underlying_assets_type          VARCHAR NOT NULL DEFAULT 'INDEX',
-    exchange             VARCHAR NULL,
-    name_ko              VARCHAR NULL,
-    name_en              VARCHAR NULL,
-    candle_path          VARCHAR NULL,
-    currency             VARCHAR NULL,
-    underlying_assets_id            VARCHAR NULL,
-    product_type           VARCHAR NULL,
-    symbol               VARCHAR NULL,
-    standard_code        VARCHAR NULL,
-    listing_ymd          INTEGER NULL,
-    last_trading_ymd     INTEGER NULL,
-    settlement_ymd       INTEGER NULL,
-    trade_multiplier     NUMERIC NULL,
-    description          VARCHAR NULL,
-    data_value           VARCHAR NULL,
-    updated_at           TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    futures_id              VARCHAR NOT NULL,
+    underlying_assets_type  VARCHAR NOT NULL DEFAULT 'INDEX',
+    exchange                VARCHAR NULL,
+    name_ko                 VARCHAR NULL,
+    name_en                 VARCHAR NULL,
+    candle_path             VARCHAR NULL,
+    currency                VARCHAR NULL,
+    underlying_assets_id    VARCHAR NULL,
+    product_type            VARCHAR NULL,
+    symbol                  VARCHAR NULL,
+    standard_code           VARCHAR NULL,
+    listing_ymd             INTEGER NULL,
+    last_trading_ymd        INTEGER NULL,
+    settlement_ymd          INTEGER NULL,
+    trade_multiplier        NUMERIC NULL,
+    description             VARCHAR NULL,
+    data_value              VARCHAR NULL,
+    updated_at              TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (futures_id)
 );
 
 create index idx_futures_01
     on futures (updated_at desc);
+
+
+create index idx_futures_02
+    on futures (standard_code);
 
 
 comment on table futures is '선물';

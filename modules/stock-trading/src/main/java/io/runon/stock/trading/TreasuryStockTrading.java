@@ -39,7 +39,6 @@ public class TreasuryStockTrading {
         return TradingGson.LOWER_CASE_WITH_UNDERSCORES.toJson(this);
     }
 
-
     public static TreasuryStockTrading make(String jsonText){
         return TradingGson.LOWER_CASE_WITH_UNDERSCORES.fromJson(jsonText, TreasuryStockTrading.class);
     }

@@ -1,7 +1,10 @@
 package io.runon.stock.securities.firm.api.kor.koreainvestment;
 
+import com.google.gson.JsonObject;
 import com.seomse.commons.http.HttpApis;
 import com.seomse.commons.utils.FileUtil;
+import com.seomse.commons.utils.GsonUtils;
+import com.seomse.jdbc.objects.JdbcObjects;
 import io.runon.stock.trading.StockGroup;
 import io.runon.stock.trading.StockGroupMap;
 import io.runon.trading.CountryCode;
@@ -90,12 +93,19 @@ public class KoreainvestmentFiles {
         String fileSeparator = FileSystems.getDefault().getSeparator();
 
         File file = HttpApis.downloadFile("https://new.real.download.dws.co.kr/common/master/fo_stk_code_mts.mst.zip", TradingDataPath.getTempPath("koreainvestment" + fileSeparator + "fo_stk_code_mts.mst.zip"));
-        File [] unZipFiles =FileUtil.unZip(file);
+        File [] unZipFiles = FileUtil.unZip(file);
         for(File unZipFile : unZipFiles){
 
             String fileText = FileUtil.getFileContents(unZipFile,"EUC-KR");
-            Futures[] futuresArray = getFutures(fileText);
-            TradingJdbc.updateTimeCheck(futuresArray);
+            Futures [] futuresArray = getFutures(fileText);
+            for(Futures futures : futuresArray){
+                Futures saveObj = JdbcObjects.getObj(Futures.class, "standard_code='" +  futures.getStandardCode() + "'");
+                if(saveObj == null){
+                    continue;
+                }
+                futures.setFuturesId(saveObj.getFuturesId());
+                TradingJdbc.updateTimeCheck(futures);
+            }
 
             //noinspection ResultOfMethodCallIgnored
             unZipFile.delete();
@@ -113,23 +123,20 @@ public class KoreainvestmentFiles {
             String line = lines[i];
             String [] values = line.split("\\|");
 
+            JsonObject jsonObject = new JsonObject();
+            jsonObject.addProperty("koreainvestment", values[1]);
+
             Futures futures = new Futures();
-            futures.setSymbol(values[1]);
-            futures.setUnderlyingAssetsType("STOCK");
-            futures.setFuturesId("KOR_" + futures.getSymbol());
-            futures.setExchange("KRX");
+            futures.setProductType(null);
             futures.setStandardCode(values[2]);
             futures.setNameKo(values[3]);
             futures.setUnderlyingAssetsId(values[7]);
+            futures.setDataValue(GsonUtils.toJson(jsonObject));
             array[i] = futures;
         }
 
         return array;
     }
-
-
-
-
 
     public static void main(String[] args) {
 //        updateDownloadFuturesList();
