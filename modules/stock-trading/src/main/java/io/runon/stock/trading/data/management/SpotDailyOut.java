@@ -39,6 +39,8 @@ public class SpotDailyOut {
 
     protected CountryCode countryCode = TradingConfig.getDefaultCountryCode();
 
+
+
     //장중에 수집하는경우 마지막 라인의 변화를 체크하는 옵션
     //공매도나 대차잔고등 일별집계가 끝나는 데이터는 falst로 설정
     protected boolean isLastLineCheck = true;
@@ -59,7 +61,7 @@ public class SpotDailyOut {
         this.countryCode = countryCode;
     }
 
-    private ZoneId zoneId = TradingConfig.DEFAULT_TIME_ZONE_ID;
+    protected ZoneId zoneId = TradingConfig.DEFAULT_TIME_ZONE_ID;
 
     public void setZoneId(ZoneId zoneId) {
         this.zoneId = zoneId;
@@ -159,7 +161,7 @@ public class SpotDailyOut {
 
         String delistedYmd = jsonFileProperties.getString(param.getDeletedPropertiesKey(),"19900101");
 
-        String nowYmd = YmdUtil.now(TradingTimes.KOR_ZONE_ID);
+        String nowYmd = YmdUtil.now(zoneId);
 
         Stock [] stocks = Stocks.getDelistedStocks(exchanges, delistedYmd, nowYmd);
 
@@ -175,7 +177,7 @@ public class SpotDailyOut {
      */
     public void out(Stock stock){
 
-        String nowYmd = YmdUtil.now(TradingTimes.KOR_ZONE_ID);
+        String nowYmd = YmdUtil.now(zoneId);
         int nowYmdNum = Integer.parseInt(nowYmd);
 
         //초기 데이터는 상장 년원일
@@ -198,7 +200,7 @@ public class SpotDailyOut {
 
         if(lastTime > -1){
 
-            nextYmd = YmdUtil.getYmd(lastTime, TradingTimes.KOR_ZONE_ID);
+            nextYmd = YmdUtil.getYmd(lastTime, zoneId);
             if(!isLastLineCheck){
                 // 마지막일자를 체크하지 않으면 마지막 저장 날짜의 다음날짜를 호출한다.
                 nextYmd = YmdUtil.getYmd(nextYmd, 1);
@@ -253,10 +255,10 @@ public class SpotDailyOut {
 
             if(isLastLineCheck && isFirst) {
 
-                FileLineOut.outBackPartChange(pathTimeLine, lines, filesDirPath, timeNameType, TradingTimes.KOR_ZONE_ID);
+                FileLineOut.outBackPartChange(pathTimeLine, lines, filesDirPath, timeNameType, zoneId);
                 isFirst = false;
             }else{
-                FileLineOut.outNewLines(pathTimeLine, lines, filesDirPath, timeNameType, TradingTimes.KOR_ZONE_ID);
+                FileLineOut.outNewLines(pathTimeLine, lines, filesDirPath, timeNameType, zoneId);
             }
 
             StockYmd stockYmd = lastYmdMap.get(stock.getStockId());

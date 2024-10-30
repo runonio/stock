@@ -1,7 +1,6 @@
 package io.runon.stock.trading;
 
 import io.runon.trading.TradingGson;
-import io.runon.trading.data.RatingScore;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -23,22 +22,22 @@ public class TreasuryStockTrading {
     Integer endYmd;
     
     //신고 수량
-    BigDecimal regQuantity;
+    BigDecimal regVolume;
     //신고 금액
-    BigDecimal regTradingPrice;
+    BigDecimal regAmount;
 
     //매매수량
-    BigDecimal tradingQuantity;
+    BigDecimal volume;
+    //매매금액
+    BigDecimal amount;
     //매매비율
     BigDecimal tradingRate;
-    //매매금액
-    BigDecimal tradingPrice;
+
 
     @Override
     public String toString(){
         return TradingGson.LOWER_CASE_WITH_UNDERSCORES.toJson(this);
     }
-
 
     public static TreasuryStockTrading make(String jsonText){
         return TradingGson.LOWER_CASE_WITH_UNDERSCORES.fromJson(jsonText, TreasuryStockTrading.class);

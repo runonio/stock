@@ -184,7 +184,7 @@ public class KoreainvestmentMarketApi implements ClosedDaysCallback {
                 tradeCandle.setLow(row.getBigDecimal("bstp_nmix_lwpr"));
 
                 tradeCandle.setVolume(row.getBigDecimal("acml_vol"));
-                tradeCandle.setTradingPrice(row.getBigDecimal("acml_tr_pbmn"));
+                tradeCandle.setAmount(row.getBigDecimal("acml_tr_pbmn"));
 
                 if(tradeCandle.getVolume().compareTo(BigDecimal.ZERO) == 0){
                     String nowYmd = YmdUtil.now(TradingTimes.KOR_ZONE_ID);

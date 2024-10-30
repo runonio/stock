@@ -11,16 +11,15 @@ import io.runon.trading.data.file.PathTimeLine;
  * ls증권 open api
  * @author macle
  */
-public abstract class LsDailyOut  extends KorSpotDailyOut {
+public abstract class LsStockDailyOut extends KorSpotDailyOut {
 
     protected final LsApi api = LsApi.getInstance();
 
     protected String [] exchanges = Exchanges.getDefaultExchanges(CountryCode.KOR);
 
-    protected final LsPeriodDataApi periodDataApi = api.getPeriodDataApi();
 
 
-    public LsDailyOut(StockPathLastTime stockPathLastTime, PathTimeLine pathTimeLine) {
+    public LsStockDailyOut(StockPathLastTime stockPathLastTime, PathTimeLine pathTimeLine) {
         super(stockPathLastTime, pathTimeLine);
 
     }

@@ -282,29 +282,37 @@ comment on table indices is '지수';
 
 CREATE TABLE futures
 (
-    futures_id           VARCHAR NOT NULL,
-    underlying_assets_type          VARCHAR NOT NULL DEFAULT 'INDEX',
-    exchange             VARCHAR NULL,
-    name_ko              VARCHAR NULL,
-    name_en              VARCHAR NULL,
-    candle_path          VARCHAR NULL,
-    currency             VARCHAR NULL,
-    underlying_assets_id            VARCHAR NULL,
-    product_type           VARCHAR NULL,
-    symbol               VARCHAR NULL,
-    standard_code        VARCHAR NULL,
-    listing_ymd          INTEGER NULL,
-    last_trading_ymd     INTEGER NULL,
-    settlement_ymd       INTEGER NULL,
-    trade_multiplier     NUMERIC NULL,
-    description          VARCHAR NULL,
-    data_value           VARCHAR NULL,
-    updated_at           TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    futures_id              VARCHAR NOT NULL,
+    underlying_assets_type  VARCHAR NOT NULL DEFAULT 'INDEX',
+    exchange                VARCHAR NULL,
+    name_ko                 VARCHAR NULL,
+    name_en                 VARCHAR NULL,
+    candle_path             VARCHAR NULL,
+    currency                VARCHAR NULL,
+    underlying_assets_id    VARCHAR NULL,
+    product_type            VARCHAR NULL,
+    symbol                  VARCHAR NULL,
+    standard_code           VARCHAR NULL,
+    listed_ymd             INTEGER NULL,
+    last_trading_ymd        INTEGER NULL,
+    settlement_ymd          INTEGER NULL,
+    trade_multiplier        NUMERIC NULL,
+    description             VARCHAR NULL,
+    data_value              VARCHAR NULL,
+    updated_at              TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (futures_id)
 );
 
 create index idx_futures_01
     on futures (updated_at desc);
+
+
+create index idx_futures_02
+    on futures (standard_code);
+
+
+create index idx_futures_03
+    on futures (symbol);
 
 
 comment on table futures is '선물';
@@ -319,7 +327,7 @@ comment on table futures is '선물';
          comment on column futures.product_type is '상품유형';
          comment on column futures.symbol is '티커_심볼';
          comment on column futures.standard_code is '표준코드';
-         comment on column futures.listing_ymd is '상장년월일';
+         comment on column futures.listed_ymd is '상장년월일';
          comment on column futures.last_trading_ymd is '최종거래일';
          comment on column futures.settlement_ymd is '결제일';
          comment on column futures.trade_multiplier is '거래승수';

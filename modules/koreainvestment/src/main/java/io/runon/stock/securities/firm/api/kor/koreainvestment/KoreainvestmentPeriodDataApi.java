@@ -6,11 +6,13 @@ import com.seomse.commons.utils.time.YmdUtil;
 import io.runon.stock.trading.daily.ProgramDaily;
 import io.runon.stock.trading.daily.StockCreditLoanDaily;
 import io.runon.stock.trading.exception.StockApiException;
+import io.runon.trading.CountryCode;
 import io.runon.trading.LockType;
 import io.runon.trading.PriceChangeType;
 import io.runon.trading.TradingTimes;
 import io.runon.trading.data.daily.VolumePowerDaily;
 import io.runon.trading.technical.analysis.candle.TradeCandle;
+import io.runon.trading.technical.analysis.candle.TradeCandleDataKey;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -207,7 +209,7 @@ public class KoreainvestmentPeriodDataApi {
 
         JSONArray array = object.getJSONArray("output2");
 
-        String dateFormat = "yyyyMMdd hh:mm";
+//        String dateFormat = "yyyyMMdd hh:mm";
 
         int length = array.length();
 
@@ -226,21 +228,21 @@ public class KoreainvestmentPeriodDataApi {
             String ymd = row.getString("stck_bsop_date");
 
             TradeCandle tradeCandle = new TradeCandle();
-            tradeCandle.setOpenTime(Times.getTime(dateFormat, ymd +" 09:00", TradingTimes.KOR_ZONE_ID));
-            tradeCandle.setCloseTime(Times.getTime(dateFormat, ymd +" 15:30", TradingTimes.KOR_ZONE_ID));
+            tradeCandle.setOpenTime(TradingTimes.getDailyOpenTime(CountryCode.KOR, ymd));
+            tradeCandle.setCloseTime(TradingTimes.getDailyCloseTime(CountryCode.KOR, ymd));
             tradeCandle.setOpen(new BigDecimal(row.getString("stck_oprc")));
             tradeCandle.setHigh(new BigDecimal(row.getString("stck_hgpr")));
             tradeCandle.setLow(new BigDecimal(row.getString("stck_lwpr")));
             tradeCandle.setClose(new BigDecimal(row.getString("stck_clpr")));
             tradeCandle.setVolume(new BigDecimal(row.getString("acml_vol")));
-            tradeCandle.setTradingPrice(new BigDecimal(row.getString("acml_tr_pbmn")));
+            tradeCandle.setAmount(new BigDecimal(row.getString("acml_tr_pbmn")));
             tradeCandle.setChange(new BigDecimal(row.getString("prdy_vrss")));
 
             //락 유형
             if(!row.isNull("flng_cls_code")) {
                 String clsCode = row.getString("flng_cls_code");
                 if(!clsCode.equals("00")){
-                    tradeCandle.addData("lock_code", clsCode);
+                    tradeCandle.addData(TradeCandleDataKey.LOCK_CODE, clsCode);
 
 //                     * 01 : 권리락
 //                     * 02 : 배당락
@@ -251,19 +253,19 @@ public class KoreainvestmentPeriodDataApi {
 //                     * 07 : 권리분기배당락
 
                     if(clsCode.equals("01")){
-                        tradeCandle.addData("lock_type", LockType.RIGHTS_LOCK.toString());
+                        tradeCandle.addData(TradeCandleDataKey.LOCK_TYPE, LockType.RIGHTS_LOCK.toString());
                     }else if(clsCode.equals("02")){
-                        tradeCandle.addData("lock_type", LockType.DIVIDEND_LOCK.toString());
+                        tradeCandle.addData(TradeCandleDataKey.LOCK_TYPE, LockType.DIVIDEND_LOCK.toString());
                     }else if(clsCode.equals("03")){
-                        tradeCandle.addData("lock_type", LockType.DISTRIBUTION_LOCK.toString());
+                        tradeCandle.addData(TradeCandleDataKey.LOCK_TYPE, LockType.DISTRIBUTION_LOCK.toString());
                     }else if(clsCode.equals("04")){
-                        tradeCandle.addData("lock_type", LockType.RIGHTS_DIVIDEND_LOCK.toString());
+                        tradeCandle.addData(TradeCandleDataKey.LOCK_TYPE, LockType.RIGHTS_DIVIDEND_LOCK.toString());
                     }else if(clsCode.equals("05")){
-                        tradeCandle.addData("lock_type", LockType.DIVIDEND_LOCK.toString());
+                        tradeCandle.addData(TradeCandleDataKey.LOCK_TYPE, LockType.DIVIDEND_LOCK.toString());
                     }else if(clsCode.equals("06")){
-                        tradeCandle.addData("lock_type", LockType.RIGHTS_DIVIDEND_LOCK.toString());
+                        tradeCandle.addData(TradeCandleDataKey.LOCK_TYPE, LockType.RIGHTS_DIVIDEND_LOCK.toString());
                     }else if(clsCode.equals("07")){
-                        tradeCandle.addData("lock_type", LockType.RIGHTS_DIVIDEND_LOCK.toString());
+                        tradeCandle.addData(TradeCandleDataKey.LOCK_TYPE, LockType.RIGHTS_DIVIDEND_LOCK.toString());
                     }
                 }
             }
@@ -314,7 +316,7 @@ public class KoreainvestmentPeriodDataApi {
         String nextBeginYmd = beginYmd;
 
         int endYmdNum = Integer.parseInt(endYmd);
-        String dateFormat = "yyyyMMdd hh:mm";
+//        String dateFormat = "yyyyMMdd hh:mm";
         outer:
         for(;;) {
 
@@ -357,24 +359,24 @@ public class KoreainvestmentPeriodDataApi {
 
                 ProgramDaily daily = new ProgramDaily();
 
-                daily.setTime(Times.getTime(dateFormat, tradeYmd +" 09:00", TradingTimes.KOR_ZONE_ID));
+                daily.setTime(TradingTimes.getDailyOpenTime(CountryCode.KOR, tradeYmd));
                 daily.setYmd(tradeYmdInt);
                 daily.setClose(row.getBigDecimal("stck_clpr"));
                 daily.setVolume(row.getBigDecimal("acml_vol"));
-                daily.setTradingPrice(row.getBigDecimal("acml_tr_pbmn"));
+                daily.setAmount(row.getBigDecimal("acml_tr_pbmn"));
                 daily.setChange(row.getBigDecimal("prdy_vrss"));
 
                 daily.setSellVolume(row.getBigDecimal("whol_smtn_seln_vol"));
-                daily.setSellPrice(row.getBigDecimal("whol_smtn_seln_tr_pbmn"));
+                daily.setSellAmount(row.getBigDecimal("whol_smtn_seln_tr_pbmn"));
 
                 daily.setBuyVolume(row.getBigDecimal("whol_smtn_shnu_vol"));
-                daily.setBuyPrice(row.getBigDecimal("whol_smtn_shnu_tr_pbmn"));
+                daily.setBuyAmount(row.getBigDecimal("whol_smtn_shnu_tr_pbmn"));
 
                 daily.setNetBuyVolume(row.getBigDecimal("whol_smtn_ntby_qty"));
-                daily.setNetBuyPrice(row.getBigDecimal("whol_smtn_ntby_tr_pbmn"));
+                daily.setNetBuyAmount(row.getBigDecimal("whol_smtn_ntby_tr_pbmn"));
 
                 daily.setNetBuyChangeVolume(row.getBigDecimal("whol_ntby_vol_icdc"));
-                daily.setNetBuyChangePrice(row.getBigDecimal("whol_ntby_tr_pbmn_icdc2"));
+                daily.setNetBuyChangeAmount(row.getBigDecimal("whol_ntby_tr_pbmn_icdc2"));
                 list.add(daily);
 
             }
@@ -452,4 +454,10 @@ public class KoreainvestmentPeriodDataApi {
         return list.toArray(new VolumePowerDaily[0]);
     }
 
+    public static void main(String[] args) {
+        String dateFormat = "yyyyMMdd hh:mm";
+        String ymd = YmdUtil.now(TradingTimes.KOR_ZONE_ID);
+
+        System.out.println(Times.ymdhm(TradingTimes.getDailyOpenTime(CountryCode.KOR, ymd), TradingTimes.KOR_ZONE_ID));
+    }
 }

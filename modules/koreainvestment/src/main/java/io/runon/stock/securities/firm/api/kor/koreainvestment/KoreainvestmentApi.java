@@ -116,8 +116,8 @@ public class KoreainvestmentApi {
         closedDaysFileOut = new ClosedDaysFileOut(marketApi, CountryCode.KOR);
     }
 
-    public void closedDaysOut(){
-        closedDaysFileOut.out();
+    public boolean closedDaysOut(){
+        return closedDaysFileOut.out();
     }
 
     public void setSleepTime(long sleepTime) {

@@ -10,16 +10,15 @@ import io.runon.stock.trading.data.StockLong;
 import io.runon.stock.trading.path.StockPathLastTime;
 import io.runon.stock.trading.path.StockPaths;
 import io.runon.trading.CountryCode;
+import io.runon.trading.CountryUtils;
 import io.runon.trading.TradingConfig;
 import io.runon.trading.TradingTimes;
 import io.runon.trading.data.Exchanges;
 import io.runon.trading.data.csv.CsvCandle;
-import io.runon.trading.data.file.PathTimeLine;
 import io.runon.trading.data.file.TimeFiles;
 import io.runon.trading.technical.analysis.candle.TradeCandle;
 
 import java.math.BigDecimal;
-import java.nio.file.FileSystems;
 import java.time.ZoneId;
 import java.util.*;
 
@@ -79,7 +78,7 @@ public class Stocks {
     }
 
     public static String getCountryCode(String stockId){
-        return stockId.substring(0, stockId.indexOf("_"));
+        return CountryUtils.getCountryCode(stockId);
     }
 
     public static String [] getIds(Stock [] stocks){
@@ -96,7 +95,6 @@ public class Stocks {
 
     public static void sortUseLastTimeParallel(Stock [] stocks, String interval, StockPathLastTime stockPathLastTime){
 
-        String fileSeparator = FileSystems.getDefault().getSeparator();
         StockLong[] sortStocks = new StockLong[stocks.length];
         for (int i = 0; i <sortStocks.length ; i++) {
             Stock stock = stocks[i];
@@ -201,7 +199,6 @@ public class Stocks {
     }
 
     public static TradeCandle getLastCandle1d(Stock stock){
-        PathTimeLine pathTimeLine = PathTimeLine.CSV;
         String filePath = StockPaths.getSpotCandleFilesPath(stock.getStockId(), "1d");
         String lastLine = TimeFiles.getLastLine(filePath);
         if(lastLine == null){

@@ -26,6 +26,7 @@ public abstract class KorSpotDailyOut implements StockDailyOutParam {
         dailyOut = new SpotDailyOut(this);
         dailyOut.setZoneId(TradingTimes.KOR_ZONE_ID);
         dailyOut.setCountryCode(CountryCode.KOR);
+
     }
 
 

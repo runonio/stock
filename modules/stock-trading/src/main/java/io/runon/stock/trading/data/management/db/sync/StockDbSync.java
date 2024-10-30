@@ -14,6 +14,7 @@ import io.runon.trading.data.*;
 import io.runon.trading.data.jdbc.TradingJdbc;
 import io.runon.trading.system.Category;
 import io.runon.trading.system.CategoryCode;
+import io.runon.trading.system.CategoryKeyValue;
 import io.runon.trading.system.CommonConfig;
 import lombok.extern.slf4j.Slf4j;
 
@@ -77,6 +78,8 @@ public class StockDbSync {
         timeTableClassList.add(CommonConfig.class);
         timeTableClassList.add(Category.class);
         timeTableClassList.add(CategoryCode.class);
+        timeTableClassList.add(CategoryKeyValue.class);
+
     }
 
     public void sync(){
@@ -132,15 +135,12 @@ public class StockDbSync {
                     JdbcObjects.callbackObj(selectConn, tableClass, null, null, "updated_at asc", -1, null, callBack);
                 }else{
                     Map<Integer, PrepareStatementData> prepareStatementDataMap =  PrepareStatements.newTimeMap(maxTime);
-
                     JdbcObjects.callbackObj(selectConn, tableClass, null, "updated_at >= ?", "updated_at asc", -1, prepareStatementDataMap, callBack);
-
                 }
 
             }catch (Exception e){
                 log.error(ExceptionUtil.getStackTrace(e));
             }
-
         }
 
 
