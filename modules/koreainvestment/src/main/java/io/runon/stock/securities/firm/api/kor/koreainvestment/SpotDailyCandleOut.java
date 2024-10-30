@@ -18,7 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 public class SpotDailyCandleOut extends KoreainvestmentDailyOut{
 
     public SpotDailyCandleOut(){
-        super(StockPathLastTime.CANDLE_SPOT, PathTimeLine.CSV);
+        super(StockPathLastTime.CANDLE, PathTimeLine.CSV);
         dailyOut.setServiceName("koreainvestment_candle");
     }
 

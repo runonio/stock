@@ -26,28 +26,28 @@ public class ProgramDaily implements StockOutTimeLineJson {
     //일거래량
     BigDecimal volume;
     //일거래대금
-    BigDecimal tradingPrice;
+    BigDecimal amount;
 
     BigDecimal change;
 
     //순매수 볼륨
     BigDecimal netBuyVolume;
     //순매수 거래대금
-    BigDecimal netBuyPrice;
+    BigDecimal netBuyAmount;
 
     //순매수 거래량 변화
     BigDecimal netBuyChangeVolume;
     //순매수 거래대금 변화
-    BigDecimal netBuyChangePrice;
+    BigDecimal netBuyChangeAmount;
 
     //프로그램 매도거래량
     BigDecimal sellVolume;
     //프로그램 매도 거래대금
-    BigDecimal sellPrice;
+    BigDecimal sellAmount;
 
-    //프로그램 순매수
+    //프로그램 매수
     BigDecimal buyVolume;
-    BigDecimal buyPrice;
+    BigDecimal buyAmount;
 
 
     public long getTime(){
@@ -80,6 +80,13 @@ public class ProgramDaily implements StockOutTimeLineJson {
 
         return TradingGson.LOWER_CASE_WITH_UNDERSCORES.toJson(this);
     }
+    public String outTimeLineJsonText(){
+        if(t == null){
+            throw new RuntimeException("time null");
+        }
+        return TradingGson.LOWER_CASE_WITH_UNDERSCORES.toJson(this);
+    }
+
     @Override
     public String toString(){
         return TradingGson.LOWER_CASE_WITH_UNDERSCORES_PRETTY.toJson(this);

@@ -17,12 +17,14 @@ public class StockPathLastTimeCandleFutures implements StockPathLastTime{
 
     @Override
     public String getFilesDirPath(Stock stock, String interval) {
-        return StockPaths.getFuturesCandleFilesPath(stock.getStockId(),interval);
+//        return StockPaths.getFuturesCandleFilesPath(stock.getStockId(),interval);
+        return null;
     }
 
     @Override
     public String getLastTimeFilePath(CountryCode countryCode, String interval) {
         String fileSeparator = FileSystems.getDefault().getSeparator();
-        return StockPaths.getFuturesCandlePath(countryCode)+fileSeparator+"candle_last_" + interval;
+//        return StockPaths.getFuturesCandlePath(countryCode)+fileSeparator+"candle_last_" + interval;
+        return null;
     }
 }

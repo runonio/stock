@@ -235,7 +235,7 @@ public class KoreainvestmentPeriodDataApi {
             tradeCandle.setLow(new BigDecimal(row.getString("stck_lwpr")));
             tradeCandle.setClose(new BigDecimal(row.getString("stck_clpr")));
             tradeCandle.setVolume(new BigDecimal(row.getString("acml_vol")));
-            tradeCandle.setTradingPrice(new BigDecimal(row.getString("acml_tr_pbmn")));
+            tradeCandle.setAmount(new BigDecimal(row.getString("acml_tr_pbmn")));
             tradeCandle.setChange(new BigDecimal(row.getString("prdy_vrss")));
 
             //락 유형
@@ -363,20 +363,20 @@ public class KoreainvestmentPeriodDataApi {
                 daily.setYmd(tradeYmdInt);
                 daily.setClose(row.getBigDecimal("stck_clpr"));
                 daily.setVolume(row.getBigDecimal("acml_vol"));
-                daily.setTradingPrice(row.getBigDecimal("acml_tr_pbmn"));
+                daily.setAmount(row.getBigDecimal("acml_tr_pbmn"));
                 daily.setChange(row.getBigDecimal("prdy_vrss"));
 
                 daily.setSellVolume(row.getBigDecimal("whol_smtn_seln_vol"));
-                daily.setSellPrice(row.getBigDecimal("whol_smtn_seln_tr_pbmn"));
+                daily.setSellAmount(row.getBigDecimal("whol_smtn_seln_tr_pbmn"));
 
                 daily.setBuyVolume(row.getBigDecimal("whol_smtn_shnu_vol"));
-                daily.setBuyPrice(row.getBigDecimal("whol_smtn_shnu_tr_pbmn"));
+                daily.setBuyAmount(row.getBigDecimal("whol_smtn_shnu_tr_pbmn"));
 
                 daily.setNetBuyVolume(row.getBigDecimal("whol_smtn_ntby_qty"));
-                daily.setNetBuyPrice(row.getBigDecimal("whol_smtn_ntby_tr_pbmn"));
+                daily.setNetBuyAmount(row.getBigDecimal("whol_smtn_ntby_tr_pbmn"));
 
                 daily.setNetBuyChangeVolume(row.getBigDecimal("whol_ntby_vol_icdc"));
-                daily.setNetBuyChangePrice(row.getBigDecimal("whol_ntby_tr_pbmn_icdc2"));
+                daily.setNetBuyChangeAmount(row.getBigDecimal("whol_ntby_tr_pbmn_icdc2"));
                 list.add(daily);
 
             }

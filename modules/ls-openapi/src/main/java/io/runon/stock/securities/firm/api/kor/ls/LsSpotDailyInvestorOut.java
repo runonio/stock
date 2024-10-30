@@ -10,17 +10,19 @@ import io.runon.trading.data.file.PathTimeLine;
  * ls증권 open api
  * @author macle
  */
-public class SpotDailyInvestorOut extends LsDailyOut{
-    public SpotDailyInvestorOut() {
+public class LsSpotDailyInvestorOut extends LsStockDailyOut {
+
+
+    private final LsPeriodDataApi periodDataApi;
+
+    public LsSpotDailyInvestorOut() {
         super(StockPathLastTime.INVESTOR, PathTimeLine.JSON);
         dailyOut.setServiceName("ls_investor");
+        periodDataApi = api.getPeriodDataApi();
     }
 
     @Override
     public String[] getLines(Stock stock, String beginYmd, String endYmd) {
-        LsApi lsApi = LsApi.getInstance();
-        LsPeriodDataApi periodDataApi = lsApi.getPeriodDataApi();
-
         StockInvestorDaily[] dailies = periodDataApi.getInvestorDailies(stock.getSymbol(), beginYmd, endYmd);
         return StockOutTimeLineJson.getLines(stock,dailies);
     }

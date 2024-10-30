@@ -293,7 +293,7 @@ CREATE TABLE futures
     product_type            VARCHAR NULL,
     symbol                  VARCHAR NULL,
     standard_code           VARCHAR NULL,
-    listing_ymd             INTEGER NULL,
+    listed_ymd             INTEGER NULL,
     last_trading_ymd        INTEGER NULL,
     settlement_ymd          INTEGER NULL,
     trade_multiplier        NUMERIC NULL,
@@ -311,6 +311,10 @@ create index idx_futures_02
     on futures (standard_code);
 
 
+create index idx_futures_03
+    on futures (symbol);
+
+
 comment on table futures is '선물';
         comment on column futures.futures_id is '선물아이디';
          comment on column futures.underlying_assets_type is '기초자산유형';
@@ -323,7 +327,7 @@ comment on table futures is '선물';
          comment on column futures.product_type is '상품유형';
          comment on column futures.symbol is '티커_심볼';
          comment on column futures.standard_code is '표준코드';
-         comment on column futures.listing_ymd is '상장년월일';
+         comment on column futures.listed_ymd is '상장년월일';
          comment on column futures.last_trading_ymd is '최종거래일';
          comment on column futures.settlement_ymd is '결제일';
          comment on column futures.trade_multiplier is '거래승수';

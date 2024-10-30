@@ -9,7 +9,7 @@ import java.nio.file.FileSystems;
 /**
  * @author macle
  */
-public class StockPathLastTimeCandleSpot implements StockPathLastTime{
+public class StockPathLastTimeCandle implements StockPathLastTime{
     @Override
     public long getLastTime(Stock stock, String interval) {
         return CsvTimeFile.getLastTime(getFilesDirPath(stock,interval));

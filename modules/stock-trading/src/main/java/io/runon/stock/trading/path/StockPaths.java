@@ -1,9 +1,8 @@
 package io.runon.stock.trading.path;
 
-import com.seomse.commons.config.Config;
 import io.runon.stock.trading.Stocks;
 import io.runon.trading.CountryCode;
-import io.runon.trading.TradingConfig;
+import io.runon.trading.data.TradingDataPath;
 
 import java.nio.file.FileSystems;
 
@@ -12,25 +11,6 @@ import java.nio.file.FileSystems;
  * @author macle
  */
 public class StockPaths {
-
-
-    public static String getFuturesCandlePath(){
-        return getFuturesCandlePath((String) null);
-    }
-
-    public static String getFuturesCandlePath(CountryCode countryCode){
-        return getFuturesCandlePath(countryCode.toString());
-    }
-
-    public static String getFuturesCandlePath(String countryCode){
-        return getFuturesDirPath(countryCode, "stock.futures.candle.dir.path", "candle");
-    }
-
-    public static String getFuturesCandleFilesPath(String id, String interval){
-        String fileSeparator = FileSystems.getDefault().getSeparator();
-        return  getFuturesCandlePath(Stocks.getCountryCode(id))+fileSeparator+id+fileSeparator+interval;
-
-    }
 
 
     @SuppressWarnings("ConstantValue")
@@ -157,49 +137,8 @@ public class StockPaths {
         return getDirPath(countryCode, "spot", configKey, dirName);
     }
 
-    public static String getFuturesDirPath(String countryCode, String configKey, String dirName){
-        return getDirPath(countryCode, "futures", configKey, dirName);
-    }
-
-
     public static String getDirPath(String countryCode, String dirType, String configKey, String dirName){
-        String fileSeparator = FileSystems.getDefault().getSeparator();
-
-        String dirPath = null;
-
-        if(countryCode != null && !countryCode.isEmpty()) {
-            dirPath = Config.getConfig(configKey + "." + countryCode);
-            //대소문자 인식용
-            if(dirPath == null){
-                dirPath = Config.getConfig(configKey + "." + countryCode.toLowerCase());
-            }
-            if(dirPath == null){
-                dirPath = Config.getConfig(configKey + "." + countryCode.toUpperCase());
-            }
-        }
-
-        //국가별로 다르게 설정할 수 잇음
-        //국내만 3천개의 종목이 넘고 미국은 만개의종목이 넘으므로 기본경로는 국가 코드가 들어가게 한다.
-        if (dirPath == null) {
-
-            if(countryCode == null){
-                dirPath = TradingConfig.getTradingDataPath() + fileSeparator + "stock" + fileSeparator + dirType + fileSeparator +dirName;
-            }else{
-                countryCode = countryCode.toUpperCase();
-                dirPath = TradingConfig.getTradingDataPath() + fileSeparator + "stock" + fileSeparator  +countryCode + fileSeparator+ dirType + fileSeparator +dirName;
-            }
-        }
-
-        return dirPath;
-    }
-
-
-    public static void main(String [] args){
-//        String path =getVolumePowerFilesPath("KOR_010130", "1d");
-//        System.out.println(path);
-
-
-
+        return TradingDataPath.getDirPath(countryCode, "stock", dirType, configKey, dirName);
     }
 
 }

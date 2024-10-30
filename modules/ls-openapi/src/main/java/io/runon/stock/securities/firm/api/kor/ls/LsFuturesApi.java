@@ -116,7 +116,7 @@ public class LsFuturesApi {
                 tradeCandle.setLow(row.getBigDecimal("low"));
 
                 tradeCandle.setVolume(volume);
-                tradeCandle.setTradingPrice(row.getBigDecimal("value"));
+                tradeCandle.setAmount(row.getBigDecimal("value"));
 
                 tradeCandle.addData(TradeCandleDataKey.OPEN_INTEREST,row.getBigDecimal("openyak").stripTrailingZeros().toPlainString());
 
