@@ -11,6 +11,8 @@ import com.seomse.jdbc.objects.JdbcObjects;
 import com.seomse.jdbc.sync.JdbcSync;
 import io.runon.stock.trading.*;
 import io.runon.trading.data.*;
+import io.runon.trading.data.calendar.EventCalendar;
+import io.runon.trading.data.calendar.EventCalendarItem;
 import io.runon.trading.data.jdbc.TradingJdbc;
 import io.runon.trading.system.Category;
 import io.runon.trading.system.CategoryCode;

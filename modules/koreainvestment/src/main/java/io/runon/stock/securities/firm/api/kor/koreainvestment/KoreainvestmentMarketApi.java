@@ -137,7 +137,7 @@ public class KoreainvestmentMarketApi implements ClosedDaysCallback {
         String nextBeginYmd = beginYmd;
 
         int endYmdNum = Integer.parseInt(endYmd);
-        String dateFormat = "yyyyMMdd hh:mm";
+        String dateFormat = "yyyyMMdd HH:mm";
 
         List<TradeCandle> list = new ArrayList<>();
         outer:
