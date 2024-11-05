@@ -182,7 +182,7 @@ public class KorEventCalendarInit {
         optionExpiration(ymds);
     }
 
-    public static void futuresExpiration( int [] ymms){
+    public static void futuresExpiration( int [] ymds){
         String closeHm = TradingTimes.getCloseTimeHm(CountryCode.KOR);
 
         String dateFormat = "yyyyMMdd hhmm";
@@ -195,7 +195,7 @@ public class KorEventCalendarInit {
         eventCalendar.setNameEn("futures expiration");
         eventCalendar.setEventType("futures_expiration");
 
-        for(int ymd : ymms){
+        for(int ymd : ymds){
 
             eventCalendar.setYmd(ymd);
             eventCalendar.setEventId(eventCalendar.getCountry() + "_" + eventCalendar.getEventType() +"_" +ymd);
@@ -207,7 +207,7 @@ public class KorEventCalendarInit {
         }
     }
 
-    public static void optionExpiration(int [] ymms){
+    public static void optionExpiration(int [] ymds){
         String closeHm = TradingTimes.getCloseTimeHm(CountryCode.KOR);
 
         String dateFormat = "yyyyMMdd hhmm";
@@ -219,7 +219,7 @@ public class KorEventCalendarInit {
         eventCalendar.setNameKo("옵션 만기일");
         eventCalendar.setNameEn("option expiration");
         eventCalendar.setEventType("option_expiration");
-        for(int ymd : ymms){
+        for(int ymd : ymds){
             eventCalendar.setYmd(ymd);
             eventCalendar.setEventId(eventCalendar.getCountry() + "_" + eventCalendar.getEventType() +"_" +ymd);
             String timeText = eventCalendar.getYmd() +" " + closeHm;
@@ -229,10 +229,66 @@ public class KorEventCalendarInit {
         }
     }
 
-    public static void main(String[] args) {
-        init();
+    public static void presidentialElection(){
+        int [] ymds ={
+                19921218, 19971218, 20021219, 20071219, 20121219, 20170509, 20220309
+        };
+        presidentialElection(ymds);
     }
 
+    public static void presidentialElection(int [] ymds){
+        EventCalendar eventCalendar = new EventCalendar();
 
+        String dateFormat = "yyyyMMdd hhmm";
+        String hm = "0600";
+
+        eventCalendar.setCountry(CountryCode.KOR.toString());
+        eventCalendar.setUpdatedAt(System.currentTimeMillis());
+        eventCalendar.setNameKo("한국 대통령 선거일");
+        eventCalendar.setNameEn("KOR presidential election");
+        eventCalendar.setEventType("presidential_election");
+        for(int ymd : ymds){
+            eventCalendar.setYmd(ymd);
+            eventCalendar.setEventId(eventCalendar.getCountry() + "_" + eventCalendar.getEventType() +"_" +ymd);
+            String timeText = eventCalendar.getYmd() +" " + hm;
+            eventCalendar.setEventTime(Times.getTime(dateFormat, timeText, TradingTimes.KOR_ZONE_ID));
+            TradingJdbc.updateTimeCheck(eventCalendar);
+        }
+    }
+
+    public static void nationalAssemblyElection(){
+        int [] ymds ={
+                19920415, 19960411, 20000413, 20040415, 20080409, 20120411, 20160413, 20200415, 20240410
+        };
+        nationalAssemblyElection(ymds);
+    }
+
+    //국회의원 총선
+    public static void nationalAssemblyElection(int [] ymds){
+        EventCalendar eventCalendar = new EventCalendar();
+
+        String dateFormat = "yyyyMMdd hhmm";
+        String hm = "0600";
+
+        eventCalendar.setCountry(CountryCode.KOR.toString());
+        eventCalendar.setUpdatedAt(System.currentTimeMillis());
+        eventCalendar.setNameKo("한국 국회의원 총선");
+        eventCalendar.setNameEn("KOR presidential election");
+        eventCalendar.setEventType("national_assembly_election");
+        for(int ymd : ymds){
+            eventCalendar.setYmd(ymd);
+            eventCalendar.setEventId(eventCalendar.getCountry() + "_" + eventCalendar.getEventType() +"_" +ymd);
+            String timeText = eventCalendar.getYmd() +" " + hm;
+            eventCalendar.setEventTime(Times.getTime(dateFormat, timeText, TradingTimes.KOR_ZONE_ID));
+            TradingJdbc.updateTimeCheck(eventCalendar);
+        }
+    }
+
+    public static void main(String[] args) {
+//        init();
+//        presidentialElection();
+        nationalAssemblyElection();
+
+    }
 
 }
