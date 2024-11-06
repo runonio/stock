@@ -285,9 +285,9 @@ public class KorEventCalendarInit {
     }
 
     public static void main(String[] args) {
-//        init();
+        init();
 //        presidentialElection();
-        nationalAssemblyElection();
+//        nationalAssemblyElection();
 
     }
 

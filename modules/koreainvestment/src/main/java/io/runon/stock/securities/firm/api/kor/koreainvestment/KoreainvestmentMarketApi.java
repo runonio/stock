@@ -43,8 +43,7 @@ public class KoreainvestmentMarketApi implements ClosedDaysCallback {
 
         return response.getMessage();
     }
-
-
+    
     public void callbackClosedDays(String beginYmd, String endYmd, StrCallback callback){
 
         String baseYmd = beginYmd;
