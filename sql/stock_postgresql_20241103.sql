@@ -185,6 +185,11 @@ CREATE TABLE stock_api_data
 create index idx_stock_api_data_01
     on stock_api_data (updated_at desc);
 
+create index idx_stock_api_data_02
+    on stock_api_data (api_url desc);
+
+
+
 comment on table stock_api_data is '주식API데이터';
         comment on column stock_api_data.stock_id is '주식아이디';
          comment on column stock_api_data.api_url is 'api_url';
