@@ -27,9 +27,7 @@ public class KoreainvestmentMarketApi implements ClosedDaysCallback {
         this.koreainvestmentApi = koreainvestmentApi;
     }
 
-    /**
-     *
-     */
+
     public String getClosedDaysJson(String baseYmd){
         koreainvestmentApi.updateAccessToken();
         String url = "/uapi/domestic-stock/v1/quotations/chk-holiday";
@@ -43,7 +41,6 @@ public class KoreainvestmentMarketApi implements ClosedDaysCallback {
 
         return response.getMessage();
     }
-
 
     public void callbackClosedDays(String beginYmd, String endYmd, StrCallback callback){
 
@@ -137,7 +134,7 @@ public class KoreainvestmentMarketApi implements ClosedDaysCallback {
         String nextBeginYmd = beginYmd;
 
         int endYmdNum = Integer.parseInt(endYmd);
-        String dateFormat = "yyyyMMdd hh:mm";
+        String dateFormat = "yyyyMMdd HH:mm";
 
         List<TradeCandle> list = new ArrayList<>();
         outer:

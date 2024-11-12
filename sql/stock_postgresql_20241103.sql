@@ -185,6 +185,11 @@ CREATE TABLE stock_api_data
 create index idx_stock_api_data_01
     on stock_api_data (updated_at desc);
 
+create index idx_stock_api_data_02
+    on stock_api_data (api_url desc);
+
+
+
 comment on table stock_api_data is '주식API데이터';
         comment on column stock_api_data.stock_id is '주식아이디';
          comment on column stock_api_data.api_url is 'api_url';
@@ -469,7 +474,7 @@ CREATE TABLE event_calendar
     event_type           VARCHAR NULL,
     name_ko              VARCHAR NULL,
     name_en              VARCHAR NULL,
-    description          VARCHAR NULL,
+    data_value          VARCHAR NULL,
     country              VARCHAR NULL,
     updated_at           TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (event_id)
@@ -486,6 +491,13 @@ create index idx_event_calendar_03
     on event_calendar (ymd desc);
 
 
+create index idx_event_calendar_item_04
+    on event_calendar (event_type desc);
+
+create index idx_event_calendar_item_05
+    on event_calendar (country desc);
+
+
 CREATE TABLE event_calendar_item
 (
     event_id             VARCHAR NOT NULL,
@@ -498,6 +510,8 @@ create index idx_event_calendar_item_01
     on event_calendar_item (updated_at desc);
 
 
+
+
 comment on table event_calendar is '이벤트캘린더';
         comment on column event_calendar.event_id is '이벤트아이디';
          comment on column event_calendar.event_time is '이벤트시간';
@@ -505,7 +519,7 @@ comment on table event_calendar is '이벤트캘린더';
          comment on column event_calendar.event_type is '이벤트유형';
          comment on column event_calendar.name_ko is '이름_한글';
          comment on column event_calendar.name_en is '이름_영문';
-         comment on column event_calendar.description is 'description';
+         comment on column event_calendar.data_value is '데이터값';
          comment on column event_calendar.country is '국가';
          comment on column event_calendar.updated_at is '업데이트일시';
 

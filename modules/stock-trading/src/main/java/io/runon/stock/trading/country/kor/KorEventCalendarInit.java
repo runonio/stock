@@ -1,40 +1,30 @@
 package io.runon.stock.trading.country.kor;
 
-import com.seomse.commons.utils.ExceptionUtil;
 import com.seomse.commons.utils.time.Times;
-import com.seomse.jdbc.objects.JdbcObjects;
-import com.seomse.jdbc.sync.JdbcSync;
-import io.runon.stock.trading.data.management.db.sync.StockDbSync;
 import io.runon.trading.CountryCode;
 import io.runon.trading.TradingTimes;
-import io.runon.trading.data.EventCalendar;
+import io.runon.trading.data.calendar.EventCalendar;
+import io.runon.trading.data.jdbc.TradingJdbc;
 import lombok.extern.slf4j.Slf4j;
-
-import java.sql.Connection;
 
 /**
  * ETF 타겟종목 초기 매핑
+ * 기준금리 등의 기타자료는 수집 프로젝트 참조.
  * @author macle
  */
 @Slf4j
 public class KorEventCalendarInit {
 
     public static void init(){
-        try(Connection selectConn = JdbcSync.newSyncServerConnection()){
-            futuresExpiration(selectConn);
-            optionExpiration(selectConn);
-            Thread.sleep(5000L);
 
-            //서버에 저장하고 개인DB에 동기화
-            StockDbSync.getInstance().sync();
-        }catch (Exception e){
-            log.error(ExceptionUtil.getStackTrace(e));
-        }
+        futuresExpiration();
+        optionExpiration();
+
         //선물 만기정보 등록
     }
 
     //선물 만기정보등록
-    public static void futuresExpiration(Connection connection){
+    public static void futuresExpiration(){
         //Chat GPT
 //        1990년: 3월 8일, 6월 14일, 9월 13일, 12월 13일
 //        1991년: 3월 14일, 6월 13일, 9월 12일, 12월 12일
@@ -121,11 +111,11 @@ public class KorEventCalendarInit {
                 , 20240314, 20240613, 20240912, 20241212
         };
 
-        futuresExpiration(connection, ymds);
+        futuresExpiration(ymds);
 
     }
 
-    public static void optionExpiration(Connection connection){
+    public static void optionExpiration(){
         //
 //    1990년대
 //1990년: 1월 11일, 2월 8일, 3월 8일, 4월 12일, 5월 10일, 6월 14일, 7월 12일, 8월 9일, 9월 13일, 10월 11일, 11월 8일, 12월 13일
@@ -189,10 +179,10 @@ public class KorEventCalendarInit {
 
 
 
-        optionExpiration(connection, ymds);
+        optionExpiration(ymds);
     }
 
-    public static void futuresExpiration(Connection connection, int [] ymms){
+    public static void futuresExpiration( int [] ymds){
         String closeHm = TradingTimes.getCloseTimeHm(CountryCode.KOR);
 
         String dateFormat = "yyyyMMdd hhmm";
@@ -202,24 +192,22 @@ public class KorEventCalendarInit {
         eventCalendar.setCountry(CountryCode.KOR.toString());
         eventCalendar.setUpdatedAt(System.currentTimeMillis());
         eventCalendar.setNameKo("선물 만기일");
-        eventCalendar.setNameKo("futures expiration");
+        eventCalendar.setNameEn("futures expiration");
+        eventCalendar.setEventType("futures_expiration");
 
-        for(int ymd : ymms){
+        for(int ymd : ymds){
 
             eventCalendar.setYmd(ymd);
-            eventCalendar.setEventId("KOR-futures-expiration_" +ymd);
+            eventCalendar.setEventId(eventCalendar.getCountry() + "_" + eventCalendar.getEventType() +"_" +ymd);
             String timeText = eventCalendar.getYmd() +" " + closeHm;
             eventCalendar.setEventTime(Times.getTime(dateFormat, timeText, TradingTimes.KOR_ZONE_ID));
-            try {
-                JdbcObjects.insertIfNoData(connection, eventCalendar);
-            }catch (Exception ignore ){}
+
+            TradingJdbc.updateTimeCheck(eventCalendar);
+
         }
     }
 
-
-
-
-    public static void optionExpiration(Connection connection, int [] ymms){
+    public static void optionExpiration(int [] ymds){
         String closeHm = TradingTimes.getCloseTimeHm(CountryCode.KOR);
 
         String dateFormat = "yyyyMMdd hhmm";
@@ -229,25 +217,78 @@ public class KorEventCalendarInit {
         eventCalendar.setCountry(CountryCode.KOR.toString());
         eventCalendar.setUpdatedAt(System.currentTimeMillis());
         eventCalendar.setNameKo("옵션 만기일");
-        eventCalendar.setNameKo("option expiration");
-
-        for(int ymd : ymms){
+        eventCalendar.setNameEn("option expiration");
+        eventCalendar.setEventType("option_expiration");
+        for(int ymd : ymds){
             eventCalendar.setYmd(ymd);
-            eventCalendar.setEventId("KOR-option-expiration_" +ymd);
+            eventCalendar.setEventId(eventCalendar.getCountry() + "_" + eventCalendar.getEventType() +"_" +ymd);
             String timeText = eventCalendar.getYmd() +" " + closeHm;
             eventCalendar.setEventTime(Times.getTime(dateFormat, timeText, TradingTimes.KOR_ZONE_ID));
-            try {
-                JdbcObjects.insertIfNoData(connection, eventCalendar);
-            }catch (Exception ignore ){}
-        }
+            TradingJdbc.updateTimeCheck(eventCalendar);
 
+        }
     }
 
+    public static void presidentialElection(){
+        int [] ymds ={
+                19921218, 19971218, 20021219, 20071219, 20121219, 20170509, 20220309
+        };
+        presidentialElection(ymds);
+    }
+
+    public static void presidentialElection(int [] ymds){
+        EventCalendar eventCalendar = new EventCalendar();
+
+        String dateFormat = "yyyyMMdd hhmm";
+        String hm = "0600";
+
+        eventCalendar.setCountry(CountryCode.KOR.toString());
+        eventCalendar.setUpdatedAt(System.currentTimeMillis());
+        eventCalendar.setNameKo("한국 대통령 선거일");
+        eventCalendar.setNameEn("KOR presidential election");
+        eventCalendar.setEventType("presidential_election");
+        for(int ymd : ymds){
+            eventCalendar.setYmd(ymd);
+            eventCalendar.setEventId(eventCalendar.getCountry() + "_" + eventCalendar.getEventType() +"_" +ymd);
+            String timeText = eventCalendar.getYmd() +" " + hm;
+            eventCalendar.setEventTime(Times.getTime(dateFormat, timeText, TradingTimes.KOR_ZONE_ID));
+            TradingJdbc.updateTimeCheck(eventCalendar);
+        }
+    }
+
+    public static void nationalAssemblyElection(){
+        int [] ymds ={
+                19920415, 19960411, 20000413, 20040415, 20080409, 20120411, 20160413, 20200415, 20240410
+        };
+        nationalAssemblyElection(ymds);
+    }
+
+    //국회의원 총선
+    public static void nationalAssemblyElection(int [] ymds){
+        EventCalendar eventCalendar = new EventCalendar();
+
+        String dateFormat = "yyyyMMdd hhmm";
+        String hm = "0600";
+
+        eventCalendar.setCountry(CountryCode.KOR.toString());
+        eventCalendar.setUpdatedAt(System.currentTimeMillis());
+        eventCalendar.setNameKo("한국 국회의원 총선");
+        eventCalendar.setNameEn("KOR presidential election");
+        eventCalendar.setEventType("national_assembly_election");
+        for(int ymd : ymds){
+            eventCalendar.setYmd(ymd);
+            eventCalendar.setEventId(eventCalendar.getCountry() + "_" + eventCalendar.getEventType() +"_" +ymd);
+            String timeText = eventCalendar.getYmd() +" " + hm;
+            eventCalendar.setEventTime(Times.getTime(dateFormat, timeText, TradingTimes.KOR_ZONE_ID));
+            TradingJdbc.updateTimeCheck(eventCalendar);
+        }
+    }
 
     public static void main(String[] args) {
         init();
+//        presidentialElection();
+//        nationalAssemblyElection();
+
     }
-
-
 
 }

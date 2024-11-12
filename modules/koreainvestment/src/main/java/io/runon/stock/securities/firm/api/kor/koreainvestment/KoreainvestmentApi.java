@@ -29,15 +29,11 @@ public class KoreainvestmentApi {
         return Singleton.instance;
     }
 
-
-
     //실전 투자
     private static final String ACTUAL_DOMAIN = "https://openapi.koreainvestment.com:9443";
     
     //모의 투자
     private static final String SIMULATED_DOMAIN ="https://openapivts.koreainvestment.com:29443";
-
-
 
     private final String key = Config.getConfig("stock.securities.firm.api.kor.koreainvestment.key");
     private final String secretKey = Config.getConfig("stock.securities.firm.api.kor.koreainvestment.secret.key");
@@ -63,6 +59,8 @@ public class KoreainvestmentApi {
     private final KoreainvestmentMarketApi marketApi;
 
     private final KoreainvestmentFuturesApi futuresApi;
+
+    private final KoreainvestmentStockInfoApi stockInfoApi;
 
     private boolean isActual ;
 
@@ -110,8 +108,8 @@ public class KoreainvestmentApi {
         periodDataApi = new KoreainvestmentPeriodDataApi(this);
         accountApi = new KoreainvestmentAccountApi(this);
         marketApi = new KoreainvestmentMarketApi(this);
-
         futuresApi = new KoreainvestmentFuturesApi(this);
+        stockInfoApi = new KoreainvestmentStockInfoApi(this);
 
         closedDaysFileOut = new ClosedDaysFileOut(marketApi, CountryCode.KOR);
     }
@@ -291,5 +289,9 @@ public class KoreainvestmentApi {
 
     public void setPeriodSleepTime(long periodSleepTime) {
         this.periodSleepTime = periodSleepTime;
+    }
+
+    public KoreainvestmentStockInfoApi getStockInfoApi() {
+        return stockInfoApi;
     }
 }

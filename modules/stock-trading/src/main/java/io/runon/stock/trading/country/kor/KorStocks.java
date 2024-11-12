@@ -37,7 +37,6 @@ public class KorStocks {
     public static final int VOLUME_POWER_DAY_GAP = 0;
 
 
-
     public static final String [] TARGET_EXCHANGES = {
             "KOSPI"
             , "KOSDAQ"
@@ -45,6 +44,17 @@ public class KorStocks {
 
     public static Stock [] getGeneralStocks(){
         return getGeneralStocks(null, YmdUtil.now(TradingTimes.KOR_ZONE_ID));
+    }
+
+    //상장폐지포함
+    public static Stock [] getGeneralStocksInDelisted(){
+        StockData stockData = StockDataManager.getInstance().getStockData();
+        String standardYmd = YmdUtil.now(TradingTimes.KOR_ZONE_ID);
+        String [] types ={
+                "STOCK"
+        };
+
+        return getGeneralStocks( stockData.getAllStocks(TARGET_EXCHANGES, types), standardYmd);
     }
 
     public static Stock [] getGeneralStocks(Stock [] stocks, String standardYmd){
