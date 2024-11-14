@@ -1,6 +1,7 @@
 package io.runon.stock.trading.data;
 
 import com.seomse.jdbc.annotation.Column;
+import com.seomse.jdbc.annotation.DateTime;
 import com.seomse.jdbc.annotation.PrimaryKey;
 import com.seomse.jdbc.annotation.Table;
 import lombok.Data;
@@ -31,5 +32,10 @@ public class StockReg {
 
     @Column(name = "name_en")
     String nameEn;
+
+    @DateTime
+    @Column(name = "updated_at")
+    long updatedAt = System.currentTimeMillis();
+
 
 }

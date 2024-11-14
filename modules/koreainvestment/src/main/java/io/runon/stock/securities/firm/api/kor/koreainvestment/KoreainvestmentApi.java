@@ -62,6 +62,10 @@ public class KoreainvestmentApi {
 
     private final KoreainvestmentStockInfoApi stockInfoApi;
 
+    private final KoreainvestmentOverseasStockInfoApi overseasStockInfoApi;
+
+    private final KoreainvestmentOverseasPeriodApi overseasPeriodApi;
+
     private boolean isActual ;
 
     private long sleepTime = Config.getLong("stock.securities.firm.kor.koreainvestment.sleep.time", 70L);
@@ -110,7 +114,8 @@ public class KoreainvestmentApi {
         marketApi = new KoreainvestmentMarketApi(this);
         futuresApi = new KoreainvestmentFuturesApi(this);
         stockInfoApi = new KoreainvestmentStockInfoApi(this);
-
+        overseasStockInfoApi = new KoreainvestmentOverseasStockInfoApi(this);
+        overseasPeriodApi = new KoreainvestmentOverseasPeriodApi(this);
         closedDaysFileOut = new ClosedDaysFileOut(marketApi, CountryCode.KOR);
     }
 
@@ -155,7 +160,7 @@ public class KoreainvestmentApi {
 
 
             for(HttpApi httpApi : httpApis){
-                httpApi.setRequestProperty("authorization", accessToken.getAuthorization());
+                httpApi.setRequestProperty("authorization", authorization);
             }
         }
     }
@@ -293,5 +298,13 @@ public class KoreainvestmentApi {
 
     public KoreainvestmentStockInfoApi getStockInfoApi() {
         return stockInfoApi;
+    }
+
+    public KoreainvestmentOverseasStockInfoApi getOverseasStockInfoApi() {
+        return overseasStockInfoApi;
+    }
+
+    public KoreainvestmentOverseasPeriodApi getOverseasPeriodApi() {
+        return overseasPeriodApi;
     }
 }

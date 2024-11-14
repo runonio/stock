@@ -195,7 +195,9 @@ public class KoreainvestmentFiles {
                 }else{
                     stockReg.setStockType("ETF");
                 }
-                JdbcObjects.insertIfNoData(stockReg);
+
+                TradingJdbc.updateTimeCheck(stockReg);
+
             }
         }
     }
