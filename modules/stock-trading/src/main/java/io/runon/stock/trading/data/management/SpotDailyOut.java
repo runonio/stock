@@ -2,7 +2,6 @@ package io.runon.stock.trading.data.management;
 
 import com.seomse.commons.config.JsonFileProperties;
 import com.seomse.commons.utils.ExceptionUtil;
-import com.seomse.commons.utils.FileUtil;
 import com.seomse.commons.utils.time.Times;
 import com.seomse.commons.utils.time.YmdUtil;
 import io.runon.stock.trading.Stock;
@@ -13,16 +12,13 @@ import io.runon.stock.trading.data.StockDataManager;
 import io.runon.stock.trading.path.StockPathLastTime;
 import io.runon.trading.CountryCode;
 import io.runon.trading.TradingConfig;
-import io.runon.trading.data.TextLong;
 import io.runon.trading.data.file.FileLineOut;
 import io.runon.trading.data.file.PathTimeLine;
 import io.runon.trading.data.file.TimeName;
-import io.runon.trading.data.json.JsonTimeFile;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.File;
 import java.time.ZoneId;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -52,7 +48,7 @@ public class SpotDailyOut {
 
     protected String listedNullBeginYmd= null;
 
-
+    protected final String interval ="1d";
 
     public SpotDailyOut(StockDailyOutParam param){
 
@@ -81,53 +77,12 @@ public class SpotDailyOut {
     }
 
     public void setLastYmdMap(Stock [] stocks){
-
-        Map<String, Stock> stockMap = Stocks.makeMap(stocks);
-
-        String filePath = param.getStockPathLastTime().getLastTimeFilePath(countryCode,"1d");
-        if(FileUtil.isFile(filePath)){
-            TextLong [] idTimes = JsonTimeFile.getLastTimeLines(filePath);
-
-            for(TextLong idTime : idTimes){
-
-                String id = idTime.getText();
-
-
-                int ymd = Integer.parseInt(YmdUtil.getYmd(idTime.getNumber(), zoneId));
-
-                StockYmd stockYmd = lastYmdMap.get(id);
-
-                if(stockYmd == null){
-                    Stock stock = stockMap.get(id);
-                    if(stock == null){
-                        continue;
-                    }
-
-                    stockYmd = new StockYmd(stock, ymd);
-                    lastYmdMap.put(id, stockYmd);
-                }else{
-                    stockYmd.setYmd(Integer.max(ymd, stockYmd.getYmd()));
-                }
-            }
-        }
+        SpotOuts.setLastYmdMap(lastYmdMap, stocks, countryCode,param.getStockPathLastTime(), interval, zoneId);
     }
 
 
     public void outLastYmdMap(){
-        Collection<StockYmd> stockYmdCollection =  lastYmdMap.values();
-
-        int index = 0;
-        TextLong[] idTimes = new TextLong[stockYmdCollection.size()];
-        for(StockYmd stockYmd : stockYmdCollection){
-
-            TextLong idTime = new TextLong();
-            idTime.setText(stockYmd.getStock().getStockId());
-            idTime.setNumber(Stocks.getDailyOpenTime(stockYmd.getStock(), stockYmd.getYmd()));
-            idTimes[index++] = idTime;
-        }
-
-        String filePath = param.getStockPathLastTime().getLastTimeFilePath(countryCode,"1d");
-        JsonTimeFile.updateLastTimeLines(idTimes, filePath, TextLong.SORT_DESC);
+        SpotOuts.outLastYmdMap(lastYmdMap, countryCode, param.getStockPathLastTime(), interval);
     }
 
 
@@ -149,9 +104,7 @@ public class SpotDailyOut {
     public void out(Stock [] stocks){
         setLastYmdMap(stocks);
 
-        log.debug("sort start");
-        Stocks.sortUseLastTimeParallel(stocks,"1d", stockPathLastTime);
-        log.debug("sort end");
+        Stocks.sortUseLastTimeParallel(stocks,interval, stockPathLastTime);
         int count = 0;
 
         for(Stock stock : stocks){
@@ -165,10 +118,10 @@ public class SpotDailyOut {
                     count = 0;
                 }
             }catch (Exception e){
-                try{
-                    Thread.sleep(5000L);
-                }catch (Exception ignore){}
                 log.error(ExceptionUtil.getStackTrace(e) +"\n" + stock);
+                try{
+                    Thread.sleep(Times.MINUTE_1);
+                }catch (Exception ignore){}
             }
         }
 
@@ -200,21 +153,17 @@ public class SpotDailyOut {
      */
     public void out(Stock stock){
 
-
-
         String nowYmd = YmdUtil.now(zoneId);
         int nowYmdNum = Integer.parseInt(nowYmd);
 
         //초기 데이터는 상장 년원일
         String nextYmd ;
 
-        String filesDirPath = stockPathLastTime.getFilesDirPath(stock, "1d");
-
+        String filesDirPath = stockPathLastTime.getFilesDirPath(stock, interval);
 
         File filesDirFile = new File(filesDirPath);
         //noinspection ResultOfMethodCallIgnored
         filesDirFile.mkdirs();
-
 
         PathTimeLine pathTimeLine = param.getPathTimeLine();
 
@@ -283,7 +232,6 @@ public class SpotDailyOut {
             if(nextYmdNum > maxYmd){
                 break;
             }
-
 
             String endYmd = YmdUtil.getYmd(nextYmd, param.getNextDay());
             callCount++;

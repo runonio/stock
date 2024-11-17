@@ -1,14 +1,19 @@
 package io.runon.stock.securities.firm.api.kor.koreainvestment;
 
 import com.seomse.commons.http.HttpApiResponse;
+import com.seomse.commons.utils.time.Times;
+import io.runon.stock.trading.Stock;
 import io.runon.stock.trading.exception.StockApiException;
 import io.runon.trading.CountryCode;
 import io.runon.trading.TradingTimes;
 import io.runon.trading.technical.analysis.candle.TradeCandle;
+import io.runon.trading.technical.analysis.candle.TradeCandleDataKey;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -45,6 +50,140 @@ public class KoreainvestmentOverseasPeriodApi {
 
         return response.getMessage();
     }
+
+    public TradeCandle [] get1mCandles(Stock stock, String ymd){
+        //그날의 최대시간 호출
+        String firstText = get1mCandleJsonText(stock.getExchange(), stock.getSymbol(), ymd, "2350");
+        JSONObject object = new JSONObject(firstText);
+        String code = object.getString("rt_cd");
+        if(!code.equals("0")){
+            if(!object.isNull("msg1")){
+                throw new StockApiException("rt_cd: " + code + ", message: " + object.getString("msg1"));
+            }else{
+                throw new StockApiException("rt_cd: " + code);
+            }
+        }
+        if(object.isNull("output2")){
+            return TradeCandle.EMPTY_CANDLES;
+        }
+
+        JSONArray array = object.getJSONArray("output2");
+
+        if(array.isEmpty()){
+            return TradeCandle.EMPTY_CANDLES;
+        }
+
+
+        boolean isBreak = false;
+        List<TradeCandle> list = new ArrayList<>();
+
+        for (int i = 0; i < array.length(); i++) {
+            TradeCandle candle = get1mCandle(array.getJSONObject(i));
+            list.add(candle);
+
+
+            if(!candle.getData(TradeCandleDataKey.YMDHM).startsWith(ymd)){
+                isBreak =true;
+                break;
+            }
+        }
+
+        for(;;){
+            if(isBreak){
+                break;
+            }
+            koreainvestmentApi.minuteSleep();
+
+            TradeCandle last = list.get(list.size()-1);
+            String ymdhm = last.getData(TradeCandleDataKey.YMDHM);
+            String next = Times.getYmdhm(ymdhm, -Times.MINUTE_1);
+            next = Times.getHm(next);
+            String jsonText = get1mCandleJsonText(stock.getExchange(), stock.getSymbol(), ymd, next);
+
+//            System.out.println(stock.getSymbol() + " " + ymd +" " + next);
+
+            object = new JSONObject(jsonText);
+            code = object.getString("rt_cd");
+            if(!code.equals("0")){
+                if(!object.isNull("msg1")){
+                    throw new StockApiException("rt_cd: " + code + ", message: " + object.getString("msg1"));
+                }else{
+                    throw new StockApiException("rt_cd: " + code);
+                }
+            }
+
+            if(object.isNull("output2")){
+                break;
+            }
+
+            array = object.getJSONArray("output2");
+            if(array.isEmpty()){
+                break;
+            }
+
+            for (int i = 0; i < array.length(); i++) {
+                TradeCandle candle = get1mCandle(array.getJSONObject(i));
+                list.add(candle);
+                if(!candle.getData(TradeCandleDataKey.YMDHM).startsWith(ymd)){
+                    isBreak =true;
+                    break;
+                }
+
+            }
+        }
+
+        if(list.isEmpty()){
+            return TradeCandle.EMPTY_CANDLES;
+        }
+
+        List<TradeCandle> reslut = new ArrayList<>();
+        //가격 변화량 설정하기
+
+        int first = list.size()-1;
+        for (int i = first; i >-1 ; i--) {
+
+            TradeCandle candle = list.get(i);
+            if(candle.getData(TradeCandleDataKey.YMDHM).startsWith(ymd)){
+                reslut.add(candle);
+            }
+            if(i == first){
+                continue;
+            }
+            candle.setPrevious(list.get(i+1).getPrevious());
+            candle.setChange();
+            candle.setEndTrade();
+        }
+
+
+        return reslut.toArray(new TradeCandle[0]);
+    }
+    public TradeCandle get1mCandle(JSONObject row){
+
+        String korYmd = row.getString("kymd");
+        String korHms = row.getString("khms");
+
+        String ymd = row.getString("xymd");
+        String hms = row.getString("xhms");
+
+        long openTime = Times.getTime("yyyyMMdd HHmmss", korYmd +" " + korHms, TradingTimes.KOR_ZONE_ID);
+        long closeTime = openTime + Times.MINUTE_1;
+
+        TradeCandle tradeCandle = new TradeCandle();
+        tradeCandle.setOpenTime(openTime);
+        tradeCandle.setCloseTime(closeTime);
+        tradeCandle.setOpen(row.getBigDecimal("open"));
+        tradeCandle.setHigh(row.getBigDecimal("high"));
+        tradeCandle.setLow(row.getBigDecimal("low"));
+        tradeCandle.setClose(row.getBigDecimal("last"));
+        tradeCandle.setVolume(row.getBigDecimal("evol"));
+        tradeCandle.setAmount(row.getBigDecimal("eamt"));
+        tradeCandle.setEndTrade();
+
+        tradeCandle.addData(TradeCandleDataKey.KOR_YMDHM, korYmd+" " + korHms.substring(0,4));
+        tradeCandle.addData(TradeCandleDataKey.YMDHM, ymd+" " + hms.substring(0,4));
+        return tradeCandle;
+    }
+
 
     public String getDailyJsonText(String exchange, String symbol, String baseYmd, boolean isRevisePrice){
         //apiportal.koreainvestment.com/apiservice/apiservice-oversea-stock-quotations#L_0e9fb2ba-bbac-4735-925a-a35e08c9a790

@@ -7,7 +7,6 @@ import io.runon.trading.data.file.PathTimeLine;
 import io.runon.trading.technical.analysis.candle.TradeCandle;
 import lombok.extern.slf4j.Slf4j;
 
-
 /**
  * 현물 일봉 캔들 내리기
  * 한국 투자증권은 아직 분봉과거치를 지원하지 않음

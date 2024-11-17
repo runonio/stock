@@ -10,7 +10,6 @@ import io.runon.trading.CountryCode;
 import io.runon.trading.LockType;
 import io.runon.trading.PriceChangeType;
 import io.runon.trading.TradingTimes;
-import io.runon.trading.data.csv.CsvCandle;
 import io.runon.trading.data.daily.VolumePowerDaily;
 import io.runon.trading.technical.analysis.candle.TradeCandle;
 import io.runon.trading.technical.analysis.candle.TradeCandleDataKey;
@@ -18,7 +17,6 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.math.BigDecimal;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -522,9 +520,11 @@ public class KoreainvestmentPeriodDataApi {
 
             TradeCandle last = list.get(list.size()-1);
             String ymdhm = Times.ymdhm(last.getOpenTime(), TradingTimes.KOR_ZONE_ID);
-            String next = Times.getYmdhm(ymdhm, -Times.MINUTE_5);
+            String next = Times.getYmdhm(ymdhm, -Times.MINUTE_1);
             next = Times.getHm(next);
             String jsonText = get1mCandleJsonText(symbol, ymd, next);
+
+//            System.out.println(symbol + " " + ymd + " " + next);
 
             object = new JSONObject(jsonText);
             code = object.getString("rt_cd");
@@ -553,6 +553,10 @@ public class KoreainvestmentPeriodDataApi {
                 }
                 list.add(candle);
             }
+        }
+
+        if(list.isEmpty()){
+            return TradeCandle.EMPTY_CANDLES;
         }
 
         TradeCandle [] candles = new TradeCandle[list.size()];
