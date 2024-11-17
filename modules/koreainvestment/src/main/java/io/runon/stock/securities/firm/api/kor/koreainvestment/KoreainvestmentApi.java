@@ -72,6 +72,9 @@ public class KoreainvestmentApi {
 
     private long periodSleepTime = Config.getLong("stock.securities.firm.kor.koreainvestment.period.out.time", 1000L);
 
+
+    private long minuteSleepTime = Config.getLong("stock.securities.firm.kor.koreainvestment.minute.out.time", 300L);
+
     private final ClosedDaysFileOut closedDaysFileOut;
 
     private KoreainvestmentApi(){
@@ -282,6 +285,13 @@ public class KoreainvestmentApi {
         try {
             Thread.sleep(periodSleepTime);
         }catch (Exception ignore){}
+    }
+
+    public void minuteSleep(){
+        try {
+            Thread.sleep(minuteSleepTime);
+        }catch (Exception ignore){}
+
     }
 
     public long getPeriodSleepTime() {

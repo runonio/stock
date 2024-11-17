@@ -30,6 +30,9 @@ public interface StockData {
      */
     Stock[] getAllStocks(String [] exchanges, String [] types);
 
+
+    Stock[] getAllStocks(String [] exchanges);
+
     String [] getGroupStockIds(String groupId);
 
     Stock [] getGroupStocks(String groupId);

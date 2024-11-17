@@ -8,14 +8,13 @@ import io.runon.stock.trading.Stocks;
 /**
  * @author macle
  */
-public class OverseasDailyCandleJsonApi {
+public class Overseas1mCandleJsonApiExample {
     public static void main(String[] args) {
         Stock stock = Stocks.getStock("USA_AAPL");
 
         KoreainvestmentApi api = KoreainvestmentApi.getInstance();
         KoreainvestmentOverseasPeriodApi periodApi  = api.getOverseasPeriodApi();
-
-        System.out.println(periodApi.getDailyJsonText(stock.getExchange(), stock.getSymbol(), "20241112", true));
+        //2024년 11월 16일 체크해보니 10월 11일부터제공 한달정도 제공하는걸로 보임.
+        System.out.println(periodApi.get1mCandleJsonText(stock.getExchange(), stock.getSymbol(), "20241011", "1600"));
     }
-
 }

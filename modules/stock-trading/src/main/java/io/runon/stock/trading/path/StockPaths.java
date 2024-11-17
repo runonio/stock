@@ -141,4 +141,9 @@ public class StockPaths {
         return TradingDataPath.getDirPath(countryCode, "stock", dirType, configKey, dirName);
     }
 
+
+    public static void main(String[] args) {
+        String path =getSpotCandlePath(CountryCode.USA);
+        System.out.println(path);
+    }
 }

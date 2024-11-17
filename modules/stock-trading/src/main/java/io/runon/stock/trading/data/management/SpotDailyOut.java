@@ -8,18 +8,19 @@ import com.seomse.commons.utils.time.YmdUtil;
 import io.runon.stock.trading.Stock;
 import io.runon.stock.trading.StockYmd;
 import io.runon.stock.trading.Stocks;
+import io.runon.stock.trading.data.StockData;
+import io.runon.stock.trading.data.StockDataManager;
 import io.runon.stock.trading.path.StockPathLastTime;
 import io.runon.trading.CountryCode;
 import io.runon.trading.TradingConfig;
-import io.runon.trading.TradingTimes;
 import io.runon.trading.data.TextLong;
 import io.runon.trading.data.file.FileLineOut;
 import io.runon.trading.data.file.PathTimeLine;
-import io.runon.trading.data.file.TimeLines;
 import io.runon.trading.data.file.TimeName;
 import io.runon.trading.data.json.JsonTimeFile;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.File;
 import java.time.ZoneId;
 import java.util.Collection;
 import java.util.HashMap;
@@ -34,11 +35,11 @@ import java.util.Map;
  */
 @Slf4j
 public class SpotDailyOut {
+
     protected final StockDailyOutParam param;
     protected final StockPathLastTime stockPathLastTime;
 
     protected CountryCode countryCode = TradingConfig.getDefaultCountryCode();
-
 
 
     //장중에 수집하는경우 마지막 라인의 변화를 체크하는 옵션
@@ -46,6 +47,12 @@ public class SpotDailyOut {
     protected boolean isLastLineCheck = true;
 
     protected String serviceName;
+
+    protected boolean isDelisted = false;
+
+    protected String listedNullBeginYmd= null;
+
+
 
     public SpotDailyOut(StockDailyOutParam param){
 
@@ -60,6 +67,7 @@ public class SpotDailyOut {
     public void setCountryCode(CountryCode countryCode) {
         this.countryCode = countryCode;
     }
+
 
     protected ZoneId zoneId = TradingConfig.DEFAULT_TIME_ZONE_ID;
 
@@ -127,20 +135,35 @@ public class SpotDailyOut {
         //전체 종목 일봉 내리기
         //KONEX 는 제외
         String [] exchanges = param.getExchanges();
-        Stock [] stocks = Stocks.getStocks(exchanges);
+        Stock[] stocks;
+        if(isDelisted) {
+            StockDataManager stockDataManager = StockDataManager.getInstance();
+            StockData stockData = stockDataManager.getStockData();
+            stocks = stockData.getAllStocks(exchanges);
+        }else{
+            stocks = Stocks.getStocks(exchanges);
+        }
         out(stocks);
     }
 
     public void out(Stock [] stocks){
         setLastYmdMap(stocks);
 
+        log.debug("sort start");
         Stocks.sortUseLastTimeParallel(stocks,"1d", stockPathLastTime);
+        log.debug("sort end");
+        int count = 0;
 
         for(Stock stock : stocks){
             try {
                 //같은 데이터를 호출하면 호출 제한이 걸리는 경우가 있다 전체 캔들을 내릴때는 예외처리를 강제해서 멈추지 않는 로직을 추가
                 out(stock);
                 param.sleep();
+                count++;
+                if(count > 50){
+                    outLastYmdMap();
+                    count = 0;
+                }
             }catch (Exception e){
                 try{
                     Thread.sleep(5000L);
@@ -177,6 +200,8 @@ public class SpotDailyOut {
      */
     public void out(Stock stock){
 
+
+
         String nowYmd = YmdUtil.now(zoneId);
         int nowYmdNum = Integer.parseInt(nowYmd);
 
@@ -184,6 +209,12 @@ public class SpotDailyOut {
         String nextYmd ;
 
         String filesDirPath = stockPathLastTime.getFilesDirPath(stock, "1d");
+
+
+        File filesDirFile = new File(filesDirPath);
+        //noinspection ResultOfMethodCallIgnored
+        filesDirFile.mkdirs();
+
 
         PathTimeLine pathTimeLine = param.getPathTimeLine();
 
@@ -215,10 +246,15 @@ public class SpotDailyOut {
             }
         }else{
             if(stock.getListedYmd() == null){
-                log.error("listed ymd null: " + stock);
-                return ;
+                if(listedNullBeginYmd == null) {
+                    log.error("listed ymd null: " + stock);
+                    return;
+                }else{
+                    nextYmd = listedNullBeginYmd;
+                }
+            }else{
+                nextYmd = Integer.toString(stock.getListedYmd());
             }
-            nextYmd = Integer.toString(stock.getListedYmd());
         }
 
         TimeName.Type timeNameType = TimeName.getDefaultType(Times.DAY_1);
@@ -236,15 +272,21 @@ public class SpotDailyOut {
             maxYmd = stock.getDelistedYmd();
         }
 
-
+        int callCount = 0;
         for(;;){
 
             if (YmdUtil.compare(nextYmd, nowYmd) > 0) {
                 break;
             }
 
-            String endYmd = YmdUtil.getYmd(nextYmd, param.getNextDay());
+            int nextYmdNum = Integer.parseInt(nextYmd);
+            if(nextYmdNum > maxYmd){
+                break;
+            }
 
+
+            String endYmd = YmdUtil.getYmd(nextYmd, param.getNextDay());
+            callCount++;
             int endYmdNum =  Integer.parseInt(endYmd);
             if(endYmdNum > maxYmd){
                 endYmd = Integer.toString(maxYmd);
@@ -255,10 +297,10 @@ public class SpotDailyOut {
 
             if(isLastLineCheck && isFirst) {
 
-                FileLineOut.outBackPartChange(pathTimeLine, lines, filesDirPath, timeNameType, zoneId);
+                FileLineOut.outBackPartChange(pathTimeLine, lines, filesDirPath, timeNameType);
                 isFirst = false;
             }else{
-                FileLineOut.outNewLines(pathTimeLine, lines, filesDirPath, timeNameType, zoneId);
+                FileLineOut.outNewLines(pathTimeLine, lines, filesDirPath, timeNameType);
             }
 
             StockYmd stockYmd = lastYmdMap.get(stock.getStockId());
@@ -271,18 +313,26 @@ public class SpotDailyOut {
                 stockYmd.setYmd(Integer.parseInt(endYmd));
             }
 
+            if(callCount > 20){
+                outLastYmdMap();
+                callCount = 0;
+            }
+
+
             if(endYmdNum >= maxYmd){
                 break;
             }
-
-            if(lines.length == 0){
-                nextYmd = YmdUtil.getYmd(endYmd, 1);
-            }else{
-                nextYmd = YmdUtil.getYmd(TimeLines.getMaxYmd(param.getPathTimeLine(), lines, zoneId),1);
-            }
-
-
+            nextYmd = YmdUtil.getYmd(endYmd, 1);
+//            if(lines.length == 0){
+//                nextYmd = YmdUtil.getYmd(endYmd, 1);
+//            }else{
+//
+//                nextYmd = YmdUtil.getYmd(TimeLines.getMaxYmd(param.getPathTimeLine(), lines, zoneId),1);
+//            }
         }
     }
 
+    public void setListedNullBeginYmd(String listedNullBeginYmd) {
+        this.listedNullBeginYmd = listedNullBeginYmd;
+    }
 }

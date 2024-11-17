@@ -6,10 +6,7 @@ import com.seomse.jdbc.objects.JdbcObjects;
 import io.runon.stock.trading.Stock;
 import io.runon.stock.trading.Stocks;
 import io.runon.stock.trading.exception.StockDataException;
-import io.runon.trading.data.Exchanges;
 
-import java.time.ZoneId;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -121,6 +118,20 @@ public class StockDataJdbc implements StockData{
 
         if(where.isEmpty()){
             throw new StockDataException("exchange, types null");
+        }
+
+        return  JdbcObjects.getObjList(Stock.class, where.toString()).toArray(new Stock[0]);
+    }
+
+    @Override
+    public Stock[] getAllStocks(String[] exchanges) {
+        StringBuilder where = new StringBuilder();
+
+        if(exchanges != null){
+            where.append("exchange in ") .append(QueryUtils.whereIn(exchanges));
+        }
+        if(where.isEmpty()){
+            throw new StockDataException("exchange null");
         }
 
         return  JdbcObjects.getObjList(Stock.class, where.toString()).toArray(new Stock[0]);

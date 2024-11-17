@@ -34,7 +34,7 @@ public class StockCandles {
         long beginTime = YmdUtil.getTime(beginYmd, zoneId);
         long endTime = YmdUtil.getTime(endYmd, zoneId) + Times.DAY_1 ;
         String path = StockPaths.getSpotCandleFilesPath(stock.getStockId(), "1d");
-        return CsvCandle.load(path, Times.DAY_1,beginTime, endTime, zoneId);
+        return CsvCandle.load(path, Times.DAY_1,beginTime, endTime);
     }
 
     public static int getSpotCandleDirsCount(CountryCode countryCode){

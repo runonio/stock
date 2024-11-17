@@ -10,6 +10,7 @@ import io.runon.trading.CountryCode;
 import io.runon.trading.LockType;
 import io.runon.trading.PriceChangeType;
 import io.runon.trading.TradingTimes;
+import io.runon.trading.data.csv.CsvCandle;
 import io.runon.trading.data.daily.VolumePowerDaily;
 import io.runon.trading.technical.analysis.candle.TradeCandle;
 import io.runon.trading.technical.analysis.candle.TradeCandleDataKey;
@@ -17,6 +18,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.math.BigDecimal;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -454,10 +456,158 @@ public class KoreainvestmentPeriodDataApi {
         return list.toArray(new VolumePowerDaily[0]);
     }
 
-    public static void main(String[] args) {
-        String dateFormat = "yyyyMMdd hh:mm";
-        String ymd = YmdUtil.now(TradingTimes.KOR_ZONE_ID);
 
-        System.out.println(Times.ymdhm(TradingTimes.getDailyOpenTime(CountryCode.KOR, ymd), TradingTimes.KOR_ZONE_ID));
+    public String get1mCandleJsonText(String symbol, String ymd, String hm){
+        //apiportal.koreainvestment.com/apiservice/apiservice-domestic-stock-quotations2#L_9fece97b-401f-4379-9e9d-4365b63c1126
+        koreainvestmentApi.updateAccessToken();
+        String url = "/uapi/domestic-stock/v1/quotations/inquire-time-dailychartprice";
+        Map<String, String> requestHeaderMap = koreainvestmentApi.computeIfAbsenttPropertySingleMap(url,"tr_id","FHKST03010230");
+
+        String query = "?FID_COND_MRKT_DIV_CODE=J&FID_INPUT_ISCD=" + symbol +"&FID_INPUT_DATE_1=" +ymd +"&FID_INPUT_HOUR_1=" + hm +"00&FID_PW_DATA_INCU_YN=Y&FID_FAKE_TICK_INCU_YN=N";
+        HttpApiResponse response =  koreainvestmentApi.getHttpGet().getResponse(url + query, requestHeaderMap);
+        if(response.getResponseCode() != 200){
+            throw new StockApiException("token make fail code:" + response.getResponseCode() +", " + response.getMessage());
+        }
+        return response.getMessage();
     }
+
+    public TradeCandle [] get1mCandles(String symbol, String ymd){
+
+//        List<String>
+        //23시를 기록하여 마지막 시간값을 가져온다.
+        String firstText = get1mCandleJsonText(symbol, ymd, "2300");
+        JSONObject object = new JSONObject(firstText);
+        String code = object.getString("rt_cd");
+        if(!code.equals("0")){
+            if(!object.isNull("msg1")){
+                throw new StockApiException("rt_cd: " + code + ", message: " + object.getString("msg1"));
+            }else{
+                throw new StockApiException("rt_cd: " + code);
+            }
+        }
+        if(object.isNull("output2")){
+            return TradeCandle.EMPTY_CANDLES;
+        }
+
+        if(object.isNull("output1")){
+            return TradeCandle.EMPTY_CANDLES;
+        }
+
+
+
+        JSONArray array = object.getJSONArray("output2");
+        if(array.isEmpty()){
+            return TradeCandle.EMPTY_CANDLES;
+        }
+
+        BigDecimal previous =  object.getJSONObject("output1").getBigDecimal("stck_prdy_clpr");
+
+        boolean isBreak = false;
+        List<TradeCandle> list = new ArrayList<>();
+
+        for (int i = 0; i < array.length(); i++) {
+            TradeCandle candle = get1mCandle(array.getJSONObject(i),ymd);
+            if(candle == null){
+                isBreak = true;
+                break;
+            }
+            list.add(candle);
+        }
+
+        for(;;){
+            if(isBreak){
+                break;
+            }
+            koreainvestmentApi.minuteSleep();
+
+            TradeCandle last = list.get(list.size()-1);
+            String ymdhm = Times.ymdhm(last.getOpenTime(), TradingTimes.KOR_ZONE_ID);
+            String next = Times.getYmdhm(ymdhm, -Times.MINUTE_5);
+            next = Times.getHm(next);
+            String jsonText = get1mCandleJsonText(symbol, ymd, next);
+
+            object = new JSONObject(jsonText);
+            code = object.getString("rt_cd");
+            if(!code.equals("0")){
+                if(!object.isNull("msg1")){
+                    throw new StockApiException("rt_cd: " + code + ", message: " + object.getString("msg1"));
+                }else{
+                    throw new StockApiException("rt_cd: " + code);
+                }
+            }
+
+            if(object.isNull("output2")){
+                break;
+            }
+
+            array = object.getJSONArray("output2");
+            if(array.isEmpty()){
+                break;
+            }
+
+            for (int i = 0; i < array.length(); i++) {
+                TradeCandle candle = get1mCandle(array.getJSONObject(i),ymd);
+                if(candle == null){
+                    isBreak = true;
+                    break;
+                }
+                list.add(candle);
+            }
+        }
+
+        TradeCandle [] candles = new TradeCandle[list.size()];
+        TradeCandle firstCandle =  list.get(list.size()-1);
+        firstCandle.setPrevious(previous);
+        firstCandle.setChange();
+        firstCandle.setEndTrade();
+        int index = 0;
+        candles[index++] = firstCandle;
+
+        for (int i = candles.length-2; i >-1 ; i--) {
+            TradeCandle candle = list.get(i);
+            candle.setPrevious(list.get(i+1).getPrevious());
+            candle.setChange();
+            candle.setEndTrade();
+            candles[index++] = candle;
+        }
+
+        return candles;
+    }
+
+    public TradeCandle get1mCandle(JSONObject row, String inYmd){
+
+        String ymd = row.getString("stck_bsop_date");
+        String hms = row.getString("stck_cntg_hour");
+
+        if(inYmd != null && !ymd.equals(inYmd)){
+            return null;
+        }
+
+        long openTime = Times.getTime("yyyyMMdd HHmmss", ymd +" " + hms, TradingTimes.KOR_ZONE_ID);
+        long closeTime = openTime + Times.MINUTE_1;
+
+        TradeCandle tradeCandle = new TradeCandle();
+        tradeCandle.setOpenTime(openTime);
+        tradeCandle.setCloseTime(closeTime);
+        tradeCandle.setOpen(row.getBigDecimal("stck_oprc"));
+        tradeCandle.setHigh(row.getBigDecimal("stck_hgpr"));
+        tradeCandle.setLow(row.getBigDecimal("stck_lwpr"));
+        tradeCandle.setClose(row.getBigDecimal("stck_prpr"));
+        tradeCandle.setVolume(row.getBigDecimal("cntg_vol"));
+
+        tradeCandle.addData(TradeCandleDataKey.SUM_AMOUNT, row.getString("acml_tr_pbmn"));
+        tradeCandle.setEndTrade();
+
+        return tradeCandle;
+    }
+
+    public static void main(String[] args) {
+
+        String ymdhm = Times.ymdhm(System.currentTimeMillis(), TradingTimes.KOR_ZONE_ID);
+        System.out.println(ymdhm);
+
+        System.out.println(Times.getYmdhm(ymdhm, -Times.MINUTE_5));
+
+    }
+
 }
