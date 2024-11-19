@@ -75,6 +75,8 @@ public class StockDbSync {
         //이벤트
         timeTableClassList.add(EventCalendar.class);
         timeTableClassList.add(EventCalendarItem.class);
+        timeTableClassList.add(NoDateData.class);
+
 
         //시스템 관련 테이블 동기화
         timeTableClassList.add(CommonConfig.class);
