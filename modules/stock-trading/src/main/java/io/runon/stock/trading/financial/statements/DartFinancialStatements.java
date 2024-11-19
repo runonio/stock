@@ -25,7 +25,6 @@ public class DartFinancialStatements {
         return makeFnlttSinglAcntAllMap(getFnlttSinglAcntAll(stockId, yq));
     }
 
-
     public static Map<String, Map<String, BigDecimal>> makeFnlttSinglAcntAllMap(String jsonText){
 
         Map<String, Map<String, BigDecimal>> map = new HashMap<>();
@@ -52,9 +51,7 @@ public class DartFinancialStatements {
         }
 
         return map;
-
     }
-
 
     public static void main(String[] args) {
         Config.getConfig("");
