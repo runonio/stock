@@ -20,6 +20,12 @@ public class KoreainvestmentStockInfoApi {
     public static final String INVEST_OPINION_SECURITIES_KEY = "koreainvestment_invest_opinion_securities";
 
 
+    public static final String BALANCE_SHEET_KEY = "koreainvestment_balance_sheet";
+
+
+    public static final String INCOME_STATEMENT_KEY = "koreainvestment_income_statement";
+
+
     private final KoreainvestmentApi koreainvestmentApi;
     public KoreainvestmentStockInfoApi(KoreainvestmentApi koreainvestmentApi){
         this.koreainvestmentApi = koreainvestmentApi;
@@ -40,9 +46,6 @@ public class KoreainvestmentStockInfoApi {
 
     }
 
-    //대차대조표
-//    https://apiportal.koreainvestment.com/apiservice/apiservice-domestic-stock-information#L_f77aedcb-b46f-4aa0-b062-f03b9a444405
-
     /**
      * 대차대조표
      *  apiportal.koreainvestment.com/apiservice/apiservice-domestic-stock-information#L_f77aedcb-b46f-4aa0-b062-f03b9a444405
@@ -61,8 +64,17 @@ public class KoreainvestmentStockInfoApi {
      * @param symbol 종목 기호
      */
     public String getBalanceSheetJsonText(String yearQuarter, String symbol){
+        //    https://apiportal.koreainvestment.com/apiservice/apiservice-domestic-stock-information#L_f77aedcb-b46f-4aa0-b062-f03b9a444405
         koreainvestmentApi.updateAccessToken();
         String url = "/uapi/domestic-stock/v1/finance/balance-sheet";
+
+        yearQuarter = yearQuarter.toLowerCase();
+        if(yearQuarter.equals("y") || yearQuarter.equals("year")){
+            yearQuarter = "0";
+        }else if(yearQuarter.equals("q") || yearQuarter.equals("quarter")){
+            yearQuarter = "1";
+        }
+
         Map<String, String> requestHeaderMap = koreainvestmentApi.computeIfAbsenttPropertySingleMap(url,"tr_id","FHKST66430100");
         String query = "?FID_DIV_CLS_CODE=" + yearQuarter + "&fid_cond_mrkt_div_code=J&fid_input_iscd=" + symbol;
         HttpApiResponse response =  koreainvestmentApi.getHttpGet().getResponse(url + query, requestHeaderMap);
@@ -72,6 +84,45 @@ public class KoreainvestmentStockInfoApi {
 
         return response.getMessage();
     }
+
+    /**
+     * -stac_yymm	결산 년월	String	Y	6
+     * -sale_account	매출액	String	Y	18
+     * -sale_cost	매출 원가	String	Y	182
+     * -sale_totl_prfi	매출 총 이익	String	Y	182
+     * -depr_cost	감가상각비	String	Y	182	출력되지 않는 데이터(99.99 로 표시)
+     * -sell_mang	판매 및 관리비	String	Y	182	출력되지 않는 데이터(99.99 로 표시)
+     * -bsop_prti	영업 이익	String	Y	182
+     * -bsop_non_ernn	영업 외 수익	String	Y	182	출력되지 않는 데이터(99.99 로 표시)
+     * -bsop_non_expn	영업 외 비용	String	Y	182	출력되지 않는 데이터(99.99 로 표시)
+     * -op_prfi	경상 이익	String	Y	182
+     * -spec_prfi	특별 이익	String	Y	182
+     * -spec_loss	특별 손실	String	Y	182
+     * -thtr_ntin	당기순이익	String	Y	102
+     * @param yearQuarter year : 0, quarter : 1
+     * @param symbol 종목 기호
+     */
+    public String getIncomeStatementJsonText(String yearQuarter, String symbol){
+        koreainvestmentApi.updateAccessToken();
+        String url = "/uapi/domestic-stock/v1/finance/income-statement";
+
+        yearQuarter = yearQuarter.toLowerCase();
+        if(yearQuarter.equals("y") || yearQuarter.equals("year")){
+            yearQuarter = "0";
+        }else if(yearQuarter.equals("q") || yearQuarter.equals("quarter")){
+            yearQuarter = "1";
+        }
+
+        Map<String, String> requestHeaderMap = koreainvestmentApi.computeIfAbsenttPropertySingleMap(url,"tr_id","FHKST66430200");
+        String query = "?FID_DIV_CLS_CODE=" + yearQuarter + "&fid_cond_mrkt_div_code=J&fid_input_iscd=" + symbol;
+        HttpApiResponse response =  koreainvestmentApi.getHttpGet().getResponse(url + query, requestHeaderMap);
+        if(response.getResponseCode() != 200){
+            throw new StockApiException("token make fail code:" + response.getResponseCode() +", " + response.getMessage());
+        }
+
+        return response.getMessage();
+    }
+
 
 
     /**

@@ -161,7 +161,6 @@ public class KoreainvestmentApi {
 
             String authorization = accessToken.getAuthorization();
 
-
             for(HttpApi httpApi : httpApis){
                 httpApi.setRequestProperty("authorization", authorization);
             }
