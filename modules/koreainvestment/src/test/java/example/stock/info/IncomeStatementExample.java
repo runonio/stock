@@ -7,12 +7,12 @@ import io.runon.stock.securities.firm.api.kor.koreainvestment.KoreainvestmentSto
  * 예제
  * @author macle
  */
-public class BalanceSheetExample {
+public class IncomeStatementExample {
     public static void main(String[] args) {
         KoreainvestmentApi api = KoreainvestmentApi.getInstance();
         KoreainvestmentStockInfoApi stockInfoApi = api.getStockInfoApi();
 
 
-        System.out.println(stockInfoApi.getBalanceSheetJsonText("0","005930"));
+        System.out.println(stockInfoApi.getIncomeStatementJsonText("0","005930"));
     }
 }

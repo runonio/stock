@@ -21,7 +21,7 @@ public interface StockData {
     /**
      * 상장 폐지 제외
      */
-    Stock[] getStocks(String [] exchanges, String standardYmd);
+    Stock[] getStocks(String [] exchanges, String baseYmd);
 
     Stock[] getDelistedStocks(String [] exchanges, String beginYmd, String endYmd);
 
@@ -29,6 +29,9 @@ public interface StockData {
      * 상장폐지 포함
      */
     Stock[] getAllStocks(String [] exchanges, String [] types);
+
+
+    Stock[] getAllStocks(String [] exchanges);
 
     String [] getGroupStockIds(String groupId);
 

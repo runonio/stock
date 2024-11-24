@@ -6,10 +6,7 @@ import com.seomse.jdbc.objects.JdbcObjects;
 import io.runon.stock.trading.Stock;
 import io.runon.stock.trading.Stocks;
 import io.runon.stock.trading.exception.StockDataException;
-import io.runon.trading.data.Exchanges;
 
-import java.time.ZoneId;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -70,17 +67,17 @@ public class StockDataJdbc implements StockData{
     }
 
     @Override
-    public Stock[] getStocks(String[] exchanges, String standardYmd) {
+    public Stock[] getStocks(String[] exchanges, String baseYmd) {
         if(exchanges == null){
             throw new StockDataException("exchange null");
         }
 
-        if(standardYmd == null){
+        if(baseYmd == null){
             return getStocks(exchanges);
         }
 
         String where = "exchange in " + QueryUtils.whereIn(exchanges) +
-                " and listed_ymd <=" + standardYmd;
+                " and listed_ymd <=" + baseYmd;
 
 
         List<Stock> stockList = JdbcObjects.getObjList(Stock.class, where);
@@ -88,7 +85,7 @@ public class StockDataJdbc implements StockData{
 
         stockList.clear();
 
-        return Stocks.filterListedStock(stocks, standardYmd);
+        return Stocks.filterListedStock(stocks, baseYmd);
     }
 
     @Override
@@ -121,6 +118,20 @@ public class StockDataJdbc implements StockData{
 
         if(where.isEmpty()){
             throw new StockDataException("exchange, types null");
+        }
+
+        return  JdbcObjects.getObjList(Stock.class, where.toString()).toArray(new Stock[0]);
+    }
+
+    @Override
+    public Stock[] getAllStocks(String[] exchanges) {
+        StringBuilder where = new StringBuilder();
+
+        if(exchanges != null){
+            where.append("exchange in ") .append(QueryUtils.whereIn(exchanges));
+        }
+        if(where.isEmpty()){
+            throw new StockDataException("exchange null");
         }
 
         return  JdbcObjects.getObjList(Stock.class, where.toString()).toArray(new Stock[0]);

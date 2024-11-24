@@ -49,22 +49,22 @@ public class KorStocks {
     //상장폐지포함
     public static Stock [] getGeneralStocksInDelisted(){
         StockData stockData = StockDataManager.getInstance().getStockData();
-        String standardYmd = YmdUtil.now(TradingTimes.KOR_ZONE_ID);
+        String basedYmd = YmdUtil.now(TradingTimes.KOR_ZONE_ID);
         String [] types ={
                 "STOCK"
         };
 
-        return getGeneralStocks( stockData.getAllStocks(TARGET_EXCHANGES, types), standardYmd);
+        return getGeneralStocks( stockData.getAllStocks(TARGET_EXCHANGES, types), basedYmd);
     }
 
-    public static Stock [] getGeneralStocks(Stock [] stocks, String standardYmd){
+    public static Stock [] getGeneralStocks(Stock [] stocks, String baseYmd){
 
         if(stocks == null) {
             StockData stockData = StockDataManager.getInstance().getStockData();
-            if (YmdUtil.isNow(standardYmd, TradingTimes.KOR_ZONE_ID)) {
+            if (YmdUtil.isNow(baseYmd, TradingTimes.KOR_ZONE_ID)) {
                 stocks = stockData.getStocks(TARGET_EXCHANGES);
             } else {
-                stocks = stockData.getStocks(TARGET_EXCHANGES, standardYmd);
+                stocks = stockData.getStocks(TARGET_EXCHANGES, baseYmd);
             }
         }
 
@@ -94,13 +94,13 @@ public class KorStocks {
         return stocks;
     }
 
-    public static StockMap makeStockMap(String standardYmd){
+    public static StockMap makeStockMap(String baseYmd){
         StockData stockData = StockDataManager.getInstance().getStockData();
         Stock [] stocks ;
-        if(YmdUtil.isNow(standardYmd, TradingTimes.KOR_ZONE_ID)){
+        if(YmdUtil.isNow(baseYmd, TradingTimes.KOR_ZONE_ID)){
             stocks = stockData.getStocks(TARGET_EXCHANGES);
         }else{
-            stocks = stockData.getStocks(TARGET_EXCHANGES, standardYmd);
+            stocks = stockData.getStocks(TARGET_EXCHANGES, baseYmd);
         }
 
         return new StockMap(stocks);

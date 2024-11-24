@@ -130,23 +130,23 @@ public class Stocks {
 
 
 
-    public static Stock [] filterListedStock(Stock [] stocks, String standardYmd){
-        return filterListedStock(stocks, Integer.parseInt(standardYmd));
+    public static Stock [] filterListedStock(Stock [] stocks, String baseYmd){
+        return filterListedStock(stocks, Integer.parseInt(baseYmd));
     }
 
-    public static Stock [] filterListedStock(Stock [] stocks, int standardYmdInt){
+    public static Stock [] filterListedStock(Stock [] stocks, int baseYmdInt){
 
         List<Stock> listedList = new ArrayList<>();
 
         for(Stock stock : stocks){
 
             //당시에 상장하지 않은종목
-            if(stock.getListedYmd() != null && stock.getListedYmd() > standardYmdInt){
+            if(stock.getListedYmd() != null && stock.getListedYmd() > baseYmdInt){
                 continue;
             }
 
             //상폐된 종목
-            if(stock.getDelistedYmd() != null && stock.getDelistedYmd() <= standardYmdInt){
+            if(stock.getDelistedYmd() != null && stock.getDelistedYmd() <= baseYmdInt){
                 continue;
             }
 
@@ -157,7 +157,7 @@ public class Stocks {
                 ZoneId zoneId = Stocks.getZoneId(stock);
 
                 int delYmd = Integer.parseInt(YmdUtil.getYmd(stock.getUpdatedAt(), zoneId));
-                if(delYmd <= standardYmdInt){
+                if(delYmd <= baseYmdInt){
                     continue;
                 }
             }

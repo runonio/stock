@@ -574,3 +574,39 @@ create index idx_category_key_value_01
 
 
 
+
+CREATE TABLE no_date_data
+(
+    data_id              VARCHAR NOT NULL,
+    date_value           VARCHAR NULL,
+    date_type            VARCHAR NULL,
+    name_ko              VARCHAR NULL,
+    name_en              VARCHAR NULL,
+    country              VARCHAR NULL,
+    data_type            VARCHAR NULL,
+    data_value           VARCHAR NULL,
+    updated_at           TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (data_id)
+);
+
+
+comment on table no_date_data is '데이터_발표날짜없음';
+        comment on column no_date_data.data_id is '데이터아이디';
+         comment on column no_date_data.date_value is '날짜값';
+         comment on column no_date_data.date_type is '날짜유형';
+         comment on column no_date_data.name_ko is '이름_한글';
+         comment on column no_date_data.name_en is '이름_영문';
+         comment on column no_date_data.country is '국가';
+         comment on column no_date_data.data_type is '데이터유형';
+         comment on column no_date_data.data_value is '데이터값';
+         comment on column no_date_data.updated_at is '업데이트일시';
+
+create index idx_no_date_data_01
+    on no_date_data (updated_at desc);
+
+
+create index idx_no_date_data_02
+    on no_date_data (country desc);
+
+create index idx_no_date_data_03
+    on no_date_data (data_type desc);

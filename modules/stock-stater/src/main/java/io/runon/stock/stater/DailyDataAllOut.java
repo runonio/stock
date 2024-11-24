@@ -3,7 +3,7 @@ package io.runon.stock.stater;
 import com.seomse.commons.config.Config;
 import com.seomse.commons.utils.ExceptionUtil;
 import io.runon.stock.securities.firm.api.kor.koreainvestment.*;
-import io.runon.stock.securities.firm.api.kor.ls.SpotDailyInvestorOut;
+import io.runon.stock.securities.firm.api.kor.ls.LsSpotDailyInvestorOut;
 import io.runon.stock.trading.data.management.KorSpotDailyShortSellingOut;
 import io.runon.stock.trading.data.management.KorSpotDailyStockLoanOut;
 import io.runon.stock.trading.data.management.db.sync.StockDbSync;
@@ -54,7 +54,7 @@ public class DailyDataAllOut {
         new Thread(() -> {
             //이베스트 투자증권에서 실행하는 부분은 다른 thread
             //외국인 기관 매매동향
-            SpotDailyInvestorOut investorOut =new SpotDailyInvestorOut();
+            LsSpotDailyInvestorOut investorOut =new LsSpotDailyInvestorOut();
             investorOut.outKor();
             investorOut.outKorDelisted();
 

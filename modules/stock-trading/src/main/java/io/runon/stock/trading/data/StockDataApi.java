@@ -21,7 +21,7 @@ public class StockDataApi implements StockData{
     }
 
     @Override
-    public Stock[] getStocks(String[] exchanges, String standardYmd) {
+    public Stock[] getStocks(String[] exchanges, String baseYmd) {
         return new Stock[0];
     }
 
@@ -32,6 +32,11 @@ public class StockDataApi implements StockData{
 
     @Override
     public Stock[] getAllStocks(String[] exchanges, String [] types) {
+        return new Stock[0];
+    }
+
+    @Override
+    public Stock[] getAllStocks(String[] exchanges) {
         return new Stock[0];
     }
 

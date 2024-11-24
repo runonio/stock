@@ -5,10 +5,6 @@
 - 한국 투자 증권
 - 이베스트 투자증권
 
-## 1분봉 과거 데이터를 제공하는 증권사
-- 키움증권 
-  - C# 으로 구현 해야함
-
 # 개발환경
 - open jdk 17
 
@@ -22,19 +18,8 @@ https://github.com/koreainvestment/open-trading-api/tree/main/stocks_info
 - [github.com/seomse](https://github.com/seomse)
 - [www.seomse.com](https://www.seomse.com/)
 
-
-### email
-- iorunon@gmail.com
-
 ### cafe
 - [cafe.naver.com/radvisor](https://cafe.naver.com/radvisor)
-
-
-### talk
-- 로보어드바이저, 시스템트레이딩, 퀀트 단톡방
-  - https://open.kakao.com/o/g6vzOKqb
-  - 참여코드: runon
-
 
 ## main developer
 - macle
