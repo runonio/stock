@@ -11,6 +11,8 @@ repositories {
 
 dependencies {
 
+
+
     implementation project(path: ':seomse-commons')
 
     implementation project(path: ':trading')
