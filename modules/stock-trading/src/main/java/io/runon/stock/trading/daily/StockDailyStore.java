@@ -2,7 +2,6 @@ package io.runon.stock.trading.daily;
 
 import com.seomse.commons.utils.time.YmdUtil;
 import io.runon.stock.trading.Stock;
-import io.runon.stock.trading.candle.StockCandles;
 import io.runon.trading.data.daily.VolumePowerDaily;
 import io.runon.trading.technical.analysis.candle.TradeCandle;
 import lombok.Data;
@@ -54,15 +53,15 @@ public class StockDailyStore {
 
     public void setData(int beginYmd, int endYmd){
 
-        candles = StockDailies.getCandle(candles, stock, beginYmd, endYmd);
+        candles = StockDataLoad.getCandle(candles, stock, beginYmd, endYmd);
 
-        investorDailies = StockDailies.getInvestor(investorDailies, stock, beginYmd, YmdUtil.getYmdInt(endYmd, investorDayGap));
-        shortSellingDailies = StockDailies.getShortSelling(shortSellingDailies, stock, beginYmd, YmdUtil.getYmdInt(endYmd, shortSellingDayGap));
-        programDailies = StockDailies.getProgram(programDailies, stock, beginYmd, YmdUtil.getYmdInt(endYmd, programDayGap));
-        stockLoanDailies = StockDailies.getStockLoan(stockLoanDailies, stock, beginYmd, YmdUtil.getYmdInt(endYmd, stockLoanDayGap));
+        investorDailies = StockDataLoad.getInvestor(investorDailies, stock, beginYmd, YmdUtil.getYmdInt(endYmd, investorDayGap));
+        shortSellingDailies = StockDataLoad.getShortSelling(shortSellingDailies, stock, beginYmd, YmdUtil.getYmdInt(endYmd, shortSellingDayGap));
+        programDailies = StockDataLoad.getProgram(programDailies, stock, beginYmd, YmdUtil.getYmdInt(endYmd, programDayGap));
+        stockLoanDailies = StockDataLoad.getStockLoan(stockLoanDailies, stock, beginYmd, YmdUtil.getYmdInt(endYmd, stockLoanDayGap));
 
-        stockCreditLoanDailies = StockDailies.getStockCreditLoan(stockCreditLoanDailies, stock, beginYmd, YmdUtil.getYmdInt(endYmd, stockCreditLoanDayGap));
-        volumePowerDailies = StockDailies.getVolumePower(volumePowerDailies, stock, beginYmd, YmdUtil.getYmdInt(endYmd, volumePowerDayGap));
+        stockCreditLoanDailies = StockDataLoad.getStockCreditLoan(stockCreditLoanDailies, stock, beginYmd, YmdUtil.getYmdInt(endYmd, stockCreditLoanDayGap));
+        volumePowerDailies = StockDataLoad.getVolumePower(volumePowerDailies, stock, beginYmd, YmdUtil.getYmdInt(endYmd, volumePowerDayGap));
     }
 
     public void setDayGap(StockDailyStoreGap dailyStoreGap){

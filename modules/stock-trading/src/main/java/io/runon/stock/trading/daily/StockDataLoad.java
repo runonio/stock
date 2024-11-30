@@ -22,10 +22,20 @@ import java.util.List;
 /**
  * @author macle
  */
-public class StockDailies {
-    /**
-     * @return 캔들
-     */
+public class StockDataLoad {
+
+//    public static TradeCandle [] get1mCandle(Stock stock, int beginYmd, int endYmd) {
+//        return StockCandles.getDailyCandles(stock, beginYmd, endYmd);
+//    }
+
+
+//    public static TradeCandle [] get1mCandle(Stock stock, long beginTime, long endTime) {
+//        return StockCandles.getDailyCandles(stock, beginYmd, endYmd);
+//    }
+
+        /**
+         * @return 캔들
+         */
     public static TradeCandle [] getCandle(Stock stock, int beginYmd, int endYmd){
         return StockCandles.getDailyCandles(stock, beginYmd, endYmd);
     }
