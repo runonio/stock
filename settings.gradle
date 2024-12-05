@@ -12,20 +12,19 @@ project(':koreainvestment').projectDir = new File(settingsDir,'modules/koreainve
 include 'ls-openapi'
 findProject(':ls-openapi').projectDir = new File(settingsDir,'modules/ls-openapi')
 
-include ':trading'
+include 'trading'
 project(':trading').projectDir = new File(settingsDir,'../../runon/trading/modules/trading')
 
 
-include ':seomse-commons'
-project(':seomse-commons').projectDir = new File(settingsDir,'../../seomse/seomse-commons/modules/commons')
+include 'commons'
+findProject(':commons').projectDir = new File(settingsDir,'../../runon/commons-jdk8/modules/commons')
+include 'jdbc'
+findProject(':jdbc').projectDir = new File(settingsDir,'../../runon/commons-jdk8/modules/jdbc')
 
-include ':jdbc'
-project(':jdbc').projectDir = new File(settingsDir,'../../seomse/seomse-commons/modules/jdbc')
-
-include ':backtesting'
+include 'backtesting'
 project(':backtesting').projectDir = new File(settingsDir,'../../runon/trading/modules/backtesting')
 
-include ':chart-view'
+include 'chart-view'
 project(':chart-view').projectDir = new File(settingsDir,'../../runon/trading/modules/chart-view')
 
 

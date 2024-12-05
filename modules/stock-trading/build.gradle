@@ -2,18 +2,13 @@ plugins {
     id 'java'
 }
 
-group 'io.runon.stock'
-version '0.0.1'
-
 repositories {
     mavenCentral()
 }
 
 dependencies {
 
-
-
-    implementation project(path: ':seomse-commons')
+    implementation project(path: ':commons')
 
     implementation project(path: ':trading')
 
@@ -23,8 +18,7 @@ dependencies {
 
     testImplementation project(path: ':chart-view')
 
-//    implementation 'com.seomse.commons:commons:1.6.0'
-
+    implementation group: 'org.slf4j', name: 'slf4j-api', version: '2.0.13'
     implementation group: 'ch.qos.logback', name: 'logback-classic', version: '1.3.14'
 
     //seomse-commons
@@ -34,7 +28,6 @@ dependencies {
     implementation group: 'org.postgresql', name: 'postgresql', version: '42.7.3'
 
     // jdbc 프로젝트 컨트롤
-//    implementation 'com.seomse.commons:jdbc:1.2.1'
     implementation project(path: ':jdbc')
     implementation group: 'com.zaxxer', name: 'HikariCP', version: '5.1.0'
     

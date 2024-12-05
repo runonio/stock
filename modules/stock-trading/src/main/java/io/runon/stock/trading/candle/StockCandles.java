@@ -8,6 +8,7 @@ import io.runon.stock.trading.data.StockLong;
 import io.runon.stock.trading.path.StockPaths;
 import io.runon.trading.CountryCode;
 import io.runon.trading.CountryUtils;
+import io.runon.trading.TradingTimes;
 import io.runon.trading.data.DataPathTimeRange;
 import io.runon.trading.data.csv.CsvCandle;
 import io.runon.trading.data.csv.CsvTimeFile;
@@ -35,6 +36,11 @@ public class StockCandles {
         long endTime = YmdUtil.getTime(endYmd, zoneId) + Times.DAY_1 ;
         String path = StockPaths.getSpotCandleFilesPath(stock.getStockId(), "1d");
         return CsvCandle.load(path, Times.DAY_1,beginTime, endTime);
+    }
+
+    public static TradeCandle [] getCandles(Stock stock,String interval, long beginTime, long endTime){
+        String path = StockPaths.getSpotCandleFilesPath(stock.getStockId(), interval);
+        return CsvCandle.load(path, TradingTimes.getIntervalTime(interval), beginTime, endTime);
     }
 
     public static int getSpotCandleDirsCount(CountryCode countryCode){

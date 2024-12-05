@@ -92,7 +92,6 @@ public class LsApi {
             }
 
             accessToken = AccessToken.make();
-            String authorization = accessToken.getAuthorization();
             httpPost.setRequestProperty("authorization", accessToken.getAuthorization());
 
             JsonObject tokenObject = accessToken.getJsonObject();
@@ -102,13 +101,30 @@ public class LsApi {
     }
 
 
+    public void changeAccessToken(){
+        synchronized (accessTokenLock) {
+            accessToken = AccessToken.make();
+            httpPost.setRequestProperty("authorization", accessToken.getAuthorization());
+
+            JsonObject tokenObject = accessToken.getJsonObject();
+            jsonFileProperties.set("last_access_token", tokenObject);
+
+        }
+    }
+
+
+
     public boolean isAccessTokenUpdate(HttpApiResponse response){
+
         try {
             String message = response.getMessage();
             JSONObject object = new JSONObject(message);
             String rspCd = object.getString("rsp_cd");
-
-            if(rspCd.equals("IGW00121")) {
+            String msg ="";
+            if(!object.isNull("rsp_msg")) {
+                msg = object.getString("rsp_msg");
+            }
+            if(rspCd.equals("IGW00121")|| rspCd.equals("IGW00123") || msg.contains("token")) {
                 periodSleep();
                 synchronized (accessTokenLock) {
 
