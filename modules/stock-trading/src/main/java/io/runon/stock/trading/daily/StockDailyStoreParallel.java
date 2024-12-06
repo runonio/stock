@@ -1,7 +1,7 @@
 package io.runon.stock.trading.daily;
 
-import com.seomse.commons.parallel.ParallelArrayJob;
-import com.seomse.commons.parallel.ParallelArrayWork;
+import io.runon.commons.parallel.ParallelArrayJob;
+import io.runon.commons.parallel.ParallelArrayWork;
 import io.runon.stock.trading.Stock;
 import io.runon.trading.TradingConfig;
 

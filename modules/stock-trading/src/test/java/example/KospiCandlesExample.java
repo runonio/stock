@@ -1,6 +1,6 @@
 package example;
 
-import com.seomse.commons.utils.time.YmdUtil;
+import io.runon.commons.utils.time.YmdUtil;
 import io.runon.trading.TradingTimes;
 import io.runon.trading.data.csv.CsvCandle;
 import io.runon.trading.technical.analysis.candle.TradeCandle;

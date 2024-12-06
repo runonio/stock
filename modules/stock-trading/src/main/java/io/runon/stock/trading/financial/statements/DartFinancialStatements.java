@@ -1,7 +1,7 @@
 package io.runon.stock.trading.financial.statements;
 
-import com.seomse.commons.config.Config;
-import com.seomse.jdbc.JdbcQuery;
+import io.runon.commons.config.Config;
+import io.runon.jdbc.JdbcQuery;
 import org.json.JSONArray;
 import org.json.JSONObject;
 

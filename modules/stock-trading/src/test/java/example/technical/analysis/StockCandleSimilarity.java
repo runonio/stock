@@ -1,7 +1,7 @@
 package example.technical.analysis;
 
-import com.seomse.commons.data.BigDecimalArray;
-import com.seomse.commons.utils.time.YmdUtil;
+import io.runon.commons.data.BigDecimalArray;
+import io.runon.commons.utils.time.YmdUtil;
 import io.runon.stock.trading.Stock;
 import io.runon.stock.trading.Stocks;
 import io.runon.stock.trading.daily.StockDataLoad;

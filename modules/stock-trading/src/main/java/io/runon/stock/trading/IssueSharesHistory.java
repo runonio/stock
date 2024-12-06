@@ -1,7 +1,6 @@
 package io.runon.stock.trading;
 
-import com.seomse.jdbc.annotation.*;
-
+import io.runon.jdbc.annotation.*;
 import io.runon.trading.data.EqualsNullCheck;
 import lombok.Data;
 

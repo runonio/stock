@@ -1,6 +1,6 @@
 package io.runon.stock.securities.firm.api.kor.koreainvestment;
 
-import com.seomse.commons.utils.time.YmdUtil;
+import io.runon.commons.utils.time.YmdUtil;
 import io.runon.stock.trading.Stock;
 import io.runon.stock.trading.data.management.Spot1mCandleOut;
 import io.runon.stock.trading.data.management.Spot1mCandleOutParam;

@@ -1,9 +1,9 @@
 package io.runon.stock.trading.daily;
 
-import com.seomse.commons.exception.ReflectiveOperationRuntimeException;
-import com.seomse.commons.utils.DataCheck;
-import com.seomse.jdbc.JdbcQuery;
-import com.seomse.jdbc.objects.JdbcObjects;
+import io.runon.commons.exception.ReflectiveOperationRuntimeException;
+import io.runon.commons.utils.DataCheck;
+import io.runon.jdbc.JdbcQuery;
+import io.runon.jdbc.objects.JdbcObjects;
 import io.runon.stock.trading.StockDailyData;
 import io.runon.trading.data.DailyData;
 

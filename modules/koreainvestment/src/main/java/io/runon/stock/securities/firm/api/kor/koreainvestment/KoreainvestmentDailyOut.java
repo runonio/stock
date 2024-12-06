@@ -1,6 +1,6 @@
 package io.runon.stock.securities.firm.api.kor.koreainvestment;
 
-import com.seomse.commons.config.JsonFileProperties;
+import io.runon.commons.config.JsonFileProperties;
 import io.runon.stock.trading.data.management.KorSpotDailyOut;
 import io.runon.stock.trading.path.StockPathLastTime;
 import io.runon.trading.CountryCode;

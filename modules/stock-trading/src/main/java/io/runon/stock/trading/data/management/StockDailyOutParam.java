@@ -1,6 +1,6 @@
 package io.runon.stock.trading.data.management;
 
-import com.seomse.commons.config.JsonFileProperties;
+import io.runon.commons.config.JsonFileProperties;
 import io.runon.stock.trading.Stock;
 import io.runon.stock.trading.path.StockPathLastTime;
 import io.runon.trading.data.file.PathTimeLine;

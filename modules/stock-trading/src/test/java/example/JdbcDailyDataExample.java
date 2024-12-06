@@ -1,6 +1,6 @@
 package example;
 
-import com.seomse.commons.config.Config;
+import io.runon.commons.config.Config;
 import io.runon.stock.trading.StockDailyData;
 import io.runon.stock.trading.daily.RdsDaily;
 

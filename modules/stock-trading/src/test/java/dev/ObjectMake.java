@@ -1,8 +1,8 @@
 package dev;
 
-import com.seomse.commons.config.Config;
-import com.seomse.jdbc.connection.ApplicationConnectionPool;
-import com.seomse.jdbc.objects.JdbcObjects;
+import io.runon.commons.config.Config;
+import io.runon.jdbc.connection.ApplicationConnectionPool;
+import io.runon.jdbc.objects.JdbcObjects;
 
 /**
  * @author macle

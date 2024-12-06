@@ -1,8 +1,7 @@
 package example;
 
-import com.seomse.commons.config.Config;
-import com.seomse.commons.utils.time.Times;
-import com.seomse.commons.utils.time.YmdUtil;
+import io.runon.commons.config.Config;
+import io.runon.commons.utils.time.YmdUtil;
 import io.runon.stock.trading.Stock;
 import io.runon.stock.trading.Stocks;
 import io.runon.stock.trading.candle.StockCandles;

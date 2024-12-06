@@ -1,9 +1,9 @@
 package io.runon.stock.securities.firm.api.kor.koreainvestment.jdbc;
 
-import com.seomse.jdbc.annotation.Column;
-import com.seomse.jdbc.annotation.DateTime;
-import com.seomse.jdbc.annotation.PrimaryKey;
-import com.seomse.jdbc.annotation.Table;
+import io.runon.jdbc.annotation.Column;
+import io.runon.jdbc.annotation.DateTime;
+import io.runon.jdbc.annotation.PrimaryKey;
+import io.runon.jdbc.annotation.Table;
 import lombok.Data;
 /**
  * 한국투자증권을 사용할 때 해외주식 정보 (업데이트용)

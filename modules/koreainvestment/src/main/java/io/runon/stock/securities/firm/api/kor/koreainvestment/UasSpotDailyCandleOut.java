@@ -1,7 +1,7 @@
 package io.runon.stock.securities.firm.api.kor.koreainvestment;
 
-import com.seomse.commons.config.JsonFileProperties;
-import com.seomse.commons.utils.time.YmdUtil;
+import io.runon.commons.config.JsonFileProperties;
+import io.runon.commons.utils.time.YmdUtil;
 import io.runon.stock.trading.Stock;
 import io.runon.stock.trading.data.management.OverseasSpotDailyOut;
 import io.runon.stock.trading.path.StockPathLastTime;

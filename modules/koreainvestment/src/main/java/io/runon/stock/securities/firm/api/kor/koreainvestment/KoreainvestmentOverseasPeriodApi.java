@@ -1,7 +1,7 @@
 package io.runon.stock.securities.firm.api.kor.koreainvestment;
 
-import com.seomse.commons.http.HttpApiResponse;
-import com.seomse.commons.utils.time.Times;
+import io.runon.commons.http.HttpApiResponse;
+import io.runon.commons.utils.time.Times;
 import io.runon.stock.trading.Stock;
 import io.runon.stock.trading.exception.StockApiException;
 import io.runon.trading.CountryCode;

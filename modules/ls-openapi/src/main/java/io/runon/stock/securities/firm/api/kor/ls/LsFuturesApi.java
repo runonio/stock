@@ -1,7 +1,7 @@
 package io.runon.stock.securities.firm.api.kor.ls;
 
-import com.seomse.commons.http.HttpApiResponse;
-import com.seomse.commons.utils.time.YmdUtil;
+import io.runon.commons.http.HttpApiResponse;
+import io.runon.commons.utils.time.YmdUtil;
 import io.runon.stock.trading.exception.StockApiException;
 import io.runon.trading.CountryCode;
 import io.runon.trading.TradingTimes;

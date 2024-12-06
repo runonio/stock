@@ -1,8 +1,8 @@
 package io.runon.stock.trading;
 
-import com.seomse.jdbc.JdbcQuery;
-import com.seomse.jdbc.exception.SQLRuntimeException;
-import com.seomse.jdbc.objects.JdbcObjects;
+import io.runon.jdbc.JdbcQuery;
+import io.runon.jdbc.exception.SQLRuntimeException;
+import io.runon.jdbc.objects.JdbcObjects;
 
 import java.sql.Connection;
 import java.sql.SQLException;

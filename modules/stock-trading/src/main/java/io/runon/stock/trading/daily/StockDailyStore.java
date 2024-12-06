@@ -1,6 +1,6 @@
 package io.runon.stock.trading.daily;
 
-import com.seomse.commons.utils.time.YmdUtil;
+import io.runon.commons.utils.time.YmdUtil;
 import io.runon.stock.trading.Stock;
 import io.runon.trading.data.daily.VolumePowerDaily;
 import io.runon.trading.technical.analysis.candle.TradeCandle;

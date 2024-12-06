@@ -1,8 +1,8 @@
 package dev;
 
-import com.seomse.commons.callback.GenericCallBack;
-import com.seomse.commons.config.Config;
-import com.seomse.jdbc.objects.JdbcObjects;
+import io.runon.commons.callback.GenericCallBack;
+import io.runon.commons.config.Config;
+import io.runon.jdbc.objects.JdbcObjects;
 import io.runon.stock.trading.StockDailyData;
 import io.runon.stock.trading.TreasuryStockTrading;
 import io.runon.stock.trading.daily.RdsDaily;

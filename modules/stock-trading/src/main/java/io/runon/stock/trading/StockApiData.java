@@ -1,10 +1,10 @@
 package io.runon.stock.trading;
 
-import com.seomse.jdbc.JdbcQuery;
-import com.seomse.jdbc.annotation.Column;
-import com.seomse.jdbc.annotation.DateTime;
-import com.seomse.jdbc.annotation.PrimaryKey;
-import com.seomse.jdbc.annotation.Table;
+import io.runon.jdbc.JdbcQuery;
+import io.runon.jdbc.annotation.Column;
+import io.runon.jdbc.annotation.DateTime;
+import io.runon.jdbc.annotation.PrimaryKey;
+import io.runon.jdbc.annotation.Table;
 import io.runon.trading.data.EqualsNullCheck;
 import lombok.Data;
 

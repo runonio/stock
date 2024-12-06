@@ -1,6 +1,6 @@
 package io.runon.stock.trading.country.kor;
 
-import com.seomse.commons.utils.time.YmdUtil;
+import io.runon.commons.utils.time.YmdUtil;
 import io.runon.trading.CountryCode;
 import io.runon.trading.TradingTimes;
 import io.runon.trading.closed.days.ClosedDays;
