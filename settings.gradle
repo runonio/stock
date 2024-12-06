@@ -4,27 +4,24 @@ include 'stock-trading'
 project(':stock-trading').projectDir = new File(settingsDir,'modules/stock-trading')
 
 include 'stock-starter'
-findProject(':stock-starter').projectDir = new File(settingsDir,'modules/stock-starter')
+project(':stock-starter').projectDir = new File(settingsDir,'modules/stock-starter')
 
 include 'koreainvestment'
 project(':koreainvestment').projectDir = new File(settingsDir,'modules/koreainvestment')
 
 include 'ls-openapi'
-findProject(':ls-openapi').projectDir = new File(settingsDir,'modules/ls-openapi')
+project(':ls-openapi').projectDir = new File(settingsDir,'modules/ls-openapi')
 
 include 'trading'
 project(':trading').projectDir = new File(settingsDir,'../../runon/trading/modules/trading')
 
-
 include 'commons'
-findProject(':commons').projectDir = new File(settingsDir,'../../runon/commons-jdk8/modules/commons')
+project(':commons').projectDir = new File(settingsDir,'../../runon/commons/modules/commons')
 include 'jdbc'
-findProject(':jdbc').projectDir = new File(settingsDir,'../../runon/commons-jdk8/modules/jdbc')
+project(':jdbc').projectDir = new File(settingsDir,'../../runon/commons/modules/jdbc')
 
 include 'backtesting'
 project(':backtesting').projectDir = new File(settingsDir,'../../runon/trading/modules/backtesting')
 
 include 'chart-view'
 project(':chart-view').projectDir = new File(settingsDir,'../../runon/trading/modules/chart-view')
-
-
