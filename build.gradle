@@ -13,15 +13,7 @@ repositories {
 
 dependencies {
 
-    implementation project(path: ':trading')
 
-    implementation 'com.seomse.commons:commons:1.6.0'
-    implementation 'com.seomse.commons:jdbc:1.2.1'
-
-    implementation group: 'org.postgresql', name: 'postgresql', version: '42.7.3'
-
-    compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.30'
-    annotationProcessor 'org.projectlombok:lombok:1.18.30'
 }
 
 test {
