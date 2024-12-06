@@ -9,6 +9,7 @@
 
 초기시작은 위프로젝트에서 시작되었으며 새로 리뉴얼 합니다.
 
+# communication
 ### blog, homepage
 - [runon.io](https://runon.io)
 - [github.com/runonio](https://github.com/runonio)
@@ -18,7 +19,9 @@
 ### cafe
 - [cafe.naver.com/radvisor](https://cafe.naver.com/radvisor)
 
+
 ## main developer
 - macle
   - github(source code): [github.com/macle86](https://github.com/macle86)
   - email: ysys86a@gmail.com
+  - kakaotalk(1:1): https://open.kakao.com/o/sspZGH3g
