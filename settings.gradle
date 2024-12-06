@@ -3,8 +3,8 @@ rootProject.name = 'stock'
 include 'stock-trading'
 project(':stock-trading').projectDir = new File(settingsDir,'modules/stock-trading')
 
-include 'stock-stater'
-findProject(':stock-stater').projectDir = new File(settingsDir,'modules/stock-stater')
+include 'stock-starter'
+findProject(':stock-starter').projectDir = new File(settingsDir,'modules/stock-starter')
 
 include 'koreainvestment'
 project(':koreainvestment').projectDir = new File(settingsDir,'modules/koreainvestment')
