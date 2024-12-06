@@ -140,8 +140,6 @@ public class Spot1mCandleOut {
         }
 
         for(;;){
-
-
             if(YmdUtil.compare(nextYmd, nowYmd) > 0 ){
                 break;
             }

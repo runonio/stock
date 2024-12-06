@@ -2,8 +2,6 @@ plugins {
     id 'java'
 }
 
-group = 'io.runon.stock'
-version = '0.0.1'
 
 repositories {
     mavenCentral()
@@ -11,23 +9,19 @@ repositories {
 
 dependencies {
     implementation project(path: ':trading')
-    implementation project(path: ':seomse-commons')
+    implementation project(path: ':commons')
 
     implementation project(path: ':stock-trading')
     implementation project(path: ':koreainvestment')
     implementation project(path: ':ls-openapi')
 
-//    implementation 'com.seomse.commons:commons:1.6.0'
-    implementation 'com.seomse.commons:jdbc:1.2.1'
-
-
-    implementation group: 'org.json', name: 'json', version: '20240303'
-    implementation group: 'com.google.code.gson', name: 'gson', version: '2.10.1'
-
     // jdbc 프로젝트 컨트롤
-//    implementation 'com.seomse.commons:jdbc:1.2.1'
     implementation project(path: ':jdbc')
     implementation group: 'com.zaxxer', name: 'HikariCP', version: '5.1.0'
+
+    implementation group: 'org.slf4j', name: 'slf4j-api', version: '2.0.13'
+    implementation group: 'org.json', name: 'json', version: '20240303'
+    implementation group: 'com.google.code.gson', name: 'gson', version: '2.10.1'
 
     compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.30'
     annotationProcessor 'org.projectlombok:lombok:1.18.30'

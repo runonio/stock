@@ -1,6 +1,7 @@
 package io.runon.stock.securities.firm.api.kor.koreainvestment;
 
 import com.google.gson.JsonObject;
+import com.seomse.commons.data.StringArray;
 import com.seomse.commons.http.HttpApis;
 import com.seomse.commons.utils.FileUtil;
 import com.seomse.commons.utils.GsonUtils;
@@ -10,7 +11,6 @@ import io.runon.stock.trading.StockGroupMap;
 import io.runon.stock.trading.data.StockReg;
 import io.runon.trading.CountryCode;
 import io.runon.trading.data.Futures;
-import io.runon.trading.data.StringArray;
 import io.runon.trading.data.TradingDataPath;
 import io.runon.trading.data.jdbc.TradingJdbc;
 
@@ -70,7 +70,7 @@ public class KoreainvestmentFiles {
     }
 
 
-    public static StringArray [] getThemeArray(String text){
+    public static StringArray[] getThemeArray(String text){
 
         String [] lines = text.split("\n");
 

@@ -8,7 +8,6 @@ import io.runon.trading.data.jdbc.TradingJdbc;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * ETF 타겟종목 초기 매핑
  * 기준금리 등의 기타자료는 수집 프로젝트 참조.
  * @author macle
  */
