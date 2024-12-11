@@ -32,7 +32,7 @@ public class SpotDailyCreditLoanOut extends KoreainvestmentDailyOut{
         return 30;
     }
 
-    public String getDeletedPropertiesKey() {
+    public String getDelistedPropertiesKey() {
         return "delisted_stocks_credit_loan_1d";
     }
 

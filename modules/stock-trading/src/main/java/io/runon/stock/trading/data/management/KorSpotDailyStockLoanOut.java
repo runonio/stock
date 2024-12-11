@@ -44,7 +44,7 @@ public class KorSpotDailyStockLoanOut extends KorSpotDailyOut{
     }
 
     @Override
-    public String getDeletedPropertiesKey() {
+    public String getDelistedPropertiesKey() {
         return "delisted_stocks_loan_1d";
     }
 }

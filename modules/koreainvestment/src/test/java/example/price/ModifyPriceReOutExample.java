@@ -1,6 +1,8 @@
-package example;
+package example.price;
 
 import io.runon.commons.utils.time.YmdUtil;
+import io.runon.stock.securities.firm.api.kor.koreainvestment.SpotDailyCandleOut;
+import io.runon.stock.securities.firm.api.kor.koreainvestment.UasSpotDailyCandleOut;
 import io.runon.stock.trading.Stock;
 import io.runon.stock.trading.Stocks;
 import io.runon.stock.trading.modify.StockModifyPriceSearch;
@@ -14,15 +16,48 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * 수정주가 검색
- * 데이터 검증
- * 수정주가  검색 예제
- * 수정주가가 발생하면 수정주가가 반영된 캔들을 다시 받아야함
  * @author macle
  */
-public class StockModifyPriceSearchExample {
+public class ModifyPriceReOutExample {
 
+    public static void usaDailyCandleReOut(){
+
+        StockModifyPriceSearch search = new StockModifyPriceSearch(CountryCode.USA);
+        search.search();
+
+        UasSpotDailyCandleOut out = new UasSpotDailyCandleOut();
+        Map<String, CandlePreviousCandles> map = search.getMap();
+        Set<String> keys = map.keySet();
+
+
+        for(String key : keys){
+            Stock stock = Stocks.getStock(key) ;
+            try{Thread.sleep(1000L);}catch(Exception ignore){}
+
+            out.reOut(stock);
+        }
+    }
+
+    public static void korDailyCandleReOut(){
+        SpotDailyCandleOut out = new SpotDailyCandleOut();
+        StockModifyPriceSearch search = new StockModifyPriceSearch(CountryCode.KOR);
+        search.search();
+
+        Map<String, CandlePreviousCandles> map = search.getMap();
+        Set<String> keys = map.keySet();
+
+
+        for(String key : keys){
+            Stock stock = Stocks.getStock(key) ;
+            try{Thread.sleep(1000L);}catch(Exception ignore){}
+
+            out.reOut(stock);
+        }
+    }
+
+    //수정주가 데이터 검색
     public static void view( CountryCode countryCode){
+        //거래정지 종목에 한해서 데이터가 맞지않는 경우가 발생한다.
         ZoneId zoneId = TradingTimes.getZoneId(countryCode);
         StockModifyPriceSearch search = new StockModifyPriceSearch(countryCode);
         search.search();
@@ -52,10 +87,14 @@ public class StockModifyPriceSearchExample {
         System.out.println(map.size());
     }
 
+
     public static void main(String[] args) {
 
-        CountryCode countryCode = CountryCode.USA;
-        view(countryCode);
+//        view(CountryCode.KOR);
+//        korDailyCandleReOut();
 
+
+//        view(CountryCode.USA);
+//        usaDailyCandleReOut();
     }
 }

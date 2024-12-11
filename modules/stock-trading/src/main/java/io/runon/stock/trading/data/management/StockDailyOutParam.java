@@ -24,6 +24,6 @@ public interface StockDailyOutParam {
 
     JsonFileProperties getJsonFileProperties();
 
-    String getDeletedPropertiesKey();
+    String getDelistedPropertiesKey();
 
 }

@@ -45,6 +45,11 @@ public abstract class OverseasSpotDailyOut implements StockDailyOutParam {
         dailyOut.out(stock);
     }
 
+    public void reOut(Stock stock){
+        dailyOut.reOut(stock);
+    }
+
+
     @Override
     public String[] getExchanges() {
         return exchanges;

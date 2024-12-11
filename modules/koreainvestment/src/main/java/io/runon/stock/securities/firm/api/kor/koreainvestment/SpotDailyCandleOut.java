@@ -33,7 +33,10 @@ public class SpotDailyCandleOut extends KoreainvestmentDailyOut{
         return 100;
     }
 
-    public String getDeletedPropertiesKey() {
+
+
+
+    public String getDelistedPropertiesKey() {
         return "delisted_stocks_candle_1d";
     }
 }

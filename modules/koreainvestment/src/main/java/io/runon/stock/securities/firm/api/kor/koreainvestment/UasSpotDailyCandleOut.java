@@ -66,7 +66,7 @@ public class UasSpotDailyCandleOut extends OverseasSpotDailyOut {
     }
 
     @Override
-    public String getDeletedPropertiesKey() {
+    public String getDelistedPropertiesKey() {
         return "uas_delisted_stocks_candle_1d";
     }
 }

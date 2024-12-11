@@ -6,7 +6,8 @@ import io.runon.commons.utils.time.Times;
 import io.runon.commons.utils.time.YmdUtil;
 import io.runon.stock.trading.Stock;
 import io.runon.stock.trading.Stocks;
-import io.runon.stock.trading.technical.analysis.similarity.StockSimCandle;
+import io.runon.stock.trading.technical.analysis.clustering.StockClusteringData;
+import io.runon.stock.trading.technical.analysis.similarity.StockSimSearchCandle;
 import io.runon.stock.trading.technical.analysis.similarity.StockSimSearchData;
 import io.runon.trading.CountryCode;
 import io.runon.trading.TradingTimes;
@@ -41,7 +42,7 @@ public class KorEtfs {
         long beginTime = YmdUtil.getTime(beginYmd, TradingTimes.KOR_ZONE_ID);
         long endTime = YmdUtil.getTime(baseYmd, TradingTimes.KOR_ZONE_ID) + Times.DAY_1;
 
-        StockSimCandle baseCandle = new StockSimCandle(baseStock);
+        StockSimSearchCandle baseCandle = new StockSimSearchCandle(baseStock);
         baseCandle.setInterval("1d");
         baseCandle.setBeginTime(beginTime);
         baseCandle.setEndTime(endTime);
@@ -70,11 +71,11 @@ public class KorEtfs {
         Map<String, Stock> map = Stocks.makeMap(targetStocks);
 
 
-        StockSimCandle [] targets = new StockSimCandle[targetStocks.length];
+        StockClusteringData [] targets = new StockClusteringData[targetStocks.length];
 
         for (int i = 0; i <targets.length ; i++) {
             Stock targetStock = targetStocks[i];
-            StockSimCandle target = new StockSimCandle(targetStock);
+            StockClusteringData target = new StockClusteringData(targetStock);
             target.setInterval("1d");
             target.setBeginTime(beginTime);
             target.setEndTime(endTime);

@@ -28,7 +28,7 @@ public class SpotDailyProgramTradeOut extends KoreainvestmentDailyOut{
     public int getNextDay() {
         return 30;
     }
-    public String getDeletedPropertiesKey() {
+    public String getDelistedPropertiesKey() {
         return "delisted_program_trade_1d";
     }
 }

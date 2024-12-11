@@ -8,7 +8,9 @@ import io.runon.stock.trading.Stocks;
 import io.runon.stock.trading.exception.StockDataException;
 import io.runon.stock.trading.path.StockPaths;
 import io.runon.trading.CountryCode;
+import io.runon.trading.CountryUtils;
 import io.runon.trading.TradingConfig;
+import io.runon.trading.data.Exchanges;
 import io.runon.trading.data.modify.ModifyPrice;
 import io.runon.trading.technical.analysis.candle.CandlePreviousCandle;
 import io.runon.trading.technical.analysis.candle.CandlePreviousCandles;
@@ -46,17 +48,9 @@ public class StockModifyPriceSearch {
     }
 
     public StockModifyPriceSearch(CountryCode countryCode){
-        if(countryCode == CountryCode.KOR) {
-            String[] exchanges = {
-                    "KOSPI"
-                    , "KOSDAQ"
-            };
+        Stock[] stocks = Stocks.getStocks(Exchanges.getDefaultExchanges(countryCode));
+        stockIds = Stocks.getIds(stocks);
 
-            Stock[] stocks = Stocks.getStocks(exchanges);
-            stockIds = Stocks.getIds(stocks);
-        }else{
-            throw new StockDataException("Not supported ; " + countryCode.toString());
-        }
     }
 
     public void setErrorRate(BigDecimal errorRate) {
@@ -77,7 +71,7 @@ public class StockModifyPriceSearch {
 
             String filesDirPath = StockPaths.getSpotCandleFilesPath(stockId,"1d");
 
-            List<CandlePreviousCandle> list =  ModifyPrice.searchLock(filesDirPath, Times.DAY_1,errorRate,errorPrice, beginTime);
+            List<CandlePreviousCandle> list =  ModifyPrice.search(filesDirPath, Times.DAY_1,errorRate,errorPrice, beginTime);
 
             if(list.isEmpty()){
                 return;

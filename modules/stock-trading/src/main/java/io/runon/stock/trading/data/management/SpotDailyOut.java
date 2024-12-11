@@ -2,6 +2,7 @@ package io.runon.stock.trading.data.management;
 
 import io.runon.commons.config.JsonFileProperties;
 import io.runon.commons.utils.ExceptionUtil;
+import io.runon.commons.utils.FileUtil;
 import io.runon.commons.utils.time.Times;
 import io.runon.commons.utils.time.YmdUtil;
 import io.runon.stock.trading.Stock;
@@ -135,7 +136,7 @@ public class SpotDailyOut {
 
         JsonFileProperties jsonFileProperties = param.getJsonFileProperties();
 
-        String delistedYmd = jsonFileProperties.getString(param.getDeletedPropertiesKey(),"19900101");
+        String delistedYmd = jsonFileProperties.getString(param.getDelistedPropertiesKey(),"19900101");
 
         String nowYmd = YmdUtil.now(zoneId);
 
@@ -143,7 +144,7 @@ public class SpotDailyOut {
 
         out(stocks);
 
-        jsonFileProperties.set(param.getDeletedPropertiesKey(), nowYmd);
+        jsonFileProperties.set(param.getDelistedPropertiesKey(), nowYmd);
 
     }
 
@@ -283,4 +284,21 @@ public class SpotDailyOut {
     public void setListedNullBeginYmd(String listedNullBeginYmd) {
         this.listedNullBeginYmd = listedNullBeginYmd;
     }
+    
+    public void reOut(Stock stock){
+        String filesDirPath = stockPathLastTime.getFilesDirPath(stock, interval);
+        File filesDirFile = new File(filesDirPath);
+
+        //기존 경로 데이터 제거
+        FileUtil.delete(filesDirFile);
+
+        if(stock.getListedYmd() != null){
+            lastYmdMap.put(stock.getStockId(), new StockYmd(stock, stock.getListedYmd()));
+        }else{
+            lastYmdMap.put(stock.getStockId(), new StockYmd(stock, 19900101));
+        }
+        out(stock);
+        outLastYmdMap();
+    }
+    
 }

@@ -53,6 +53,10 @@ public abstract class KorSpotDailyOut implements StockDailyOutParam {
     }
 
 
+    public void reOut(Stock stock){
+        dailyOut.reOut(stock);
+    }
+
     @Override
     public String[] getExchanges() {
         return exchanges;

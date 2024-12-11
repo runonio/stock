@@ -47,7 +47,7 @@ public class KorSpotDailyShortSellingOut  extends KorSpotDailyOut{
     }
 
     @Override
-    public String getDeletedPropertiesKey() {
+    public String getDelistedPropertiesKey() {
         return "delisted_stocks_short_selling_1d";
     }
 }

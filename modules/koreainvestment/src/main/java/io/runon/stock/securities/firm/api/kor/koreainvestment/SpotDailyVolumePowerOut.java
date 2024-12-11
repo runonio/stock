@@ -31,7 +31,7 @@ public class SpotDailyVolumePowerOut extends KoreainvestmentDailyOut{
     }
 
     @Override
-    public String getDeletedPropertiesKey() {
+    public String getDelistedPropertiesKey() {
 
         return "delisted_volume_power_1d";
     }

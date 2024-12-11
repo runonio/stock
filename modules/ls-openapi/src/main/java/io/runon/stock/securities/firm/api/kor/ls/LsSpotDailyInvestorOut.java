@@ -33,7 +33,7 @@ public class LsSpotDailyInvestorOut extends LsStockDailyOut {
     }
 
     @Override
-    public String getDeletedPropertiesKey() {
+    public String getDelistedPropertiesKey() {
         return "delisted_stocks_investor_1d";
     }
 }
