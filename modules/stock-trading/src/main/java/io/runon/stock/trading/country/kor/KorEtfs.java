@@ -96,7 +96,7 @@ public class KorEtfs {
             minSize = 1;
         }
 
-        IdArray<BigDecimalArray> [] searchDataArray =  TradingSimilarity.search(baseCandle, targets, new BigDecimal("0.2"), minSize, new BigDecimal("70") );
+        IdArray<BigDecimalArray> [] searchDataArray =  TradingSimilarity.search(baseCandle, targets, new BigDecimal("0.2"), minSize, new BigDecimal("70"), new BigDecimal("10000000") );
         StockSimSearchData stockSimSearchData = new StockSimSearchData();
         stockSimSearchData.setSearchArray(searchDataArray);
         stockSimSearchData.setTargetStocks(targetStocks);

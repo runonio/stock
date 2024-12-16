@@ -19,40 +19,24 @@ public class StockClusteringGroup {
     StockClusteringData [] dataArray;
     Map<String, StockClusteringData> dataMap;
 
-    public void sort(){
-        if(dataArray.length == 1){
-            return;
-        }
-
-        //군집내 점수를 더한다.
-        //전체 타임라인 구하기
-        //군집내 모든 시간라인 정보생성
-        Map<Long, List<BigDecimal>> timeChangeMap = new HashMap<>();
-        for(StockClusteringData data : dataArray){
-            TimeChangePercent [] timeChanges = data.getChangeArray();
-            for(TimeChangePercent timeChange : timeChanges){
-                List<BigDecimal> list = timeChangeMap.computeIfAbsent(timeChange.getTime(), k -> new ArrayList<>());
-                list.add(timeChange.getChangePercent());
-            }
-        }
-
-
-        Map<Long, BigDecimal> avgMap = new HashMap<>();
-
-
-        Set<Long> keys = timeChangeMap.keySet();
-        for(Long key : keys){
-            List<BigDecimal> list = timeChangeMap.get(key);
-            avgMap.put(key, BigDecimals.average(list));
-
-        }
+    public void sort(Map<Long, BigDecimal> avgMap){
 
         for(StockClusteringData data : dataArray){
             data.setGroupScore(avgMap);
         }
 
-        Arrays.sort(dataArray, SORT_DESC);
 
+        if(dataArray.length == 1){
+            return;
+        }
+
+        sort();
+
+    }
+
+
+    public void sort(){
+        Arrays.sort(dataArray, SORT_DESC);
     }
 
 
