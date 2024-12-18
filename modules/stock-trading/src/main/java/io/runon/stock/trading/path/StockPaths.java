@@ -33,6 +33,13 @@ public class StockPaths {
         return getSpotDirPath(countryCode, "stock.spot.candle.dir.path", "candle");
     }
 
+    public static String getAnalysisPath(CountryCode countryCode){
+        return getAnalysisPath(countryCode.toString());
+    }
+
+    public static String getAnalysisPath(String countryCode){
+        return getSpotDirPath(countryCode, "stock.spot.analysis.dir.path", "analysis");
+    }
 
 
     public static String getSpotCandleFilesPath(String stockId, String interval){
