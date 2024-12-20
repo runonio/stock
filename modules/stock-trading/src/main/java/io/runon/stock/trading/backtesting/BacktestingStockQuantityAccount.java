@@ -5,6 +5,7 @@ import io.runon.stock.trading.StockHoldingQuantity;
 import io.runon.stock.trading.Stocks;
 import io.runon.stock.trading.exception.StockDataException;
 import io.runon.trading.backtesting.account.BacktestingHoldingAccount;
+import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -14,6 +15,7 @@ import java.util.Map;
  * 주식전용 베겥스팅 추가도구
  * @author macle
  */
+@Setter
 public class BacktestingStockQuantityAccount extends BacktestingHoldingAccount<StockHoldingQuantity> {
 
 
@@ -22,7 +24,6 @@ public class BacktestingStockQuantityAccount extends BacktestingHoldingAccount<S
 
     private BigDecimal buyTaxRate = BigDecimal.ZERO;
     private BigDecimal sellTaxRate = new BigDecimal("0.0025");
-
 
 
     private Map<String, Stock> stockMap = null;
@@ -102,24 +103,8 @@ public class BacktestingStockQuantityAccount extends BacktestingHoldingAccount<S
     }
 
 
+    public void setSlippage(BigDecimal slippage) {
+        stockPrice.setSlippage(slippage);
 
-    public BacktestingStockPrice getStockPrice() {
-        return stockPrice;
-    }
-
-    public void setBuyFeeRate(BigDecimal buyFeeRate) {
-        this.buyFeeRate = buyFeeRate;
-    }
-
-    public void setSellFeeRate(BigDecimal sellFeeRate) {
-        this.sellFeeRate = sellFeeRate;
-    }
-
-    public void setBuyTaxRate(BigDecimal buyTaxRate) {
-        this.buyTaxRate = buyTaxRate;
-    }
-
-    public void setSellTaxRate(BigDecimal sellTaxRate) {
-        this.sellTaxRate = sellTaxRate;
     }
 }

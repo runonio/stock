@@ -14,6 +14,7 @@ public class BacktestingStockPrice extends MapPrice<TradeCandle> {
     private final BacktestingStockQuantityAccount account;
 
 
+    private BigDecimal slippage = BigDecimal.ZERO;
 
     public BacktestingStockPrice(BacktestingStockQuantityAccount account){
         this.account = account;
@@ -24,14 +25,23 @@ public class BacktestingStockPrice extends MapPrice<TradeCandle> {
         BigDecimal buyFeeRate = account.getBuyFeeRate(id);
         BigDecimal price = getPrice(id);
 
+        price = price.add(price.multiply(slippage));
+
         return price.add(price.multiply(buyFeeRate));
     }
 
     @Override
     public BigDecimal getSellPrice(String id) {
         BigDecimal price = getPrice(id);
+        price = price.subtract(price.multiply(slippage));
+
         BigDecimal sellFeeRate = account.getSellFeeRate(id);
         return price.subtract(price.multiply(sellFeeRate));
+    }
+
+
+    public void setSlippage(BigDecimal slippage) {
+        this.slippage = slippage;
     }
 }
 
