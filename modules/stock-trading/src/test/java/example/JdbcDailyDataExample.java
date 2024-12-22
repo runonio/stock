@@ -2,7 +2,7 @@ package example;
 
 import io.runon.commons.config.Config;
 import io.runon.stock.trading.StockDailyData;
-import io.runon.stock.trading.daily.RdsDaily;
+import io.runon.stock.trading.data.daily.RdsDaily;
 
 
 import java.util.List;

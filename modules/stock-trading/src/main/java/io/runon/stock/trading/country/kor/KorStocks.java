@@ -8,9 +8,7 @@ import io.runon.stock.trading.data.StockData;
 import io.runon.stock.trading.data.StockDataManager;
 import io.runon.trading.TradingTimes;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 한국시장 관련처리
@@ -43,30 +41,64 @@ public class KorStocks {
     };
 
     public static Stock [] getGeneralStocks(){
-        return getGeneralStocks(null, YmdUtil.now(TradingTimes.KOR_ZONE_ID));
+
+        return getGeneralStocks(Stocks.getStocks(TARGET_EXCHANGES));
     }
 
     //상장폐지포함
     public static Stock [] getGeneralStocksInDelisted(){
         StockData stockData = StockDataManager.getInstance().getStockData();
-        String basedYmd = YmdUtil.now(TradingTimes.KOR_ZONE_ID);
         String [] types ={
                 "STOCK"
         };
 
-        return getGeneralStocks( stockData.getAllStocks(TARGET_EXCHANGES, types), basedYmd);
+        return getGeneralStocks( stockData.getAllStocks(TARGET_EXCHANGES, types));
     }
 
-    public static Stock [] getGeneralStocks(Stock [] stocks, String baseYmd){
 
-        if(stocks == null) {
-            StockData stockData = StockDataManager.getInstance().getStockData();
-            if (YmdUtil.isNow(baseYmd, TradingTimes.KOR_ZONE_ID)) {
-                stocks = stockData.getStocks(TARGET_EXCHANGES);
-            } else {
-                stocks = stockData.getStocks(TARGET_EXCHANGES, baseYmd);
-            }
+    public static Stock [] getEtfsInDelisted(){
+        StockData stockData = StockDataManager.getInstance().getStockData();
+        String [] types ={
+                "ETF"
+        };
+
+        return stockData.getAllStocks(TARGET_EXCHANGES, types);
+    }
+
+
+    /**
+     * 일반 주식과 ETF, 벡테스팅용 데이터 로드에사용
+     * @return 일반 주식과 ETF
+     */
+    public static Stock [] getGeneralStocksEtfInDelisted(){
+
+
+        List<Stock> list = new ArrayList<>();
+        Set<String> check = new HashSet<>();
+        Stock [] stocks = getGeneralStocksInDelisted();
+        for(Stock stock : stocks){
+            list.add(stock);
+            check.add(stock.getStockId());
         }
+
+
+        stocks = getEtfsInDelisted();
+        for(Stock stock : stocks) {
+            if(check.contains(stock.getStockId())){
+                continue;
+            }
+            list.add(stock);
+        }
+
+        Stock [] result = list.toArray(new Stock[list.size()]);
+        list.clear();
+        check.clear();
+        return result;
+    }
+
+
+
+    public static Stock [] getGeneralStocks(Stock [] stocks){
 
         //주식종료 분석
         List<Stock> list = new ArrayList<>();

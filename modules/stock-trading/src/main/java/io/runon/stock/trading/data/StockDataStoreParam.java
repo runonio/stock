@@ -1,4 +1,4 @@
-package io.runon.stock.trading.daily;
+package io.runon.stock.trading.data;
 
 import lombok.Data;
 
@@ -6,7 +6,7 @@ import lombok.Data;
  * @author macle
  */
 @Data
-public class StockDailyStoreGap {
+public class StockDataStoreParam {
 
     int investorDayGap = -1;
 
@@ -24,5 +24,6 @@ public class StockDailyStoreGap {
 
     //체결강도
     int volumePowerDayGap = 0;
+
 
 }

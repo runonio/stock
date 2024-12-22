@@ -8,7 +8,6 @@ https://github.com/seomse/seomse-stock
 
 지금 데이터를 가져오는 방법이 런온 시스템을 개방중인 중앙 DB와 연동되어 있습니다. 이후에 개인화가 될때는 중앙DB에서 데이터를 가져오는 부분이 API화가 될 부분인데, 주식을 활용하는 봇이 많아질떄까지
 
-
 # 개발환경
 - open jdk 17
 
@@ -19,10 +18,8 @@ https://github.com/seomse/seomse-stock
 - [github.com/seomse](https://github.com/seomse)
 - [www.seomse.com](https://www.seomse.com/)
 
-### cafe
-- [cafe.naver.com/radvisor](https://cafe.naver.com/radvisor)
-
 ## main developer
 - macle
-   - github(source code): [github.com/macle86](https://github.com/macle86)
-   - email: ysys86a@gmail.com
+  - github(source code): [github.com/macle86](https://github.com/macle86)
+  - email: ysys86a@gmail.com
+  - kakaotalk(1:1): https://open.kakao.com/o/sspZGH3g

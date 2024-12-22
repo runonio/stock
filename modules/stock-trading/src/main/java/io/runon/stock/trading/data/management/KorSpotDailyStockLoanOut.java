@@ -2,7 +2,7 @@ package io.runon.stock.trading.data.management;
 
 import io.runon.commons.config.JsonFileProperties;
 import io.runon.stock.trading.Stock;
-import io.runon.stock.trading.daily.StockLoanDaily;
+import io.runon.stock.trading.data.daily.StockLoanDaily;
 import io.runon.stock.trading.data.LoanData;
 import io.runon.stock.trading.data.StockDataManager;
 import io.runon.stock.trading.path.StockPathLastTime;

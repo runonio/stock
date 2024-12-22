@@ -2,7 +2,7 @@ package example.investor;
 
 import io.runon.stock.securities.firm.api.kor.koreainvestment.KoreainvestmentApi;
 import io.runon.stock.securities.firm.api.kor.koreainvestment.KoreainvestmentPeriodDataApi;
-import io.runon.stock.trading.daily.ProgramDaily;
+import io.runon.stock.trading.data.daily.ProgramDaily;
 
 /**
  * 예제

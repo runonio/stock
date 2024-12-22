@@ -1,6 +1,6 @@
 package dev;
 
-import io.runon.stock.trading.daily.ProgramDaily;
+import io.runon.stock.trading.data.daily.ProgramDaily;
 import io.runon.trading.data.TextChange;
 import io.runon.trading.data.file.TimeFiles;
 import org.json.JSONObject;

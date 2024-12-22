@@ -1,8 +1,8 @@
 package io.runon.stock.trading.data;
 
 import io.runon.stock.trading.Stock;
-import io.runon.stock.trading.daily.ShortSellingDaily;
-import io.runon.stock.trading.daily.StockLoanDaily;
+import io.runon.stock.trading.data.daily.ShortSellingDaily;
+import io.runon.stock.trading.data.daily.StockLoanDaily;
 
 
 /**

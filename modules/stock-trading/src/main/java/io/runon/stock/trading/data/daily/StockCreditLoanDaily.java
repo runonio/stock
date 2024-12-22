@@ -1,4 +1,4 @@
-package io.runon.stock.trading.daily;
+package io.runon.stock.trading.data.daily;
 
 import io.runon.trading.TradingGson;
 import lombok.Data;

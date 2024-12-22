@@ -1,4 +1,4 @@
-package io.runon.stock.trading.daily;
+package io.runon.stock.trading.data.daily;
 
 import io.runon.commons.callback.StrCallback;
 import io.runon.commons.utils.time.Times;
@@ -33,9 +33,9 @@ public class StockDataLoad {
 //        return StockCandles.getDailyCandles(stock, beginYmd, endYmd);
 //    }
 
-        /**
-         * @return 캔들
-         */
+    /**
+     * @return 캔들
+     */
     public static TradeCandle [] getCandle(Stock stock, int beginYmd, int endYmd){
         return StockCandles.getDailyCandles(stock, beginYmd, endYmd);
     }

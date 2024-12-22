@@ -4,7 +4,7 @@ import io.runon.commons.data.BigDecimalArray;
 import io.runon.commons.utils.time.YmdUtil;
 import io.runon.stock.trading.Stock;
 import io.runon.stock.trading.Stocks;
-import io.runon.stock.trading.daily.StockDataLoad;
+import io.runon.stock.trading.data.daily.StockDataLoad;
 import io.runon.trading.TradingTimes;
 import io.runon.trading.technical.analysis.candle.TradeCandle;
 import io.runon.trading.technical.analysis.similarity.TradingSimilarity;

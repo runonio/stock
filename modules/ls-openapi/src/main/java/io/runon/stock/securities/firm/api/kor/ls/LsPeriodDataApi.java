@@ -1,7 +1,7 @@
 package io.runon.stock.securities.firm.api.kor.ls;
 
 import io.runon.commons.http.HttpApiResponse;
-import io.runon.stock.trading.daily.StockInvestorDaily;
+import io.runon.stock.trading.data.daily.StockInvestorDaily;
 import io.runon.stock.trading.exception.StockApiException;
 import org.json.JSONArray;
 import org.json.JSONObject;

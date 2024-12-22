@@ -1,25 +1,32 @@
-package io.runon.stock.trading.daily;
+package io.runon.stock.trading.data;
 
 import io.runon.commons.utils.time.YmdUtil;
 import io.runon.stock.trading.Stock;
+import io.runon.stock.trading.data.daily.*;
+import io.runon.trading.data.TimeNumbersMap;
 import io.runon.trading.data.daily.VolumePowerDaily;
 import io.runon.trading.technical.analysis.candle.TradeCandle;
 import lombok.Data;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
- * 주식 일별 분석 정보
+ * 분석에 필요한 정보를 메모리에 올려놓기 위한 정보
  * @author macle
  */
 @Data
-public class StockDailyStore {
+public class StockDataStore {
 
     private Stock stock;
 
+    private final Map<String, Object> dataMap = new HashMap<>();
+
     TradeCandle [] candles = null; //캔들
-    StockInvestorDaily [] investorDailies = null; //투자자별
-    ShortSellingDaily [] shortSellingDailies = null; //공매도
-    ProgramDaily [] programDailies = null; //프로그램
-    StockLoanDaily [] stockLoanDailies = null;//대차잔고
+    StockInvestorDaily[] investorDailies = null; //투자자별
+    ShortSellingDaily[] shortSellingDailies = null; //공매도
+    ProgramDaily[] programDailies = null; //프로그램
+    StockLoanDaily[] stockLoanDailies = null;//대차잔고
 
     StockCreditLoanDaily[] stockCreditLoanDailies = null; //종목별 신용정보
     VolumePowerDaily [] volumePowerDailies = null; //체결강도
@@ -42,7 +49,7 @@ public class StockDailyStore {
     //체결강도
     int volumePowerDayGap = 0;
 
-    public StockDailyStore(Stock stock){
+    public StockDataStore(Stock stock){
         this.stock = stock;
     }
 
@@ -64,7 +71,7 @@ public class StockDailyStore {
         volumePowerDailies = StockDataLoad.getVolumePower(volumePowerDailies, stock, beginYmd, YmdUtil.getYmdInt(endYmd, volumePowerDayGap));
     }
 
-    public void setDayGap(StockDailyStoreGap dailyStoreGap){
+    public void setDayGap(StockDataStoreParam dailyStoreGap){
 
         if(dailyStoreGap == null){
             return;
@@ -76,5 +83,50 @@ public class StockDailyStore {
         stockLoanDayGap = dailyStoreGap.stockLoanDayGap;
         stockCreditLoanDayGap = dailyStoreGap.stockCreditLoanDayGap;
         volumePowerDayGap = dailyStoreGap.volumePowerDayGap;
+    }
+
+
+    public void putData(String key, Object value) {
+        dataMap.put(key, value);
+    }
+
+    public TimeNumbersMap[] getTimeNumbersMaps(String key) {
+        Object obj = dataMap.get(key);
+        if(obj == null){
+            return null;
+        }
+        return (TimeNumbersMap []) obj;
+    }
+
+    public TimeNumbersMap getTimeNumbersMap(String key, int ymd){
+
+        TimeNumbersMap [] maps = getTimeNumbersMaps(key);
+        if(maps == null){
+            return null;
+        }
+
+        for(TimeNumbersMap timeNumbersMap : maps){
+            if(timeNumbersMap.getYmd() == ymd){
+                return timeNumbersMap;
+            }
+        }
+
+        return null;
+    }
+
+    public TimeNumbersMap getTimeNumbersMap(String key, long time){
+
+        TimeNumbersMap [] maps = getTimeNumbersMaps(key);
+        if(maps == null){
+            return null;
+        }
+
+        for(TimeNumbersMap timeNumbersMap : maps){
+            if(timeNumbersMap.getTime() == time){
+                return timeNumbersMap;
+            }
+        }
+
+        return null;
     }
 }

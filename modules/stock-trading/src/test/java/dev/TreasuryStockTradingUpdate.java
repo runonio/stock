@@ -5,7 +5,7 @@ import io.runon.commons.config.Config;
 import io.runon.jdbc.objects.JdbcObjects;
 import io.runon.stock.trading.StockDailyData;
 import io.runon.stock.trading.TreasuryStockTrading;
-import io.runon.stock.trading.daily.RdsDaily;
+import io.runon.stock.trading.data.daily.RdsDaily;
 import org.json.JSONObject;
 
 /**

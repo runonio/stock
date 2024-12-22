@@ -109,6 +109,11 @@ public class Stocks {
         return Exchanges.getZoneId(stock.getExchange());
     }
 
+    public static ZoneId getZoneId(String stockId){
+        String countryCode = getCountryCode(stockId);
+        return TradingTimes.getZoneId(countryCode);
+    }
+
     public static void sortUseLastTimeParallel(Stock [] stocks, String interval, StockPathLastTime stockPathLastTime){
 
         StockLong[] sortStocks = new StockLong[stocks.length];

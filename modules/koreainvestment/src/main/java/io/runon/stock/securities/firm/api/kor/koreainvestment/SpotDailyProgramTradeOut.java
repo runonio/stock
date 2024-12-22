@@ -1,7 +1,7 @@
 package io.runon.stock.securities.firm.api.kor.koreainvestment;
 
 import io.runon.stock.trading.Stock;
-import io.runon.stock.trading.daily.ProgramDaily;
+import io.runon.stock.trading.data.daily.ProgramDaily;
 import io.runon.stock.trading.data.management.StockOutTimeLineJson;
 import io.runon.stock.trading.path.StockPathLastTime;
 import io.runon.trading.data.file.PathTimeLine;

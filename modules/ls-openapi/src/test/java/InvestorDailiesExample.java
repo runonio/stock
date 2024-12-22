@@ -1,5 +1,5 @@
 import io.runon.stock.securities.firm.api.kor.ls.LsApi;
-import io.runon.stock.trading.daily.StockInvestorDaily;
+import io.runon.stock.trading.data.daily.StockInvestorDaily;
 
 /**
  * 파일처리 관련 유틸성 클래스
