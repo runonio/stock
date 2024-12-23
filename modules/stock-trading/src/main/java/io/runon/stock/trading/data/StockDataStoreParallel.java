@@ -13,7 +13,7 @@ import java.util.Map;
 public class StockDataStoreParallel {
 
 
-    public  static StockDataStore[] parallelDataSet(Stock [] stocks, StockDataStoreParam stockDailyStoreParam, Stock[] stocks1, int beginYmd, int endYmd){
+    public  static StockDataStore[] parallelDataSet(Stock [] stocks, StockDataStoreParam stockDailyStoreParam, int beginYmd, int endYmd){
         return parallelDataSet(null, null, stocks, beginYmd, endYmd, null);
     }
 

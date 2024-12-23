@@ -99,6 +99,11 @@ public class KorStocks {
 
 
     public static Stock [] getGeneralStocks(Stock [] stocks){
+        return getGeneralStocks(stocks, null);
+    }
+
+
+    public static Stock [] getGeneralStocks(Stock [] stocks, Integer baseYmd){
 
         //주식종료 분석
         List<Stock> list = new ArrayList<>();
@@ -116,6 +121,8 @@ public class KorStocks {
             if(stock.getNameKo().contains("스팩")){
                 continue;
             }
+
+
 
             if(!stock.getSymbol().equals("0")){
                 list.add(stock);

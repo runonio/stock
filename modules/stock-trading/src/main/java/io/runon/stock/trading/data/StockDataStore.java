@@ -129,4 +129,14 @@ public class StockDataStore {
 
         return null;
     }
+
+
+    public static Stock [] getStocks(StockDataStore [] array){
+        Stock [] stocks = new Stock[array.length];
+        for (int i = 0; i <stocks.length ; i++) {
+            stocks[i] = array[i].stock;
+        }
+
+        return stocks;
+    }
 }

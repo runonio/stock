@@ -248,5 +248,18 @@ public class Stocks {
     }
 
 
+    public static boolean isListed(Stock stock, int ymd){
+        if(stock.getListedYmd() != null && stock.getListedYmd() > ymd){
+            return false;
+        }
+
+        if(stock.getDelistedYmd() != null && stock.getDelistedYmd() <= ymd){
+            return false;
+        }
+
+
+        return false;
+    }
+
 
 }
