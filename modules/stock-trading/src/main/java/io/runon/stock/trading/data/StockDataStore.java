@@ -130,6 +130,22 @@ public class StockDataStore {
         return null;
     }
 
+    public TimeNumbersMap getTimeNumbersMap(String key, long beginTime, long endTime){
+
+        TimeNumbersMap [] maps = getTimeNumbersMaps(key);
+        if(maps == null){
+            return null;
+        }
+
+        for(TimeNumbersMap timeNumbersMap : maps){
+            if(timeNumbersMap.getTime() >= beginTime && timeNumbersMap.getTime() < endTime){
+                return timeNumbersMap;
+            }
+        }
+
+        return null;
+    }
+
 
     public static Stock [] getStocks(StockDataStore [] array){
         Stock [] stocks = new Stock[array.length];

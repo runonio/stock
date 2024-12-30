@@ -107,4 +107,8 @@ public class BacktestingStockQuantityAccount extends BacktestingHoldingAccount<S
         stockPrice.setSlippage(slippage);
 
     }
+
+    public BacktestingStockPrice getStockPrice() {
+        return stockPrice;
+    }
 }
