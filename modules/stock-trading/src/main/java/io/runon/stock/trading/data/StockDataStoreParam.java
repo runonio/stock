@@ -26,4 +26,17 @@ public class StockDataStoreParam {
     int volumePowerDayGap = 0;
 
 
+    boolean isInvestor = true;
+
+    boolean isShortSelling = true;
+
+    boolean isProgram = true;
+
+    boolean isStockLoan = true;
+
+    boolean isCreditLoan = true;
+
+    boolean isVolumePower = true;
+
+
 }

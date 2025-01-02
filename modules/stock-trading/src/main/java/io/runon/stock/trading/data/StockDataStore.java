@@ -3,6 +3,7 @@ package io.runon.stock.trading.data;
 import io.runon.commons.utils.time.YmdUtil;
 import io.runon.stock.trading.Stock;
 import io.runon.stock.trading.data.daily.*;
+import io.runon.trading.TradingTimes;
 import io.runon.trading.data.TimeNumbersMap;
 import io.runon.trading.data.daily.VolumePowerDaily;
 import io.runon.trading.technical.analysis.candle.TradeCandle;
@@ -49,6 +50,18 @@ public class StockDataStore {
     //체결강도
     int volumePowerDayGap = 0;
 
+    boolean isInvestor = true;
+
+    boolean isShortSelling = true;
+
+    boolean isProgram = true;
+
+    boolean isStockLoan = true;
+
+    boolean isCreditLoan = true;
+
+    boolean isVolumePower = true;
+
     public StockDataStore(Stock stock){
         this.stock = stock;
     }
@@ -62,27 +75,45 @@ public class StockDataStore {
 
         candles = StockDataLoad.getCandle(candles, stock, beginYmd, endYmd);
 
-        investorDailies = StockDataLoad.getInvestor(investorDailies, stock, beginYmd, YmdUtil.getYmdInt(endYmd, investorDayGap));
-        shortSellingDailies = StockDataLoad.getShortSelling(shortSellingDailies, stock, beginYmd, YmdUtil.getYmdInt(endYmd, shortSellingDayGap));
-        programDailies = StockDataLoad.getProgram(programDailies, stock, beginYmd, YmdUtil.getYmdInt(endYmd, programDayGap));
-        stockLoanDailies = StockDataLoad.getStockLoan(stockLoanDailies, stock, beginYmd, YmdUtil.getYmdInt(endYmd, stockLoanDayGap));
-
-        stockCreditLoanDailies = StockDataLoad.getStockCreditLoan(stockCreditLoanDailies, stock, beginYmd, YmdUtil.getYmdInt(endYmd, stockCreditLoanDayGap));
-        volumePowerDailies = StockDataLoad.getVolumePower(volumePowerDailies, stock, beginYmd, YmdUtil.getYmdInt(endYmd, volumePowerDayGap));
+        if(isInvestor) {
+            investorDailies = StockDataLoad.getInvestor(investorDailies, stock, beginYmd, YmdUtil.getYmdInt(endYmd, investorDayGap));
+        }
+        if(isShortSelling) {
+            shortSellingDailies = StockDataLoad.getShortSelling(shortSellingDailies, stock, beginYmd, YmdUtil.getYmdInt(endYmd, shortSellingDayGap));
+        }
+        if(isProgram) {
+            programDailies = StockDataLoad.getProgram(programDailies, stock, beginYmd, YmdUtil.getYmdInt(endYmd, programDayGap));
+        }
+        if(isStockLoan) {
+            stockLoanDailies = StockDataLoad.getStockLoan(stockLoanDailies, stock, beginYmd, YmdUtil.getYmdInt(endYmd, stockLoanDayGap));
+        }
+        if(isCreditLoan) {
+            stockCreditLoanDailies = StockDataLoad.getStockCreditLoan(stockCreditLoanDailies, stock, beginYmd, YmdUtil.getYmdInt(endYmd, stockCreditLoanDayGap));
+        }
+        if(isVolumePower) {
+            volumePowerDailies = StockDataLoad.getVolumePower(volumePowerDailies, stock, beginYmd, YmdUtil.getYmdInt(endYmd, volumePowerDayGap));
+        }
     }
 
-    public void setDayGap(StockDataStoreParam dailyStoreGap){
+    public void set(StockDataStoreParam param){
 
-        if(dailyStoreGap == null){
+        if(param == null){
             return;
         }
 
-        investorDayGap = dailyStoreGap.investorDayGap;
-        shortSellingDayGap = dailyStoreGap.shortSellingDayGap;
-        programDayGap = dailyStoreGap.programDayGap;
-        stockLoanDayGap = dailyStoreGap.stockLoanDayGap;
-        stockCreditLoanDayGap = dailyStoreGap.stockCreditLoanDayGap;
-        volumePowerDayGap = dailyStoreGap.volumePowerDayGap;
+        investorDayGap = param.investorDayGap;
+        shortSellingDayGap = param.shortSellingDayGap;
+        programDayGap = param.programDayGap;
+        stockLoanDayGap = param.stockLoanDayGap;
+        stockCreditLoanDayGap = param.stockCreditLoanDayGap;
+        volumePowerDayGap = param.volumePowerDayGap;
+
+        isInvestor = param.isInvestor;
+        isShortSelling = param.isShortSelling;
+        isProgram = param.isProgram;
+        isStockLoan = param.isStockLoan;
+        isCreditLoan = param.isCreditLoan;
+        isVolumePower = param.isVolumePower;
     }
 
 
@@ -147,6 +178,37 @@ public class StockDataStore {
     }
 
 
+    int lastCandleSearchIndex = 0;
+
+    public TradeCandle getCandle( long beginTime, long endTime){
+        for (int i = lastCandleSearchIndex; i <candles.length ; i++) {
+            TradeCandle candle = candles[i];
+            if(beginTime <= candle.getOpenTime() && endTime > candle.getOpenTime()){
+                //검색성공
+                lastCandleSearchIndex = i;
+                return candle;
+            }if(candle.getOpenTime() >= endTime){
+                return null;
+            }
+        }
+
+        for (int i = lastCandleSearchIndex-1; i > -1; i--) {
+            TradeCandle candle = candles[i];
+            if(beginTime <= candle.getOpenTime() && endTime > candle.getOpenTime()){
+                //검색성공
+                lastCandleSearchIndex = i;
+                return candle;
+            }if(candle.getOpenTime() < beginTime){
+                return null;
+            }
+        }
+
+
+        return null;
+    }
+
+
+
     public static Stock [] getStocks(StockDataStore [] array){
         Stock [] stocks = new Stock[array.length];
         for (int i = 0; i <stocks.length ; i++) {
@@ -155,4 +217,9 @@ public class StockDataStore {
 
         return stocks;
     }
+
+
+
+
+
 }

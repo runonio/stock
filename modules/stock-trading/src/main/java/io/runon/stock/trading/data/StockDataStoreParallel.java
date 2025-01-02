@@ -36,7 +36,7 @@ public class StockDataStoreParallel {
                 array[i] = new StockDataStore(stock);
             }
 
-            array[i].setDayGap(dailyStoreParam);
+            array[i].set(dailyStoreParam);
         }
 
         ParallelArrayWork<StockDataStore> work = dataStore -> {

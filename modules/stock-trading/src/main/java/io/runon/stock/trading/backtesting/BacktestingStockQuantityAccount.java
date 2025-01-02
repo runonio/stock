@@ -4,6 +4,7 @@ import io.runon.stock.trading.Stock;
 import io.runon.stock.trading.StockHoldingQuantity;
 import io.runon.stock.trading.Stocks;
 import io.runon.stock.trading.exception.StockDataException;
+import io.runon.trading.PriceGet;
 import io.runon.trading.backtesting.account.BacktestingHoldingAccount;
 import lombok.Setter;
 
@@ -38,12 +39,9 @@ public class BacktestingStockQuantityAccount extends BacktestingHoldingAccount<S
         this.stockMap = stockMap;
     }
 
-    public void putStock(Stock stock){
-        if(stockMap == null){
-            stockMap = new HashMap<>();
-        }
 
-        stockMap.put(stock.getStockId(), stock);
+    public void setPriceGet(PriceGet priceGet){
+        stockPrice.setPriceGet(priceGet);
     }
 
 
