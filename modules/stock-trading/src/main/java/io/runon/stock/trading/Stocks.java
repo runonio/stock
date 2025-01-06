@@ -1,7 +1,7 @@
 package io.runon.stock.trading;
 
 import io.runon.commons.parallel.ParallelArrayJob;
-import io.runon.commons.parallel.ParallelArrayWork;
+import io.runon.commons.parallel.ParallelWork;
 import io.runon.commons.utils.time.Times;
 import io.runon.commons.utils.time.YmdUtil;
 import io.runon.stock.trading.data.StockData;
@@ -123,7 +123,7 @@ public class Stocks {
             sortStocks[i].setStock(stock);
         }
 
-        ParallelArrayWork<StockLong> work = stockLong -> {
+        ParallelWork<StockLong> work = stockLong -> {
 
             long time = stockPathLastTime.getLastTime(stockLong.getStock(), interval);
             stockLong.setNum(time);

@@ -1,14 +1,12 @@
 package io.runon.stock.trading.modify;
 
 import io.runon.commons.parallel.ParallelArrayJob;
-import io.runon.commons.parallel.ParallelArrayWork;
+import io.runon.commons.parallel.ParallelWork;
 import io.runon.commons.utils.time.Times;
 import io.runon.stock.trading.Stock;
 import io.runon.stock.trading.Stocks;
-import io.runon.stock.trading.exception.StockDataException;
 import io.runon.stock.trading.path.StockPaths;
 import io.runon.trading.CountryCode;
-import io.runon.trading.CountryUtils;
 import io.runon.trading.TradingConfig;
 import io.runon.trading.data.Exchanges;
 import io.runon.trading.data.modify.ModifyPrice;
@@ -67,7 +65,7 @@ public class StockModifyPriceSearch {
 
     public void search(){
 
-        ParallelArrayWork<String> work = stockId -> {
+        ParallelWork<String> work = stockId -> {
 
             String filesDirPath = StockPaths.getSpotCandleFilesPath(stockId,"1d");
 

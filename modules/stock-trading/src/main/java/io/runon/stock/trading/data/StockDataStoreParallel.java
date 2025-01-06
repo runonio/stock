@@ -1,7 +1,7 @@
 package io.runon.stock.trading.data;
 
 import io.runon.commons.parallel.ParallelArrayJob;
-import io.runon.commons.parallel.ParallelArrayWork;
+import io.runon.commons.parallel.ParallelWork;
 import io.runon.stock.trading.Stock;
 import io.runon.trading.TradingConfig;
 
@@ -39,7 +39,7 @@ public class StockDataStoreParallel {
             array[i].set(dailyStoreParam);
         }
 
-        ParallelArrayWork<StockDataStore> work = dataStore -> {
+        ParallelWork<StockDataStore> work = dataStore -> {
           dataStore.setData(beginYmd, endYmd);
           if(put != null){
               put.setData(dataStore, beginYmd, endYmd);
