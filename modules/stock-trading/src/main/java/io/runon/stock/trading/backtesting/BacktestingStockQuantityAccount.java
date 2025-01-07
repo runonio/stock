@@ -101,9 +101,9 @@ public class BacktestingStockQuantityAccount extends BacktestingHoldingAccount<S
     }
 
 
-    public void setSlippage(BigDecimal slippage) {
-        stockPrice.setSlippage(slippage);
-
+    @Override
+    public BigDecimal getPrice(String symbol) {
+        return stockPrice.getPrice(symbol);
     }
 
     public BacktestingStockPrice getStockPrice() {

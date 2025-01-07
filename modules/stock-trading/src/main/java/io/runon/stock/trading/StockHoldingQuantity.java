@@ -38,4 +38,7 @@ public class StockHoldingQuantity implements HoldingQuantity {
     public Stock getStock() {
         return stock;
     }
+
+
+
 }

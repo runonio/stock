@@ -7,6 +7,7 @@ import io.runon.trading.TradingTimes;
 import io.runon.trading.data.TimeNumbersMap;
 import io.runon.trading.data.daily.VolumePowerDaily;
 import io.runon.trading.technical.analysis.candle.TradeCandle;
+import io.runon.trading.technical.analysis.candle.TradeCandleIndex;
 import lombok.Data;
 
 import java.util.HashMap;
@@ -178,31 +179,31 @@ public class StockDataStore {
     }
 
 
-    int lastCandleSearchIndex = 0;
 
-    public TradeCandle getCandle( long beginTime, long endTime){
-        for (int i = lastCandleSearchIndex; i <candles.length ; i++) {
+    public TradeCandleIndex getCandle( long beginTime, long endTime, int lastIndex){
+
+
+        for (int i = lastIndex; i <candles.length ; i++) {
+            TradeCandle candle = candles[i];
+            if(beginTime <= candle.getOpenTime() && endTime > candle.getOpenTime()){
+
+                //검색성공
+                return new TradeCandleIndex(candle, i);
+            }
+
+        }
+
+        for (int i = lastIndex-1; i > -1; i--) {
             TradeCandle candle = candles[i];
             if(beginTime <= candle.getOpenTime() && endTime > candle.getOpenTime()){
                 //검색성공
-                lastCandleSearchIndex = i;
-                return candle;
-            }if(candle.getOpenTime() >= endTime){
-                return null;
+                return new TradeCandleIndex(candle, i);
             }
+
         }
 
-        for (int i = lastCandleSearchIndex-1; i > -1; i--) {
-            TradeCandle candle = candles[i];
-            if(beginTime <= candle.getOpenTime() && endTime > candle.getOpenTime()){
-                //검색성공
-                lastCandleSearchIndex = i;
-                return candle;
-            }if(candle.getOpenTime() < beginTime){
-                return null;
-            }
-        }
 
+//        System.out.println("null: " + stock.getStockId() +", "  +  YmdUtil.getYmd(beginTime, TradingTimes.KOR_ZONE_ID));
 
         return null;
     }

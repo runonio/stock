@@ -2,8 +2,6 @@ package io.runon.stock.trading.backtesting;
 
 import io.runon.trading.PriceGet;
 import io.runon.trading.backtesting.price.IdPrice;
-import io.runon.trading.backtesting.price.MapPrice;
-import io.runon.trading.technical.analysis.candle.TradeCandle;
 
 import java.math.BigDecimal;
 
@@ -15,10 +13,8 @@ public class BacktestingStockPrice implements IdPrice {
 
     private final BacktestingStockQuantityAccount account;
 
-
-    private BigDecimal slippage = BigDecimal.ZERO;
-
     private PriceGet priceGet;
+
 
     public BacktestingStockPrice(BacktestingStockQuantityAccount account){
         this.account = account;
@@ -29,19 +25,25 @@ public class BacktestingStockPrice implements IdPrice {
         return priceGet.getPrice(id);
     }
 
+
     @Override
     public BigDecimal getBuyPrice(String id) {
         BigDecimal buyFeeRate = account.getBuyFeeRate(id);
         BigDecimal price = getPrice(id);
 
-        price = price.add(price.multiply(slippage));
+        price = price.add(price.multiply(account.getSlippage()));
 
         return price.add(price.multiply(buyFeeRate));
     }
     @Override
     public BigDecimal getSellPrice(String id) {
         BigDecimal price = getPrice(id);
-        price = price.subtract(price.multiply(slippage));
+
+        if(price == null){
+            price = BigDecimal.ZERO;
+        }
+
+        price = price.subtract(price.multiply(account.getSlippage()));
 
         BigDecimal sellFeeRate = account.getSellFeeRate(id);
         return price.subtract(price.multiply(sellFeeRate));
@@ -52,8 +54,5 @@ public class BacktestingStockPrice implements IdPrice {
         this.priceGet = priceGet;
     }
 
-    public void setSlippage(BigDecimal slippage) {
-        this.slippage = slippage;
-    }
 }
 
