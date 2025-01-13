@@ -4,6 +4,7 @@ import io.runon.stock.trading.Stock;
 import io.runon.stock.trading.Stocks;
 import io.runon.stock.trading.data.management.StockOutTimeLineJson;
 import io.runon.trading.Time;
+import io.runon.trading.TimeNumber;
 import io.runon.trading.TradingGson;
 import lombok.Data;
 
@@ -15,7 +16,7 @@ import java.math.BigDecimal;
  * @author macle
  */
 @Data
-public class ShortSellingDaily implements StockOutTimeLineJson, Time {
+public class ShortSellingDaily implements StockOutTimeLineJson, TimeNumber {
     public static final ShortSellingDaily [] EMPTY_ARRAY = new ShortSellingDaily[0];
 
     Long t ;
@@ -111,4 +112,8 @@ public class ShortSellingDaily implements StockOutTimeLineJson, Time {
         return TradingGson.LOWER_CASE_WITH_UNDERSCORES.toJson(this);
     }
 
+    @Override
+    public BigDecimal getNumber() {
+        return balanceAmt;
+    }
 }

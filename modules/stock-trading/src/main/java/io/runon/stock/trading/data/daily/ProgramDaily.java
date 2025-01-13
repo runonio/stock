@@ -3,6 +3,7 @@ package io.runon.stock.trading.data.daily;
 import io.runon.stock.trading.Stock;
 import io.runon.stock.trading.Stocks;
 import io.runon.stock.trading.data.management.StockOutTimeLineJson;
+import io.runon.trading.TimeNumber;
 import io.runon.trading.TradingGson;
 import lombok.Data;
 
@@ -14,7 +15,7 @@ import java.math.BigDecimal;
  * @author macle
  */
 @Data
-public class ProgramDaily implements StockOutTimeLineJson {
+public class ProgramDaily implements StockOutTimeLineJson, TimeNumber {
 
     public static final ProgramDaily [] EMPTY_ARRAY = new ProgramDaily[0];
 
@@ -92,4 +93,8 @@ public class ProgramDaily implements StockOutTimeLineJson {
         return TradingGson.LOWER_CASE_WITH_UNDERSCORES_PRETTY.toJson(this);
     }
 
+    @Override
+    public BigDecimal getNumber() {
+        return netBuyAmount;
+    }
 }

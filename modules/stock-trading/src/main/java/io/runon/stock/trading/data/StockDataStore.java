@@ -2,15 +2,18 @@ package io.runon.stock.trading.data;
 
 import io.runon.commons.utils.time.YmdUtil;
 import io.runon.stock.trading.Stock;
+import io.runon.stock.trading.Stocks;
 import io.runon.stock.trading.data.daily.*;
 import io.runon.trading.TimeNumber;
 import io.runon.trading.TradingTimes;
 import io.runon.trading.data.TimeNumbersMap;
+import io.runon.trading.data.TimeRange;
 import io.runon.trading.data.daily.VolumePowerDaily;
 import io.runon.trading.technical.analysis.candle.TradeCandle;
 import io.runon.trading.technical.analysis.candle.TradeCandleIndex;
 import lombok.Data;
 
+import java.time.ZoneId;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -76,19 +79,53 @@ public class StockDataStore {
     public void setData(int beginYmd, int endYmd){
 
         candles = StockDataLoad.getCandle(candles, stock, beginYmd, endYmd);
-
+        ZoneId zoneId = Stocks.getZoneId(stock);
         if(isInvestor) {
             investorDailies = StockDataLoad.getInvestor(investorDailies, stock, beginYmd, YmdUtil.getYmdInt(endYmd, investorDayGap));
+
+            TradeCandleIndex lastCandleIndex =null;
+            for(StockInvestorDaily daily : investorDailies){
+                TradeCandleIndex candleIndex;
+                TimeRange timeRange = TradingTimes.getYmdRange(daily.getYmd(), zoneId);
+                if(lastCandleIndex == null){
+                    candleIndex = getCandle(timeRange.getBeginTime(), timeRange.getEndTime(),0);
+                }else{
+                    candleIndex = getCandle(timeRange.getBeginTime(), timeRange.getEndTime(),lastCandleIndex.getIndex());
+                }
+
+                if(candleIndex != null){
+                    lastCandleIndex = candleIndex;
+                    daily.init(candleIndex.getTradeCandle());
+                }
+            }
         }
+        if(isStockLoan) {
+            stockLoanDailies = StockDataLoad.getStockLoan(stockLoanDailies, stock, beginYmd, YmdUtil.getYmdInt(endYmd, stockLoanDayGap));
+            TradeCandleIndex lastCandleIndex =null;
+            for(StockLoanDaily daily : stockLoanDailies){
+                TradeCandleIndex candleIndex;
+                TimeRange timeRange = TradingTimes.getYmdRange(daily.getYmd(), zoneId);
+                if(lastCandleIndex == null){
+                    candleIndex = getCandle(timeRange.getBeginTime(), timeRange.getEndTime(),0);
+                }else{
+                    candleIndex = getCandle(timeRange.getBeginTime(), timeRange.getEndTime(),lastCandleIndex.getIndex());
+                }
+
+                if(candleIndex != null){
+                    lastCandleIndex = candleIndex;
+                    daily.init(candleIndex.getTradeCandle());
+                }
+            }
+
+        }
+
         if(isShortSelling) {
             shortSellingDailies = StockDataLoad.getShortSelling(shortSellingDailies, stock, beginYmd, YmdUtil.getYmdInt(endYmd, shortSellingDayGap));
         }
         if(isProgram) {
             programDailies = StockDataLoad.getProgram(programDailies, stock, beginYmd, YmdUtil.getYmdInt(endYmd, programDayGap));
         }
-        if(isStockLoan) {
-            stockLoanDailies = StockDataLoad.getStockLoan(stockLoanDailies, stock, beginYmd, YmdUtil.getYmdInt(endYmd, stockLoanDayGap));
-        }
+
         if(isCreditLoan) {
             stockCreditLoanDailies = StockDataLoad.getStockCreditLoan(stockCreditLoanDailies, stock, beginYmd, YmdUtil.getYmdInt(endYmd, stockCreditLoanDayGap));
         }
@@ -179,10 +216,6 @@ public class StockDataStore {
         return null;
     }
 
-
-
-
-
     public TradeCandleIndex getCandle( long beginTime, long endTime, int lastIndex){
 
 
@@ -204,9 +237,6 @@ public class StockDataStore {
             }
 
         }
-
-
-//        System.out.println("null: " + stock.getStockId() +", "  +  YmdUtil.getYmd(beginTime, TradingTimes.KOR_ZONE_ID));
 
         return null;
     }

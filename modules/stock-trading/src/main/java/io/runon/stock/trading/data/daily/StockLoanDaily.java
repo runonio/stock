@@ -4,10 +4,14 @@ import io.runon.stock.trading.Stock;
 import io.runon.stock.trading.Stocks;
 import io.runon.stock.trading.data.management.StockOutTimeLineJson;
 import io.runon.trading.Time;
+import io.runon.trading.TimeNumber;
 import io.runon.trading.TradingGson;
+import io.runon.trading.technical.analysis.candle.TradeCandle;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
+import java.math.RoundingMode;
 import java.util.Comparator;
 
 /**
@@ -17,10 +21,12 @@ import java.util.Comparator;
  * @author macle
  */
 @Data
-public class StockLoanDaily implements StockOutTimeLineJson, Time {
+public class StockLoanDaily implements StockOutTimeLineJson, TimeNumber {
 
     public static final StockLoanDaily [] EMPTY_ARRAY = new StockLoanDaily[0];
     public static final Comparator<StockLoanDaily> SORT = Comparator.comparingInt(o -> o.ymd);
+
+    int scale = 0;
 
     Long t ;
 
@@ -59,6 +65,48 @@ public class StockLoanDaily implements StockOutTimeLineJson, Time {
         return TradingGson.LOWER_CASE_WITH_UNDERSCORES.fromJson(jsonStr, StockLoanDaily.class);
     }
 
+    public void initZero(){
+        if(shares == null){
+            shares = BigDecimal.ZERO;
+        }
+
+        if(volume == null){
+            volume = BigDecimal.ZERO;
+        }
+
+        if(loanTransaction == null) {
+            loanTransaction = BigDecimal.ZERO;
+        }
+
+        if(loanRepayment == null) {
+            loanRepayment = BigDecimal.ZERO;
+        }
+
+        if(loanBalance == null){
+            loanBalance = BigDecimal.ZERO;
+        }
+
+    }
+
+    public void init(TradeCandle candle){
+        if(close.compareTo(candle.getClose()) == 0){
+            return;
+        }
+
+        initZero();
+
+        BigDecimal changeRate = close.divide(candle.getClose(), MathContext.DECIMAL128);
+
+        this.close = candle.getClose();
+
+        shares =shares.multiply(changeRate).setScale(scale, RoundingMode.HALF_UP);
+        volume = volume.multiply(changeRate).setScale(scale, RoundingMode.HALF_UP);
+
+        loanTransaction = loanTransaction.multiply(changeRate).setScale(scale, RoundingMode.HALF_UP);
+        loanRepayment = loanRepayment.multiply(changeRate).setScale(scale, RoundingMode.HALF_UP);
+        loanBalance = loanBalance.multiply(changeRate).setScale(scale, RoundingMode.HALF_UP);
+
+    }
 
     @Override
     public String outTimeLineJsonText(Stock stock){
@@ -83,4 +131,8 @@ public class StockLoanDaily implements StockOutTimeLineJson, Time {
         this.t = time;
     }
 
+    @Override
+    public BigDecimal getNumber() {
+        return loanBalance;
+    }
 }
