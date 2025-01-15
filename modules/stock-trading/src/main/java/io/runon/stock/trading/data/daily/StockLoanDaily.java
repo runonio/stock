@@ -85,10 +85,14 @@ public class StockLoanDaily implements StockOutTimeLineJson, TimeNumber {
         if(loanBalance == null){
             loanBalance = BigDecimal.ZERO;
         }
-
     }
 
     public void init(TradeCandle candle){
+
+        if(close == null){
+            return;
+        }
+
         if(close.compareTo(candle.getClose()) == 0){
             return;
         }
@@ -105,7 +109,6 @@ public class StockLoanDaily implements StockOutTimeLineJson, TimeNumber {
         loanTransaction = loanTransaction.multiply(changeRate).setScale(scale, RoundingMode.HALF_UP);
         loanRepayment = loanRepayment.multiply(changeRate).setScale(scale, RoundingMode.HALF_UP);
         loanBalance = loanBalance.multiply(changeRate).setScale(scale, RoundingMode.HALF_UP);
-
     }
 
     @Override
@@ -113,7 +116,6 @@ public class StockLoanDaily implements StockOutTimeLineJson, TimeNumber {
         if(t == null){
            t = Stocks.getDailyOpenTime(stock, ymd);
         }
-
         return TradingGson.LOWER_CASE_WITH_UNDERSCORES.toJson(this);
     }
 
