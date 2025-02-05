@@ -167,6 +167,27 @@ public class KoreainvestmentApi {
         }
     }
 
+
+    public void updateTokenNoCheck(){
+        synchronized (accessTokenLock) {
+            HttpApiResponse httpResponse = HttpApis.postJson(domain + "/oauth2/tokenP", accessTokenParam);
+            if(httpResponse.getResponseCode() != 200){
+                throw new TokenException("token make fail code:" + httpResponse.getResponseCode() +", " + httpResponse.getMessage());
+            }
+
+            JsonObject tokenObject = GsonUtils.fromJsonObject(httpResponse.getMessage());
+            jsonFileProperties.set("last_access_token", tokenObject);
+
+            accessToken = new AccessToken(tokenObject);
+
+            String authorization = accessToken.getAuthorization();
+
+            for(HttpApi httpApi : httpApis){
+                httpApi.setRequestProperty("authorization", authorization);
+            }
+        }
+    }
+
     public Map<String, String> makeRequestProperty(){
         Map<String, String> map = new HashMap<>();
         map.put("Content-Type","application/json; charset=utf-8");

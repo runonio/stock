@@ -39,7 +39,7 @@ public class StockModifyPriceSearch {
 
     private BigDecimal errorPrice = new BigDecimal("1");
 
-    private long beginTime = System.currentTimeMillis() - (Times.DAY_1*365);
+    private long beginTime = System.currentTimeMillis() - (Times.DAY_1*1000);
 
     public StockModifyPriceSearch(String [] stockIds){
         this.stockIds = stockIds;
@@ -96,5 +96,19 @@ public class StockModifyPriceSearch {
         return map;
     }
 
+
+    public static void main(String[] args) {
+        Stock[] stocks = Stocks.getStocks(Exchanges.getDefaultExchanges(CountryCode.KOR));
+        long beginTime = System.currentTimeMillis() - (Times.DAY_1*1000);
+        for(Stock stock : stocks){
+            if(stock.getNameKo().contains("현대글로비스")){
+                System.out.println(stock);
+                String filesDirPath = StockPaths.getSpotCandleFilesPath(stock.getStockId(),"1d");
+                List<CandlePreviousCandle> list =  ModifyPrice.search(filesDirPath, Times.DAY_1,null, new BigDecimal(1), beginTime);
+                System.out.println(list.size());
+            }
+        }
+
+    }
 
 }

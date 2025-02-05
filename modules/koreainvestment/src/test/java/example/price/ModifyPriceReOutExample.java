@@ -94,7 +94,7 @@ public class ModifyPriceReOutExample {
 //        korDailyCandleReOut();
 
 
-//        view(CountryCode.USA);
-//        usaDailyCandleReOut();
+        view(CountryCode.USA);
+        usaDailyCandleReOut();
     }
 }

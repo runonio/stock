@@ -54,7 +54,7 @@ public class StockModifyPriceSearchExample {
 
     public static void main(String[] args) {
 
-        CountryCode countryCode = CountryCode.USA;
+        CountryCode countryCode = CountryCode.KOR;
         view(countryCode);
 
     }
