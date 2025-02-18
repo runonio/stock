@@ -30,6 +30,11 @@ public class KorSpot1mCandleOut implements Spot1mCandleOutParam {
         candleOut.out("20231107");
     }
 
+    public void out(Stock stock){
+        candleOut.out("20231107", stock);
+    }
+
+
     @Override
     public String[] getExchanges() {
         return exchanges;

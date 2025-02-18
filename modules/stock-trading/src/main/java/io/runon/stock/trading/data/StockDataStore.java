@@ -9,6 +9,7 @@ import io.runon.trading.TradingTimes;
 import io.runon.trading.data.TimeNumbersMap;
 import io.runon.trading.data.TimeRange;
 import io.runon.trading.data.daily.VolumePowerDaily;
+import io.runon.trading.technical.analysis.candle.IdCandles;
 import io.runon.trading.technical.analysis.candle.TradeCandle;
 import io.runon.trading.technical.analysis.candle.TradeCandleIndex;
 import lombok.Data;
@@ -22,7 +23,7 @@ import java.util.Map;
  * @author macle
  */
 @Data
-public class StockDataStore {
+public class StockDataStore implements IdCandles {
 
     private Stock stock;
 
@@ -253,7 +254,14 @@ public class StockDataStore {
     }
 
 
+    @Override
+    public String getId() {
+        return stock.getStockId();
+    }
 
-
+    @Override
+    public TradeCandle [] getCandles(){
+        return candles;
+    }
 
 }

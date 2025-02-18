@@ -1,6 +1,7 @@
 package io.runon.stock.trading.market;
 
 import io.runon.trading.CountryCode;
+import io.runon.trading.TimeNumber;
 import io.runon.trading.TradingGson;
 import io.runon.trading.TradingTimes;
 import lombok.Data;
@@ -13,7 +14,7 @@ import java.util.Comparator;
  * @author macle
  */
 @Data
-public class KorMarketCreditLoanDaily {
+public class KorMarketCreditLoanDaily implements TimeNumber {
 
     public static final KorMarketCreditLoanDaily[] EMPTY_ARRAY = new KorMarketCreditLoanDaily[0];
     public static final Comparator<KorMarketCreditLoanDaily> SORT = Comparator.comparingInt(o -> o.ymd);
@@ -55,4 +56,13 @@ public class KorMarketCreditLoanDaily {
         return TradingGson.LOWER_CASE_WITH_UNDERSCORES.toJson(this);
     }
 
+    @Override
+    public BigDecimal getNumber() {
+        return kospi.add(kosdaq);
+    }
+
+    @Override
+    public long getTime() {
+        return t;
+    }
 }

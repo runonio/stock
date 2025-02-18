@@ -547,7 +547,7 @@ comment on table time_text is '타임텍스트';
          comment on column time_text.updated_at is '업데이트일시';
 
 create index idx_time_text_01
-    on time_data (updated_at desc);
+    on time_text (updated_at desc);
 
 
 

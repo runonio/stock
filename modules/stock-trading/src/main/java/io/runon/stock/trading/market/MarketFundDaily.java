@@ -1,6 +1,7 @@
 package io.runon.stock.trading.market;
 
 import io.runon.trading.CountryCode;
+import io.runon.trading.Time;
 import io.runon.trading.TradingGson;
 import io.runon.trading.TradingTimes;
 import lombok.Data;
@@ -13,7 +14,7 @@ import java.util.Comparator;
  * @author macle
  */
 @Data
-public class MarketFundDaily {
+public class MarketFundDaily implements Time {
 
     public static final MarketFundDaily[] EMPTY_ARRAY = new MarketFundDaily[0];
     public static final Comparator<MarketFundDaily> SORT = Comparator.comparingInt(o -> o.ymd);
