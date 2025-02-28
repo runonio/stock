@@ -26,6 +26,53 @@ public class KoreainvestmentOverseasPeriodApi {
         this.koreainvestmentApi = koreainvestmentApi;
     }
 
+    //다우
+    //S&P 500
+    //나스닥 100
+    //러셀 2000
+    //유로스톡스50
+    //니케이
+    //중국상해
+    //항생
+    //독일 DAX
+    //FTSE
+    //인토니프티
+    //CSI 300
+    //RTS 러시아
+    //iBovespa 브라질
+    //네덜란드 AEX
+    //스위스 SMI
+    //이탈리아 FTSE MIB
+    //싱가폴 MSCI
+    //SGX FTSE Taiwan
+    //프랑스 CAC
+    //IBEX 35
+
+    /**
+     *
+     * @param marketCode 	시장 분류 코드 N: 해외지수, X 환율, I: 국채, S:금선물
+     * @param iscd  입력 종목코드(doc/overseas_index.txt 파일참조) 해당 API로 미국주식 조회 시, 다우30, 나스닥100, S&P500 종목만 조회 가능합니다. 더 많은 미국주식 종목 시세를 이용할 시에는, 해외주식기간별시세 API 사용 부탁드립니다.
+     * @param beginYmd 시작일자(YYYYMMDD)
+     * @param endYmd 종료일자(YYYYMMDD)
+     * @param periodType D:일, W:주, M:월, Y:년
+     * @return
+     */
+    public String getMarketCandleJson(String marketCode, String iscd, String beginYmd, String endYmd, String periodType){
+        //apiportal.koreainvestment.com/apiservice/apiservice-oversea-stock-quotations#L_da63a88a-e288-426f-9498-42db0b537bf3
+        koreainvestmentApi.updateAccessToken();
+        String url = "/uapi/overseas-price/v1/quotations/inquire-daily-chartprice";
+        Map<String, String> requestHeaderMap = koreainvestmentApi.computeIfAbsenttPropertySingleMap(url,"tr_id","FHKST03030100");
+
+        String query = "?AUTH=&FID_COND_MRKT_DIV_CODE=" + marketCode + "&FID_INPUT_ISCD=" + iscd + "&FID_INPUT_DATE_1=" +beginYmd
+                + "&FID_INPUT_DATE_2=" + endYmd + "&FID_PERIOD_DIV_CODE="+periodType;
+        HttpApiResponse response =  koreainvestmentApi.getHttpGet().getResponse(url + query, requestHeaderMap);
+
+        if(response.getResponseCode() != 200){
+            throw new StockApiException("token make fail code:" + response.getResponseCode() +", " + response.getMessage());
+        }
+
+        return response.getMessage();
+    }
 
     public String get1mCandleJsonText(String exchange, String symbol, String ymd, String hm){
         //apiportal.koreainvestment.com/apiservice/apiservice-oversea-stock-quotations#L_852d7e45-4f34-418b-b6a1-a4552bbcdf90
