@@ -64,7 +64,6 @@ public class LsPeriodDataApi {
 
         JSONArray array = jsonObject.getJSONArray("t1717OutBlock");
 
-        int index = 0;
 
         int length = array.length();
 

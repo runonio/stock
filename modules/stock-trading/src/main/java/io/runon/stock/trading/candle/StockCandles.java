@@ -43,6 +43,9 @@ public class StockCandles {
         return CsvCandle.load(path, TradingTimes.getIntervalTime(interval), beginTime, endTime);
     }
 
+
+
+
     public static int getSpotCandleDirsCount(CountryCode countryCode){
 
         String dirPath = StockPaths.getSpotCandlePath(countryCode);

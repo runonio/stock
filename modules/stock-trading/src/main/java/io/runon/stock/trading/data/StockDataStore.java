@@ -29,7 +29,10 @@ public class StockDataStore implements IdCandles {
 
     private final Map<String, Object> dataMap = new HashMap<>();
 
-    TradeCandle [] candles = null; //캔들
+    TradeCandle [] candles = null; //캔들 //일봉
+
+    TradeCandle [] candles1m = null; //캔들 //1분봉
+
     StockInvestorDaily[] investorDailies = null; //투자자별
     ShortSellingDaily[] shortSellingDailies = null; //공매도
     ProgramDaily[] programDailies = null; //프로그램
@@ -37,6 +40,9 @@ public class StockDataStore implements IdCandles {
 
     StockCreditLoanDaily[] stockCreditLoanDailies = null; //종목별 신용정보
     VolumePowerDaily [] volumePowerDailies = null; //체결강도
+
+
+
 
     //투자자별 매매동향
     int investorDayGap = -1;
