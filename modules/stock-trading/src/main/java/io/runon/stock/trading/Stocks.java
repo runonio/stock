@@ -1,5 +1,6 @@
 package io.runon.stock.trading;
 
+import io.runon.commons.config.Config;
 import io.runon.commons.parallel.ParallelArrayJob;
 import io.runon.commons.parallel.ParallelWork;
 import io.runon.commons.utils.time.Times;
@@ -11,7 +12,6 @@ import io.runon.stock.trading.path.StockPathLastTime;
 import io.runon.stock.trading.path.StockPaths;
 import io.runon.trading.CountryCode;
 import io.runon.trading.CountryUtils;
-import io.runon.trading.TradingConfig;
 import io.runon.trading.TradingTimes;
 import io.runon.trading.data.Exchanges;
 import io.runon.trading.data.csv.CsvCandle;
@@ -130,7 +130,7 @@ public class Stocks {
         };
 
         ParallelArrayJob<StockLong> parallelArrayJob = new ParallelArrayJob<>(sortStocks, work);
-        parallelArrayJob.setThreadCount(TradingConfig.getTradingThreadCount());
+        parallelArrayJob.setThreadCount(Config.getThreadCount());
 
         parallelArrayJob.runSync();
 

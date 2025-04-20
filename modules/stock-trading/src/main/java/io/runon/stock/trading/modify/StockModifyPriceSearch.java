@@ -1,5 +1,6 @@
 package io.runon.stock.trading.modify;
 
+import io.runon.commons.config.Config;
 import io.runon.commons.parallel.ParallelArrayJob;
 import io.runon.commons.parallel.ParallelWork;
 import io.runon.commons.utils.time.Times;
@@ -86,7 +87,7 @@ public class StockModifyPriceSearch {
         };
 
         ParallelArrayJob<String> parallelArrayJob = new ParallelArrayJob<>(stockIds, work);
-        parallelArrayJob.setThreadCount(TradingConfig.getTradingThreadCount());
+        parallelArrayJob.setThreadCount(Config.getThreadCount());
 
         parallelArrayJob.runSync();
     }

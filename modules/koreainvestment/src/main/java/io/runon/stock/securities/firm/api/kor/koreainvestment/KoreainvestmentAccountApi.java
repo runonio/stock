@@ -58,7 +58,7 @@ public class KoreainvestmentAccountApi {
      * -prdt_name	상품명	String	Y	60	종목명
      * -trad_dvsn_name	매매구분명	String	Y	60	매수매도구분
      * -bfdy_buy_qty	전일매수수량	String	Y	10
-     * -bfdy_sll_qty	전일매도수량	String	Y	10
+     * -bfdy_sll_qty	전일매도수량	String	Y	10z
      * -thdt_buyqty	금일매수수량	String	Y	10
      * -thdt_sll_qty	금일매도수량	String	Y	10
      * -hldg_qty	보유수량	String	Y	19

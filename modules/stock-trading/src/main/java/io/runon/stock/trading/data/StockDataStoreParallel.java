@@ -1,5 +1,6 @@
 package io.runon.stock.trading.data;
 
+import io.runon.commons.config.Config;
 import io.runon.commons.parallel.ParallelArrayJob;
 import io.runon.commons.parallel.ParallelWork;
 import io.runon.stock.trading.Stock;
@@ -47,7 +48,7 @@ public class StockDataStoreParallel {
         };
 
         ParallelArrayJob<StockDataStore> parallelArrayJob = new ParallelArrayJob<>(array, work);
-        parallelArrayJob.setThreadCount(TradingConfig.getTradingThreadCount());
+        parallelArrayJob.setThreadCount(Config.getThreadCount());
 
         parallelArrayJob.runSync();
 
