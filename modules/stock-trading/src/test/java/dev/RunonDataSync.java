@@ -13,6 +13,7 @@ public class RunonDataSync {
         KorStocks.updateStockType();
         ApiDataSync.candleSyncAll();
 
+
         //대차잔고
         KorSpotDailyStockLoanOut stockLoanOut = new KorSpotDailyStockLoanOut();
         stockLoanOut.outKor();

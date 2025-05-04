@@ -16,7 +16,7 @@ public class Candle1mExample {
 
         KoreainvestmentPeriodDataApi dataApi = api.getPeriodDataApi();
 
-        TradeCandle [] candles = dataApi.get1mCandles("005930","20241115");
+        TradeCandle [] candles = dataApi.get1mCandles("005930","NX","20250428");
 
 //        for(TradeCandle candle : candles){
 //            System.out.println(candle);

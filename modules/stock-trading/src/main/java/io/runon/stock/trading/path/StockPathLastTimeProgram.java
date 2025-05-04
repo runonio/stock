@@ -12,17 +12,17 @@ import java.nio.file.FileSystems;
  */
 public class StockPathLastTimeProgram implements StockPathLastTime{
     @Override
-    public long getLastTime(Stock stock, String interval) {
-        return JsonTimeFile.getLastTime(getFilesDirPath(stock,interval));
+    public long getLastTime(Stock stock, String exchange, String interval) {
+        return JsonTimeFile.getLastTime(getFilesDirPath(stock,exchange,interval));
     }
 
     @Override
-    public String getFilesDirPath(Stock stock, String interval) {
+    public String getFilesDirPath(Stock stock, String exchange, String interval) {
         return StockPaths.getProgramFilesPath(stock.getStockId(), interval);
     }
 
     @Override
-    public String getLastTimeFilePath(CountryCode countryCode, String interval) {
+    public String getLastTimeFilePath(CountryCode countryCode, String exchange, String interval) {
         String fileSeparator = FileSystems.getDefault().getSeparator();
         return StockPaths.getProgramPath(countryCode)+fileSeparator+"program_trade_last_" + interval;
 

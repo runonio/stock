@@ -77,20 +77,20 @@ public class SpotDailyOut {
         isLastLineCheck = lastLineCheck;
     }
 
-    public void setLastYmdMap(Stock [] stocks){
-        SpotOuts.setLastYmdMap(lastYmdMap, stocks, countryCode,param.getStockPathLastTime(), interval, zoneId);
+    public void setLastYmdMap(Stock [] stocks, String exchange){
+        SpotOuts.setLastYmdMap(lastYmdMap, stocks, countryCode, exchange, param.getStockPathLastTime(), interval, zoneId);
     }
 
 
-    public void outLastYmdMap(){
-        SpotOuts.outLastYmdMap(lastYmdMap, countryCode, param.getStockPathLastTime(), interval);
+    public void outLastYmdMap(String exchange){
+        SpotOuts.outLastYmdMap(lastYmdMap, countryCode, exchange,param.getStockPathLastTime(), interval);
     }
 
 
-    public void out(){
+    public void out(String exchange){
         //전체 종목 일봉 내리기
         //KONEX 는 제외
-        String [] exchanges = param.getExchanges();
+        String [] exchanges = param.getMarkets();
         Stock[] stocks;
         if(isDelisted) {
             StockDataManager stockDataManager = StockDataManager.getInstance();
@@ -99,23 +99,23 @@ public class SpotDailyOut {
         }else{
             stocks = Stocks.getStocks(exchanges);
         }
-        out(stocks);
+        out(stocks, exchange);
     }
 
-    public void out(Stock [] stocks){
-        setLastYmdMap(stocks);
+    public void out(Stock [] stocks, String exchange){
+        setLastYmdMap(stocks, exchange);
 
-        Stocks.sortUseLastTimeParallel(stocks,interval, stockPathLastTime);
+        Stocks.sortUseLastTimeParallel(stocks,exchange,interval, stockPathLastTime);
         int count = 0;
 
         for(Stock stock : stocks){
             try {
                 //같은 데이터를 호출하면 호출 제한이 걸리는 경우가 있다 전체 캔들을 내릴때는 예외처리를 강제해서 멈추지 않는 로직을 추가
-                out(stock);
+                out(stock, exchange);
                 param.sleep();
                 count++;
                 if(count > 50){
-                    outLastYmdMap();
+                    outLastYmdMap(exchange);
                     count = 0;
                 }
             }catch (Exception e){
@@ -126,13 +126,13 @@ public class SpotDailyOut {
             }
         }
 
-        outLastYmdMap();
+        outLastYmdMap(exchange);
     }
 
     //상폐된 주식 캔들 내리기
-    public void outDelisted(){
+    public void outDelisted(String exchange){
 
-        String [] exchanges = param.getExchanges();
+        String [] exchanges = param.getMarkets();
 
         JsonFileProperties jsonFileProperties = param.getJsonFileProperties();
 
@@ -142,7 +142,7 @@ public class SpotDailyOut {
 
         Stock [] stocks = Stocks.getDelistedStocks(exchanges, delistedYmd, nowYmd);
 
-        out(stocks);
+        out(stocks, exchange);
 
         jsonFileProperties.set(param.getDelistedPropertiesKey(), nowYmd);
 
@@ -152,7 +152,7 @@ public class SpotDailyOut {
      * 상장 시점부터 내릴 수 있는 전체 정보를 내린다.
      * @param stock 종목정보
      */
-    public void out(Stock stock){
+    public void out(Stock stock, String exchange){
 
         String nowYmd = YmdUtil.now(zoneId);
         int nowYmdNum = Integer.parseInt(nowYmd);
@@ -160,7 +160,7 @@ public class SpotDailyOut {
         //초기 데이터는 상장 년원일
         String nextYmd ;
 
-        String filesDirPath = stockPathLastTime.getFilesDirPath(stock, interval);
+        String filesDirPath = stockPathLastTime.getFilesDirPath(stock, exchange, interval);
 
         File filesDirFile = new File(filesDirPath);
         //noinspection ResultOfMethodCallIgnored
@@ -263,7 +263,7 @@ public class SpotDailyOut {
             }
 
             if(callCount > 20){
-                outLastYmdMap();
+                outLastYmdMap(exchange);
                 callCount = 0;
             }
 
@@ -285,8 +285,8 @@ public class SpotDailyOut {
         this.listedNullBeginYmd = listedNullBeginYmd;
     }
     
-    public void reOut(Stock stock){
-        String filesDirPath = stockPathLastTime.getFilesDirPath(stock, interval);
+    public void reOut(Stock stock, String exchange){
+        String filesDirPath = stockPathLastTime.getFilesDirPath(stock, exchange, interval);
         File filesDirFile = new File(filesDirPath);
 
         //기존 경로 데이터 제거
@@ -297,8 +297,8 @@ public class SpotDailyOut {
         }else{
             lastYmdMap.put(stock.getStockId(), new StockYmd(stock, 19900101));
         }
-        out(stock);
-        outLastYmdMap();
+        out(stock, exchange);
+        outLastYmdMap(exchange);
     }
     
 }

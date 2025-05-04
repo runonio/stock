@@ -45,8 +45,8 @@ public class KoreainvestmentPeriodDataApi {
      * @param isRevisePrice 수정주가 여뷰
      * @return 결과값 jsontext
      */
-    public String getPeriodDataJsonText(String symbol, String period, String beginYmd, String endYmd, boolean isRevisePrice){
-        //https://apiportal.koreainvestment.com/apiservice/apiservice-domestic-stock-quotations#L_a08c3421-e50f-4f24-b1fe-64c12f723c77
+    public String getPeriodDataJsonText(String symbol, String market, String period, String beginYmd, String endYmd, boolean isRevisePrice){
+        //https://apiportal.koreainvestment.com/apiservice-apiservice?/uapi/domestic-stock/v1/quotations/inquire-daily-itemchartprice
 
         koreainvestmentApi.updateAccessToken();
         String url = "/uapi/domestic-stock/v1/quotations/inquire-daily-itemchartprice";
@@ -60,7 +60,16 @@ public class KoreainvestmentPeriodDataApi {
             sendRevisePrice = "1";
         }
 
-        String query = "?fid_cond_mrkt_div_code=J&fid_input_iscd=" + symbol +"&fid_input_date_1=" + beginYmd +"&fid_input_date_2=" +endYmd +"&fid_period_div_code=" + period + "&fid_org_adj_prc=" + sendRevisePrice;
+        market = market.toUpperCase();
+
+        if(market.equals("KRX")){
+            market = "J";
+        }else if(market.equals("NXT")){
+            market = "NX";
+        }
+
+
+        String query = "?fid_cond_mrkt_div_code=" + market +"&fid_input_iscd=" + symbol +"&fid_input_date_1=" + beginYmd +"&fid_input_date_2=" +endYmd +"&fid_period_div_code=" + period + "&fid_org_adj_prc=" + sendRevisePrice;
 
         HttpApiResponse response =  koreainvestmentApi.getHttpGet().getResponse(url + query, requestHeaderMap);
         if(response.getResponseCode() != 200){
@@ -93,9 +102,7 @@ public class KoreainvestmentPeriodDataApi {
 
     public StockCreditLoanDaily[] getCreditLoanDailies(String symbol, String beginYmd, String endYmd){
 
-
         List<StockCreditLoanDaily> list = new ArrayList<>();
-
 
         String nextBeginYmd = beginYmd;
 
@@ -189,11 +196,18 @@ public class KoreainvestmentPeriodDataApi {
         return list.toArray(new StockCreditLoanDaily[0]);
     }
 
-
-    public TradeCandle [] getCandles(String symbol, String period, String beginYmd, String endYmd, boolean isRevisePrice){
-        String jsonText = getPeriodDataJsonText(symbol, period, beginYmd, endYmd, isRevisePrice);
+    public TradeCandle [] getNxtCandles(String symbol, String period, String beginYmd, String endYmd, boolean isRevisePrice){
+        String jsonText = getPeriodDataJsonText(symbol, "NX",period, beginYmd, endYmd, isRevisePrice);
         return getCandles(jsonText);
     }
+
+
+    public TradeCandle [] getCandles(String symbol, String period, String beginYmd, String endYmd, boolean isRevisePrice){
+        String jsonText = getPeriodDataJsonText(symbol, "J",period, beginYmd, endYmd, isRevisePrice);
+        return getCandles(jsonText);
+    }
+
+
 
     public static TradeCandle [] getCandles(String jsonText){
 
@@ -455,13 +469,21 @@ public class KoreainvestmentPeriodDataApi {
     }
 
 
-    public String get1mCandleJsonText(String symbol, String ymd, String hm){
+    public String get1mCandleJsonText(String symbol,String market, String ymd, String hm){
         //apiportal.koreainvestment.com/apiservice/apiservice-domestic-stock-quotations2#L_9fece97b-401f-4379-9e9d-4365b63c1126
         koreainvestmentApi.updateAccessToken();
         String url = "/uapi/domestic-stock/v1/quotations/inquire-time-dailychartprice";
         Map<String, String> requestHeaderMap = koreainvestmentApi.computeIfAbsenttPropertySingleMap(url,"tr_id","FHKST03010230");
 
-        String query = "?FID_COND_MRKT_DIV_CODE=J&FID_INPUT_ISCD=" + symbol +"&FID_INPUT_DATE_1=" +ymd +"&FID_INPUT_HOUR_1=" + hm +"00&FID_PW_DATA_INCU_YN=Y&FID_FAKE_TICK_INCU_YN=N";
+
+        if(market.equals("KRX")){
+            market = "J";
+        }else if(market.equals("NXT")){
+            market = "NX";
+        }
+
+
+        String query = "?FID_COND_MRKT_DIV_CODE=" + market +"&FID_INPUT_ISCD=" + symbol +"&FID_INPUT_DATE_1=" +ymd +"&FID_INPUT_HOUR_1=" + hm +"00&FID_PW_DATA_INCU_YN=Y&FID_FAKE_TICK_INCU_YN=N";
         HttpApiResponse response =  koreainvestmentApi.getHttpGet().getResponse(url + query, requestHeaderMap);
         if(response.getResponseCode() != 200){
             throw new StockApiException("token make fail code:" + response.getResponseCode() +", " + response.getMessage());
@@ -469,11 +491,11 @@ public class KoreainvestmentPeriodDataApi {
         return response.getMessage();
     }
 
-    public TradeCandle [] get1mCandles(String symbol, String ymd){
+    public TradeCandle [] get1mCandles(String symbol, String market, String ymd){
 
 //        List<String>
         //23시를 기록하여 마지막 시간값을 가져온다.
-        String firstText = get1mCandleJsonText(symbol, ymd, "2300");
+        String firstText = get1mCandleJsonText(symbol,market, ymd, "2300");
         JSONObject object = new JSONObject(firstText);
         String code = object.getString("rt_cd");
         if(!code.equals("0")){
@@ -522,7 +544,7 @@ public class KoreainvestmentPeriodDataApi {
             String ymdhm = Times.ymdhm(last.getOpenTime(), TradingTimes.KOR_ZONE_ID);
             String next = Times.getYmdhm(ymdhm, -Times.MINUTE_1);
             next = Times.getHm(next);
-            String jsonText = get1mCandleJsonText(symbol, ymd, next);
+            String jsonText = get1mCandleJsonText(symbol, market, ymd, next);
 
 //            System.out.println(symbol + " " + ymd + " " + next);
 

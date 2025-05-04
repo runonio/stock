@@ -4,7 +4,6 @@ import io.runon.commons.config.Config;
 import io.runon.commons.parallel.ParallelArrayJob;
 import io.runon.commons.parallel.ParallelWork;
 import io.runon.stock.trading.Stock;
-import io.runon.trading.TradingConfig;
 
 import java.util.Map;
 
@@ -14,11 +13,11 @@ import java.util.Map;
 public class StockDataStoreParallel {
 
 
-    public  static StockDataStore[] parallelDataSet(Stock [] stocks, StockDataStoreParam stockDailyStoreParam, int beginYmd, int endYmd){
-        return parallelDataSet(null, null, stocks, beginYmd, endYmd, null);
+    public  static StockDataStore[] parallelDataSet(Stock [] stocks, StockDataStoreParam stockDailyStoreParam, String exchange, int beginYmd, int endYmd){
+        return parallelDataSet(null, null, stocks, exchange, beginYmd, endYmd, null);
     }
 
-    public static StockDataStore[] parallelDataSet(Map<String, StockDataStore> lastStoreMap, StockDataStoreParam dailyStoreParam, Stock [] stocks, int beginYmd, int endYmd, StockDataStorePut put){
+    public static StockDataStore[] parallelDataSet(Map<String, StockDataStore> lastStoreMap, StockDataStoreParam dailyStoreParam, Stock [] stocks, String exchange, int beginYmd, int endYmd, StockDataStorePut put){
 
         final StockDataStore[] array = new StockDataStore[stocks.length];
         for (int i = 0; i <array.length ; i++) {
@@ -41,9 +40,9 @@ public class StockDataStoreParallel {
         }
 
         ParallelWork<StockDataStore> work = dataStore -> {
-          dataStore.setData(beginYmd, endYmd);
+          dataStore.setData(exchange, beginYmd, endYmd );
           if(put != null){
-              put.setData(dataStore, beginYmd, endYmd);
+              put.setData(dataStore, exchange, beginYmd, endYmd);
           }
         };
 

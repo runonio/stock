@@ -30,35 +30,43 @@ public abstract class KorSpotDailyOut implements StockDailyOutParam {
     }
 
 
-    public void setExchanges(String[] exchanges) {
+    public void setMarkets(String[] exchanges) {
         this.exchanges = exchanges;
     }
 
 
     public void outKor(){
-        dailyOut.out();
+        outKor(null);
+    }
+
+    public void outKor(String exchange){
+        dailyOut.out(exchange);
+    }
+
+    public void outKorDelisted(){
+        outKorDelisted(null);
     }
 
     //상폐된 주식 캔들 내리기
-    public void outKorDelisted(){
-        dailyOut.outDelisted();
+    public void outKorDelisted(String exchange){
+        dailyOut.outDelisted(exchange);
     }
 
     /**
      * 상장 시점부터 내릴 수 있는 전체 정보를 내린다.
      * @param stock 종목정보
      */
-    public void out(Stock stock){
-        dailyOut.out(stock);
+    public void out(Stock stock, String exchange){
+        dailyOut.out(stock, exchange);
     }
 
 
-    public void reOut(Stock stock){
-        dailyOut.reOut(stock);
+    public void reOut(Stock stock, String exchange){
+        dailyOut.reOut(stock, exchange);
     }
 
     @Override
-    public String[] getExchanges() {
+    public String[] getMarkets() {
         return exchanges;
     }
 

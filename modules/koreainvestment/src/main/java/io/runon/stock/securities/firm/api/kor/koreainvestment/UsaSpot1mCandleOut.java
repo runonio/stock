@@ -28,11 +28,21 @@ public class UsaSpot1mCandleOut implements Spot1mCandleOutParam {
     }
 
     public void out(){
-        candleOut.out(YmdUtil.getYmd(YmdUtil.now(TradingTimes.USA_ZONE_ID), -45));
+        String exchange = null;
+        out(exchange);
     }
 
+    public void out(String exchange){
+        candleOut.out(YmdUtil.getYmd(YmdUtil.now(TradingTimes.USA_ZONE_ID), -45), exchange);
+    }
+
+
     public void out(Stock stock){
-        candleOut.out(YmdUtil.getYmd(YmdUtil.now(TradingTimes.USA_ZONE_ID), -45), stock);
+        out(stock, null);
+    }
+
+    public void out(Stock stock, String exchange){
+        candleOut.out(YmdUtil.getYmd(YmdUtil.now(TradingTimes.USA_ZONE_ID), -45), stock, exchange);
     }
 
 

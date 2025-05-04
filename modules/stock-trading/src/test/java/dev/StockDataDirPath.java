@@ -8,7 +8,7 @@ import io.runon.trading.CountryCode;
  */
 public class StockDataDirPath {
     public static void main(String[] args) {
-        System.out.println(StockPaths.getSpotCandlePath(CountryCode.KOR));
+        System.out.println(StockPaths.getSpotCandlePath(CountryCode.KOR, "KRX"));
         System.out.println(StockPaths.getSpotCreditLoanPath(CountryCode.KOR));
     }
 }

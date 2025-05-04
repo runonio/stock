@@ -13,7 +13,7 @@ public class Candle1mJsonExample {
 
         KoreainvestmentPeriodDataApi dataApi = api.getPeriodDataApi();
 //20231107
-        String text = dataApi.get1mCandleJsonText("005930", "20241115","2200");
+        String text = dataApi.get1mCandleJsonText("005930", "J","20241115","2200");
         System.out.println(text);
 
 

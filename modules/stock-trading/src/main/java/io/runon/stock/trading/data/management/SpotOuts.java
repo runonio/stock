@@ -20,11 +20,11 @@ public class SpotOuts {
 
 
 
-    public static void setLastYmdMap(Map<String, StockYmd> lastYmdMap, Stock[] stocks, CountryCode countryCode, StockPathLastTime stockPathLastTime, String interval, ZoneId zoneId){
+    public static void setLastYmdMap(Map<String, StockYmd> lastYmdMap, Stock[] stocks, CountryCode countryCode, String exchange, StockPathLastTime stockPathLastTime, String interval, ZoneId zoneId){
 
         Map<String, Stock> stockMap = Stocks.makeMap(stocks);
 
-        String filePath = stockPathLastTime.getLastTimeFilePath(countryCode,interval);
+        String filePath = stockPathLastTime.getLastTimeFilePath(countryCode, exchange, interval);
         if(FileUtil.isFile(filePath)){
             TextLong[] idTimes = JsonTimeFile.getLastTimeLines(filePath);
 
@@ -52,7 +52,7 @@ public class SpotOuts {
         }
     }
 
-    public static void outLastYmdMap(Map<String, StockYmd> lastYmdMap, CountryCode countryCode, StockPathLastTime stockPathLastTime, String interval){
+    public static void outLastYmdMap(Map<String, StockYmd> lastYmdMap, CountryCode countryCode, String exchange, StockPathLastTime stockPathLastTime, String interval){
         Collection<StockYmd> stockYmdCollection =  lastYmdMap.values();
 
         int index = 0;
@@ -65,7 +65,7 @@ public class SpotOuts {
             idTimes[index++] = idTime;
         }
 
-        String filePath = stockPathLastTime.getLastTimeFilePath(countryCode,interval);
+        String filePath = stockPathLastTime.getLastTimeFilePath(countryCode, exchange,interval);
         JsonTimeFile.updateLastTimeLines(idTimes, filePath, TextLong.SORT_DESC);
     }
 }

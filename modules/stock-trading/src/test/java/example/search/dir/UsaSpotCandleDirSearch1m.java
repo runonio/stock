@@ -12,8 +12,8 @@ import java.io.File;
  */
 public class UsaSpotCandleDirSearch1m {
     public static void main(String[] args) {
-        File[] files = FileUtil.getDirs(new File(StockPaths.getSpotCandlePath(CountryCode.USA)), "1m");
-        File[] files1d = FileUtil.getDirs(new File(StockPaths.getSpotCandlePath(CountryCode.USA)), "1d");
+        File[] files = FileUtil.getDirs(new File(StockPaths.getSpotCandlePath(CountryCode.USA, null)), "1m");
+        File[] files1d = FileUtil.getDirs(new File(StockPaths.getSpotCandlePath(CountryCode.USA, null)), "1d");
 
         System.out.println("1m: " + files.length +", 1d: " + files1d.length);
 //        for(File file : files){

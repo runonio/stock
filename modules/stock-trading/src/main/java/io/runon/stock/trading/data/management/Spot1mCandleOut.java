@@ -52,19 +52,18 @@ public class Spot1mCandleOut {
 
     private final Map<String, StockYmd> lastYmdMap = new HashMap<>();
 
-    public void setLastYmdMap(Stock[] stocks){
-        SpotOuts.setLastYmdMap(lastYmdMap, stocks, param.getCountryCode(), pathLastTime, interval, zoneId);
+    public void setLastYmdMap(Stock[] stocks, String exchange){
+        SpotOuts.setLastYmdMap(lastYmdMap, stocks, param.getCountryCode(), exchange,pathLastTime, interval, zoneId);
     }
-    public void outLastYmdMap(){
-        SpotOuts.outLastYmdMap(lastYmdMap, param.getCountryCode(), pathLastTime, interval);
+    public void outLastYmdMap(String exchange){
+        SpotOuts.outLastYmdMap(lastYmdMap, param.getCountryCode(), exchange, pathLastTime, interval);
     }
-
 
     public void setDelisted(boolean delisted) {
         isDelisted = delisted;
     }
 
-    public void out(String beginYmd){
+    public void out(String beginYmd, String exchange){
         //전체 종목 일봉 내리기
         //KONEX 는 제외
         String [] exchanges = param.getExchanges();
@@ -76,22 +75,22 @@ public class Spot1mCandleOut {
         }else{
             stocks = Stocks.getStocks(exchanges);
         }
-        out(beginYmd, stocks);
+        out(beginYmd, exchange);
     }
 
-    public void out(String beginYmd, Stock [] stocks){
-        setLastYmdMap(stocks);
-        Stocks.sortUseLastTimeParallel(stocks, interval, pathLastTime);
+    public void out(String beginYmd, Stock [] stocks, String exchange){
+        setLastYmdMap(stocks, exchange);
+        Stocks.sortUseLastTimeParallel(stocks, exchange, interval, pathLastTime);
         int count = 0;
 
         for(Stock stock : stocks){
             try {
                 //같은 데이터를 호출하면 호출 제한이 걸리는 경우가 있다 전체 캔들을 내릴때는 예외처리를 강제해서 멈추지 않는 로직을 추가
-                out(beginYmd, stock);
+                out(beginYmd, stock, exchange);
                 param.sleep();
                 count++;
                 if(count > 10){
-                    outLastYmdMap();
+                    outLastYmdMap(exchange);
                     count = 0;
                 }
             }catch (Exception e){
@@ -101,16 +100,16 @@ public class Spot1mCandleOut {
                 }catch (Exception ignore){}
             }
         }
-        outLastYmdMap();
+        outLastYmdMap(exchange);
     }
 
-    public void out(String beginYmd, Stock stock){
+    public void out(String beginYmd, Stock stock, String exchange){
 
         log.debug("1m candle out start: " +stock);
 
         String nowYmd = YmdUtil.now(zoneId);
 
-        String filesDirPath = pathLastTime.getFilesDirPath(stock, interval);
+        String filesDirPath = pathLastTime.getFilesDirPath(stock, exchange, interval);
         File filesDirFile = new File(filesDirPath);
         //noinspection ResultOfMethodCallIgnored
         filesDirFile.mkdirs();

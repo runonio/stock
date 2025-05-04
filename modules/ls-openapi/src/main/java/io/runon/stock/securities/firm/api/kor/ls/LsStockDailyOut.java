@@ -24,7 +24,7 @@ public abstract class LsStockDailyOut extends KorSpotDailyOut {
 
     }
 
-    public void setExchanges(String[] exchanges) {
+    public void setMarkets(String[] exchanges) {
         this.exchanges = exchanges;
     }
 

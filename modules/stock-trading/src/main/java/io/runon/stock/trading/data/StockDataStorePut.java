@@ -4,5 +4,5 @@ package io.runon.stock.trading.data;
  */
 public interface StockDataStorePut {
 
-    void setData(StockDataStore dataStore, int beginYmd, int endYmd);
+    void setData(StockDataStore dataStore, String exchange, int beginYmd, int endYmd);
 }

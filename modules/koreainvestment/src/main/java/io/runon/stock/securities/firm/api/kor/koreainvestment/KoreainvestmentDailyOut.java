@@ -28,7 +28,7 @@ public abstract class KoreainvestmentDailyOut extends KorSpotDailyOut {
     }
 
 
-    public void setExchanges(String[] exchanges) {
+    public void setMarkets(String[] exchanges) {
         this.exchanges = exchanges;
     }
 

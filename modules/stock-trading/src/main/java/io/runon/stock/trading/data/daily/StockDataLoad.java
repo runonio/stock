@@ -36,15 +36,15 @@ public class StockDataLoad {
     /**
      * @return 캔들
      */
-    public static TradeCandle [] getCandle(Stock stock, int beginYmd, int endYmd){
-        return StockCandles.getDailyCandles(stock, beginYmd, endYmd);
+    public static TradeCandle [] getCandle(Stock stock, String exchange, int beginYmd, int endYmd){
+        return StockCandles.getDailyCandles(stock, exchange, beginYmd, endYmd);
     }
 
-    public static TradeCandle [] getCandle( TradeCandle [] lastCandles, Stock stock, int beginYmd, int endYmd){
+    public static TradeCandle [] getCandle( TradeCandle [] lastCandles, Stock stock, String exchange, int beginYmd, int endYmd){
 
         //라스트 1개는 다시 불러 온다. 값이 변경될 수 있다.
         if(lastCandles == null || lastCandles.length < 2){
-            return getCandle(stock, beginYmd, endYmd);
+            return getCandle(stock, exchange, beginYmd, endYmd);
         }
 
         ZoneId zoneId = Stocks.getZoneId(stock);
@@ -74,7 +74,7 @@ public class StockDataLoad {
             return list.toArray(new TradeCandle[0]);
         }
 
-        TradeCandle [] candles = StockCandles.getDailyCandles(stock, newBeginYmd, endYmd);
+        TradeCandle [] candles = StockCandles.getDailyCandles(stock, exchange, newBeginYmd, endYmd);
         list.addAll(Arrays.asList(candles));
 
         return list.toArray(new TradeCandle[0]);

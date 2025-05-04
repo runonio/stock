@@ -27,9 +27,9 @@ public interface StockPathLastTime {
     StockPathLastTime VOLUME_POWER = new StockPathLastTimeVolumePower();
 
 
-    long getLastTime(Stock stock, String interval);
+    long getLastTime(Stock stock, String exchange, String interval);
 
-    String getFilesDirPath(Stock stock, String interval);
+    String getFilesDirPath(Stock stock, String exchange, String interval);
 
-    String getLastTimeFilePath(CountryCode countryCode, String interval);
+    String getLastTimeFilePath(CountryCode countryCode, String exchange, String interval);
 }

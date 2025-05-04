@@ -23,7 +23,7 @@ public class SpotDailyCandleOut extends KoreainvestmentDailyOut{
 
     @Override
     public String[] getLines(Stock stock, String beginYmd, String endYmd) {
-        String text = periodDataApi.getPeriodDataJsonText(stock.getSymbol(),"D", beginYmd, endYmd, true);
+        String text = periodDataApi.getPeriodDataJsonText(stock.getSymbol(),"J","D", beginYmd, endYmd, true);
         TradeCandle [] candles = KoreainvestmentPeriodDataApi.getCandles(text);
         return CsvCandle.lines(candles);
     }

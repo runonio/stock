@@ -26,12 +26,12 @@ public class KorSpot1mCandleOut implements Spot1mCandleOutParam {
         candleOut.setZoneId(TradingTimes.KOR_ZONE_ID);
     }
 
-    public void out(){
-        candleOut.out("20231107");
+    public void out(String exchange){
+        candleOut.out("20231107", exchange);
     }
 
-    public void out(Stock stock){
-        candleOut.out("20231107", stock);
+    public void out(Stock stock, String exchange){
+        candleOut.out("20231107", stock, exchange);
     }
 
 
@@ -52,6 +52,6 @@ public class KorSpot1mCandleOut implements Spot1mCandleOutParam {
 
     @Override
     public TradeCandle[] getCandles(Stock stock, String ymd) {
-        return dataApi.get1mCandles(stock.getSymbol(), ymd);
+        return dataApi.get1mCandles(stock.getSymbol(),"J", ymd);
     }
 }

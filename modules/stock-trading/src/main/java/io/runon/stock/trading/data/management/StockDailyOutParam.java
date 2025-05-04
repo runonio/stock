@@ -18,7 +18,7 @@ public interface StockDailyOutParam {
 
     StockPathLastTime getStockPathLastTime();
 
-    String [] getExchanges();
+    String [] getMarkets();
 
     int getNextDay();
 

@@ -114,7 +114,7 @@ public class Stocks {
         return TradingTimes.getZoneId(countryCode);
     }
 
-    public static void sortUseLastTimeParallel(Stock [] stocks, String interval, StockPathLastTime stockPathLastTime){
+    public static void sortUseLastTimeParallel(Stock [] stocks, String exchange, String interval, StockPathLastTime stockPathLastTime){
 
         StockLong[] sortStocks = new StockLong[stocks.length];
         for (int i = 0; i <sortStocks.length ; i++) {
@@ -125,7 +125,7 @@ public class Stocks {
 
         ParallelWork<StockLong> work = stockLong -> {
 
-            long time = stockPathLastTime.getLastTime(stockLong.getStock(), interval);
+            long time = stockPathLastTime.getLastTime(stockLong.getStock(), exchange, interval);
             stockLong.setNum(time);
         };
 
@@ -212,15 +212,15 @@ public class Stocks {
             return BigDecimal.ZERO;
         }
 
-        TradeCandle lastCandle = getLastCandle1d(stock);
+        TradeCandle lastCandle = getLastCandle1d(stock, null);
         if(lastCandle == null){
             return null;
         }
         return new BigDecimal(issuedShares).multiply(lastCandle.getClose());
     }
 
-    public static TradeCandle getLastCandle1d(Stock stock){
-        String filePath = StockPaths.getSpotCandleFilesPath(stock.getStockId(), "1d");
+    public static TradeCandle getLastCandle1d(Stock stock, String exchange){
+        String filePath = StockPaths.getSpotCandleFilesPath(stock.getStockId(), exchange, "1d");
         String lastLine = TimeFiles.getLastLine(filePath);
         if(lastLine == null){
             return null;

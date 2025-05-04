@@ -19,7 +19,7 @@ public class StockCandlePrintExample {
 
         Stock stock = Stocks.getStock(CountryCode.KOR, "453850");
 
-        TradeCandle[] candles = StockCandles.getDailyCandles(stock, "20200101", "20241211");
+        TradeCandle[] candles = StockCandles.getDailyCandles(stock, "KRX","20200101", "20241211");
 
 
 //        for (int i =1; i < candles.length; i++) {

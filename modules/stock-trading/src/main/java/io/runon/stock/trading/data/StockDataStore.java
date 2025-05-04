@@ -4,7 +4,6 @@ import io.runon.commons.utils.time.YmdUtil;
 import io.runon.stock.trading.Stock;
 import io.runon.stock.trading.Stocks;
 import io.runon.stock.trading.data.daily.*;
-import io.runon.trading.TimeNumber;
 import io.runon.trading.TradingTimes;
 import io.runon.trading.data.TimeNumbersMap;
 import io.runon.trading.data.TimeRange;
@@ -79,13 +78,13 @@ public class StockDataStore implements IdCandles {
     }
 
 
-    public void setData(String beginYmd, String endYmd){
-        setData(Integer.parseInt(beginYmd), Integer.parseInt(endYmd));
+    public void setData(String exchange, String beginYmd, String endYmd ){
+        setData(exchange, Integer.parseInt(beginYmd), Integer.parseInt(endYmd) );
     }
 
-    public void setData(int beginYmd, int endYmd){
+    public void setData(String exchange, int beginYmd, int endYmd){
 
-        candles = StockDataLoad.getCandle(candles, stock, beginYmd, endYmd);
+        candles = StockDataLoad.getCandle(candles, stock, exchange, beginYmd, endYmd);
         ZoneId zoneId = Stocks.getZoneId(stock);
         if(isInvestor) {
             investorDailies = StockDataLoad.getInvestor(investorDailies, stock, beginYmd, YmdUtil.getYmdInt(endYmd, investorDayGap));

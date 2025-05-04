@@ -1,28 +1,27 @@
-package test;
+package example.price;
 
+import io.runon.commons.utils.time.YmdUtil;
 import io.runon.stock.securities.firm.api.kor.koreainvestment.KoreainvestmentApi;
 import io.runon.stock.securities.firm.api.kor.koreainvestment.KoreainvestmentPeriodDataApi;
+import io.runon.trading.TradingTimes;
 import io.runon.trading.technical.analysis.candle.TradeCandle;
 
 /**
- * REITs 로표시되는종목이 ETF, ETN, 주식중 어떤걸로 분별되는지 테스트하기
  * @author macle
  */
-public class REITsTest {
+public class KorNxtCandleOut {
     public static void main(String[] args) {
         KoreainvestmentApi api = KoreainvestmentApi.getInstance();
 
-        KoreainvestmentPeriodDataApi periodDataApi = api.getPeriodDataApi();
+        KoreainvestmentPeriodDataApi dataApi = api.getPeriodDataApi();
 
-        String text = periodDataApi.getPeriodDataJsonText("350520","J","D","20240301","20240401",true);
-
-        TradeCandle[] candles = KoreainvestmentPeriodDataApi.getCandles(text);
+        TradeCandle [] candles = dataApi.getNxtCandles("005930", "D",   "20250304", YmdUtil.now(TradingTimes.KOR_ZONE_ID), true);
 
         for(TradeCandle candle : candles){
             System.out.println(candle);
         }
 
-        System.out.println(candles[0]);
+        System.out.println(candles.length);
 
     }
 }

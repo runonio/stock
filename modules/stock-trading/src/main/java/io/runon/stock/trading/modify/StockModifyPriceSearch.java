@@ -64,11 +64,11 @@ public class StockModifyPriceSearch {
         this.beginTime = beginTime;
     }
 
-    public void search(){
+    public void search(String exchange) {
 
         ParallelWork<String> work = stockId -> {
 
-            String filesDirPath = StockPaths.getSpotCandleFilesPath(stockId,"1d");
+            String filesDirPath = StockPaths.getSpotCandleFilesPath(stockId, exchange,"1d");
 
             List<CandlePreviousCandle> list =  ModifyPrice.search(filesDirPath, Times.DAY_1,errorRate,errorPrice, beginTime);
 
@@ -104,7 +104,7 @@ public class StockModifyPriceSearch {
         for(Stock stock : stocks){
             if(stock.getNameKo().contains("현대글로비스")){
                 System.out.println(stock);
-                String filesDirPath = StockPaths.getSpotCandleFilesPath(stock.getStockId(),"1d");
+                String filesDirPath = StockPaths.getSpotCandleFilesPath(stock.getStockId(),null,"1d");
                 List<CandlePreviousCandle> list =  ModifyPrice.search(filesDirPath, Times.DAY_1,null, new BigDecimal(1), beginTime);
                 System.out.println(list.size());
             }

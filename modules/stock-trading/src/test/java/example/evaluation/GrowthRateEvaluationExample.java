@@ -21,7 +21,7 @@ public class GrowthRateEvaluationExample {
         String endYmd  = YmdUtil.now(TradingTimes.KOR_ZONE_ID);
         String beginYmd = "20150101";
 
-        TradeCandle[] candles = StockCandles.getDailyCandles(stock, beginYmd, endYmd);
+        TradeCandle[] candles = StockCandles.getDailyCandles(stock, "KRX",beginYmd, endYmd);
 
 
         BigDecimalArray evResult =   GrowthRateEvaluation.evaluation(candles, Stocks.getZoneId(stock));

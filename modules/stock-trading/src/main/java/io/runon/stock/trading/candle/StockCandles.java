@@ -26,29 +26,29 @@ import java.util.Arrays;
  */
 public class StockCandles {
 
-    public static TradeCandle[] getDailyCandles(Stock stock, int beginYmd, int endYmd){
-        return getDailyCandles(stock, Integer.toString(beginYmd), Integer.toString(endYmd));
+    public static TradeCandle[] getDailyCandles(Stock stock, String exchange, int beginYmd, int endYmd){
+        return getDailyCandles(stock, exchange, Integer.toString(beginYmd), Integer.toString(endYmd));
     }
-    public static TradeCandle[] getDailyCandles(Stock stock, String beginYmd, String endYmd){
+    public static TradeCandle[] getDailyCandles(Stock stock, String exchange, String beginYmd, String endYmd){
         ZoneId zoneId = Stocks.getZoneId(stock);
 
         long beginTime = YmdUtil.getTime(beginYmd, zoneId);
         long endTime = YmdUtil.getTime(endYmd, zoneId) + Times.DAY_1 ;
-        String path = StockPaths.getSpotCandleFilesPath(stock.getStockId(), "1d");
+        String path = StockPaths.getSpotCandleFilesPath(stock.getStockId(), exchange,"1d");
         return CsvCandle.load(path, Times.DAY_1,beginTime, endTime);
     }
 
-    public static TradeCandle [] getCandles(Stock stock,String interval, long beginTime, long endTime){
-        String path = StockPaths.getSpotCandleFilesPath(stock.getStockId(), interval);
+    public static TradeCandle [] getCandles(Stock stock, String exchange, String interval, long beginTime, long endTime){
+        String path = StockPaths.getSpotCandleFilesPath(stock.getStockId(), exchange, interval);
         return CsvCandle.load(path, TradingTimes.getIntervalTime(interval), beginTime, endTime);
     }
 
 
 
 
-    public static int getSpotCandleDirsCount(CountryCode countryCode){
+    public static int getSpotCandleDirsCount(CountryCode countryCode, String exchange){
 
-        String dirPath = StockPaths.getSpotCandlePath(countryCode);
+        String dirPath = StockPaths.getSpotCandlePath(countryCode,exchange);
 
         File file = new File(dirPath);
 
@@ -71,9 +71,9 @@ public class StockCandles {
         return cnt;
     }
 
-    public static void sortUseLastOpenTime(Stock[] stocks, CountryCode countryCode, String interval){
+    public static void sortUseLastOpenTime(Stock[] stocks, CountryCode countryCode, String exchange, String interval){
 
-        String dirPath =  StockPaths.getSpotCandlePath(countryCode);
+        String dirPath =  StockPaths.getSpotCandlePath(countryCode, exchange);
         String fileSeparator = FileSystems.getDefault().getSeparator();
 
         StockLong[] sortStocks = new StockLong[stocks.length];
@@ -96,12 +96,12 @@ public class StockCandles {
         }
     }
 
-    public static DataPathTimeRange getSpotCandleTimeRange(String stockId, String interval){
+    public static DataPathTimeRange getSpotCandleTimeRange(String stockId, String exchange , String interval){
 
         String countryCode = Stocks.getCountryCode(stockId);
 
 
-        DataPathTimeRange dataPathTimeRange= Files.getTimeRange(new File(StockPaths.getSpotCandleFilesPath(stockId, interval)));
+        DataPathTimeRange dataPathTimeRange= Files.getTimeRange(new File(StockPaths.getSpotCandleFilesPath(stockId, exchange, interval)));
 
         if(dataPathTimeRange == null){
             return null;

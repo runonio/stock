@@ -16,11 +16,11 @@ public class StockPaths {
     @SuppressWarnings("ConstantValue")
     public static String getSpotCandlePath(){
         String nullCode = null;
-        return getSpotCandlePath(nullCode);
+        return getSpotCandlePath(nullCode, null);
     }
 
-    public static String getSpotCandlePath(CountryCode countryCode){
-        return getSpotCandlePath(countryCode.toString());
+    public static String getSpotCandlePath(CountryCode countryCode, String exchange){
+        return getSpotCandlePath(countryCode.toString(), exchange);
     }
 
     /**
@@ -29,8 +29,8 @@ public class StockPaths {
      * @param countryCode 국가코드
      * @return 캔들 폴더 경로
      */
-    public static String getSpotCandlePath(String countryCode){
-        return getSpotDirPath(countryCode, "stock.spot.candle.dir.path", "candle");
+    public static String getSpotCandlePath(String countryCode, String exchange){
+        return getSpotDirPath(countryCode, exchange,"stock.spot.candle.dir.path", "candle");
     }
 
     public static String getAnalysisPath(CountryCode countryCode){
@@ -38,13 +38,13 @@ public class StockPaths {
     }
 
     public static String getAnalysisPath(String countryCode){
-        return getSpotDirPath(countryCode, "stock.spot.analysis.dir.path", "analysis");
+        return getSpotDirPath(countryCode, null,"stock.spot.analysis.dir.path", "analysis");
     }
 
 
-    public static String getSpotCandleFilesPath(String stockId, String interval){
+    public static String getSpotCandleFilesPath(String stockId, String exchange, String interval){
         String fileSeparator = FileSystems.getDefault().getSeparator();
-        return  getSpotCandlePath(Stocks.getCountryCode(stockId))+fileSeparator+stockId+fileSeparator+interval;
+        return  getSpotCandlePath(Stocks.getCountryCode(stockId), exchange)+fileSeparator+stockId+fileSeparator+interval;
     }
 
     public static String getSpotCreditLoanPath(CountryCode countryCode){
@@ -52,7 +52,7 @@ public class StockPaths {
     }
 
     public static String getSpotCreditLoanPath(String countryCode){
-        return getSpotDirPath(countryCode, "stock.spot.credit.loan.dir.path", "credit_loan");
+        return getSpotDirPath(countryCode, null,"stock.spot.credit.loan.dir.path", "credit_loan");
     }
     //신용
     public static String getSpotCreditLoanFilesPath(String stockId, String interval){
@@ -74,7 +74,7 @@ public class StockPaths {
 
     //대주
     public static String getStockLoanPath(String countryCode){
-        return getSpotDirPath(countryCode, "stock.loan.dir.path", "stock_loan");
+        return getSpotDirPath(countryCode, null,"stock.loan.dir.path", "stock_loan");
     }
 
 
@@ -92,7 +92,7 @@ public class StockPaths {
 
     //공매도
     public static String getShortSellingPath(String countryCode){
-        return getSpotDirPath(countryCode, "stock.short.selling.dir.path", "short_selling");
+        return getSpotDirPath(countryCode, null,"stock.short.selling.dir.path", "short_selling");
     }
 
     //매매동향 외국인기관
@@ -108,7 +108,7 @@ public class StockPaths {
     }
     //매매동향 외국인기관
     public static String getInvestorPath(String countryCode){
-        return getSpotDirPath(countryCode, "stock.investor.dir.path", "investor");
+        return getSpotDirPath(countryCode, null,"stock.investor.dir.path", "investor");
     }
 
     public static String getProgramFilesPath(String stockId, String interval) {
@@ -123,7 +123,7 @@ public class StockPaths {
     }
 
     public static String getProgramPath(String countryCode){
-        return getSpotDirPath(countryCode, "stock.program.dir.path", "program");
+        return getSpotDirPath(countryCode, null,"stock.program.dir.path", "program");
     }
 
     public static String getVolumePowerFilesPath(String stockId, String interval){
@@ -137,11 +137,18 @@ public class StockPaths {
     }
 
     public static String getVolumePowerPath(String countryCode){
-        return getSpotDirPath(countryCode, "stock.volume.power.dir.path", "volume_power");
+        return getSpotDirPath(countryCode, null,"stock.volume.power.dir.path", "volume_power");
     }
 
-    public static String getSpotDirPath(String countryCode, String configKey, String dirName) {
-        return getDirPath(countryCode, "spot", configKey, dirName);
+    public static String getSpotDirPath(String countryCode, String exchange, String configKey, String dirName) {
+        String dirType;
+        if(exchange == null || exchange.isEmpty()){
+            dirType = "spot";
+        }else{
+            dirType = "spot-"+exchange;
+        }
+
+        return getDirPath(countryCode, dirType, configKey, dirName);
     }
 
     public static String getDirPath(String countryCode, String dirType, String configKey, String dirName){
@@ -150,7 +157,7 @@ public class StockPaths {
 
 
     public static void main(String[] args) {
-        String path =getSpotCandlePath(CountryCode.USA);
+        String path =getSpotCandlePath(CountryCode.USA, null);
         System.out.println(path);
     }
 }
