@@ -2,9 +2,9 @@ package io.runon.stock.trading;
 
 import io.runon.commons.utils.GsonUtils;
 import io.runon.jdbc.annotation.Column;
-import io.runon.jdbc.annotation.Table;
-import io.runon.jdbc.annotation.PrimaryKey;
 import io.runon.jdbc.annotation.DateTime;
+import io.runon.jdbc.annotation.PrimaryKey;
+import io.runon.jdbc.annotation.Table;
 import lombok.Data;
 
 /**
