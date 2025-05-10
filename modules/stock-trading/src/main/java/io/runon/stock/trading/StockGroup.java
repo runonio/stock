@@ -1,6 +1,6 @@
 package io.runon.stock.trading;
 
-import io.runon.trading.TradingGson;
+import io.runon.commons.utils.GsonUtils;
 import lombok.Data;
 import io.runon.jdbc.annotation.Column;
 import io.runon.jdbc.annotation.Table;
@@ -39,6 +39,6 @@ public class StockGroup {
 
     @Override
     public String toString(){
-        return  TradingGson.LOWER_CASE_WITH_UNDERSCORES_PRETTY.toJson(this);
+        return  GsonUtils.LOWER_CASE_WITH_UNDERSCORES_PRETTY.toJson(this);
     }
 }

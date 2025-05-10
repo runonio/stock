@@ -22,7 +22,7 @@ public class StockSortTest {
         System.out.println(stocks[1]);
 
         long sortBeginTime = System.currentTimeMillis();
-        Stocks.sortUseLastTimeParallel(stocks,"1d", new StockPathLastTimeCandle());
+        Stocks.sortUseLastTimeParallel(stocks,null,"1d", new StockPathLastTimeCandle());
 
         System.out.println(TimeUtil.getTimeValue(System.currentTimeMillis() - sortBeginTime));
         System.out.println("-------------------------");

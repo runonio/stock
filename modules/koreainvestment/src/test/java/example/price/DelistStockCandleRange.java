@@ -12,7 +12,7 @@ public class DelistStockCandleRange {
     public static void main(String[] args) {
         String stockId = "KOR_182690";
 
-        DataPathTimeRange range = StockCandles.getSpotCandleTimeRange(stockId, "1d");
+        DataPathTimeRange range = StockCandles.getSpotCandleTimeRange(stockId,null, "1d");
 
         Stock stock = Stocks.getStock(stockId);
 

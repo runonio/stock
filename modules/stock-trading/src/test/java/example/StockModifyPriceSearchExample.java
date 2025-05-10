@@ -25,7 +25,7 @@ public class StockModifyPriceSearchExample {
     public static void view( CountryCode countryCode){
         ZoneId zoneId = TradingTimes.getZoneId(countryCode);
         StockModifyPriceSearch search = new StockModifyPriceSearch(countryCode);
-        search.search();
+        search.search(null);
 
         Map<String, CandlePreviousCandles> map = search.getMap();
 

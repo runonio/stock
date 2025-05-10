@@ -1,8 +1,8 @@
 package io.runon.stock.trading.market;
 
+import io.runon.commons.utils.GsonUtils;
 import io.runon.trading.CountryCode;
 import io.runon.trading.Time;
-import io.runon.trading.TradingGson;
 import io.runon.trading.TradingTimes;
 import lombok.Data;
 
@@ -43,7 +43,7 @@ public class MarketFundDaily implements Time {
 
     @Override
     public String toString(){
-        return TradingGson.LOWER_CASE_WITH_UNDERSCORES_PRETTY.toJson(this);
+        return GsonUtils.LOWER_CASE_WITH_UNDERSCORES_PRETTY.toJson(this);
     }
 
     public long getTime(){
@@ -55,7 +55,7 @@ public class MarketFundDaily implements Time {
     }
 
     public static MarketFundDaily make(String jsonStr, CountryCode countryCode){
-        MarketFundDaily daily = TradingGson.LOWER_CASE_WITH_UNDERSCORES.fromJson(jsonStr, MarketFundDaily.class);
+        MarketFundDaily daily = GsonUtils.LOWER_CASE_WITH_UNDERSCORES.fromJson(jsonStr, MarketFundDaily.class);
         if(daily.t == null){
             daily.t = TradingTimes.getDailyOpenTime(countryCode, Integer.toString(daily.ymd));
         }
@@ -68,6 +68,6 @@ public class MarketFundDaily implements Time {
             t = TradingTimes.getDailyOpenTime(countryCode, Integer.toString(ymd));
         }
 
-        return TradingGson.LOWER_CASE_WITH_UNDERSCORES.toJson(this);
+        return GsonUtils.LOWER_CASE_WITH_UNDERSCORES.toJson(this);
     }
 }

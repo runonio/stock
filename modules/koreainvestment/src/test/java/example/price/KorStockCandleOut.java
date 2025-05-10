@@ -19,7 +19,7 @@ public class KorStockCandleOut {
 
         for(String stockId : stockIds){
             Stock stock = Stocks.getStock(stockId);
-            candleOut.out(stock);
+            candleOut.out(stock, null);
         }
         //특정 종목만 아웃
     }

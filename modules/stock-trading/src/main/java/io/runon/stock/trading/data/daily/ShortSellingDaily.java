@@ -1,11 +1,10 @@
 package io.runon.stock.trading.data.daily;
 
+import io.runon.commons.utils.GsonUtils;
 import io.runon.stock.trading.Stock;
 import io.runon.stock.trading.Stocks;
 import io.runon.stock.trading.data.management.StockOutTimeLineJson;
-import io.runon.trading.Time;
 import io.runon.trading.TimeNumber;
-import io.runon.trading.TradingGson;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -41,7 +40,7 @@ public class ShortSellingDaily implements StockOutTimeLineJson, TimeNumber {
 
     @Override
     public String toString(){
-        return TradingGson.LOWER_CASE_WITH_UNDERSCORES_PRETTY.toJson(this);
+        return GsonUtils.LOWER_CASE_WITH_UNDERSCORES_PRETTY.toJson(this);
     }
 
     /**
@@ -91,7 +90,7 @@ public class ShortSellingDaily implements StockOutTimeLineJson, TimeNumber {
 
 
     public static ShortSellingDaily make(String jsonStr){
-        return TradingGson.LOWER_CASE_WITH_UNDERSCORES.fromJson(jsonStr, ShortSellingDaily.class);
+        return GsonUtils.LOWER_CASE_WITH_UNDERSCORES.fromJson(jsonStr, ShortSellingDaily.class);
     }
 
     public static ShortSellingDaily make(String jsonStr, Stock stock){
@@ -109,7 +108,7 @@ public class ShortSellingDaily implements StockOutTimeLineJson, TimeNumber {
             t = Stocks.getDailyOpenTime(stock, ymd);
         }
 
-        return TradingGson.LOWER_CASE_WITH_UNDERSCORES.toJson(this);
+        return GsonUtils.LOWER_CASE_WITH_UNDERSCORES.toJson(this);
     }
 
     @Override

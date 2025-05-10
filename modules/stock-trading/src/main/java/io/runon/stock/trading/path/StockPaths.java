@@ -19,6 +19,14 @@ public class StockPaths {
         return getSpotCandlePath(nullCode, null);
     }
 
+    public static String getSpotCandlePath(String countryCode){
+        return getSpotCandlePath(countryCode, null);
+    }
+
+    public static String getSpotCandlePath(CountryCode countryCode){
+        return getSpotCandlePath(countryCode.toString(), null);
+    }
+
     public static String getSpotCandlePath(CountryCode countryCode, String exchange){
         return getSpotCandlePath(countryCode.toString(), exchange);
     }
@@ -30,6 +38,13 @@ public class StockPaths {
      * @return 캔들 폴더 경로
      */
     public static String getSpotCandlePath(String countryCode, String exchange){
+
+        if(countryCode.equals(CountryCode.KOR.toString())){
+            if(exchange != null && exchange.equalsIgnoreCase("krx")){
+                exchange = null;
+            }
+        }
+
         return getSpotDirPath(countryCode, exchange,"stock.spot.candle.dir.path", "candle");
     }
 
@@ -145,7 +160,7 @@ public class StockPaths {
         if(exchange == null || exchange.isEmpty()){
             dirType = "spot";
         }else{
-            dirType = "spot-"+exchange;
+            dirType = "spot-"+exchange.toLowerCase();
         }
 
         return getDirPath(countryCode, dirType, configKey, dirName);

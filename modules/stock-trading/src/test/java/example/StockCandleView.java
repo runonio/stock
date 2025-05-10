@@ -17,7 +17,7 @@ public class StockCandleView {
         int baseYmd = YmdUtil.nowInt(TradingTimes.KOR_ZONE_ID);
         int beginYmd = YmdUtil.getYmdInt(baseYmd, - 30);
 
-        TradeCandle [] candles = StockCandles.getDailyCandles(stock, 20230104, 20230110);
+        TradeCandle [] candles = StockCandles.getDailyCandles(stock, "krx",20230104, 20230110);
 
         for(TradeCandle candle :candles){
             System.out.println(YmdUtil.getYmd(candle.getOpenTime(), TradingTimes.KOR_ZONE_ID));

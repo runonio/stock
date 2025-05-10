@@ -1,11 +1,10 @@
 package io.runon.stock.trading.data.daily;
 
+import io.runon.commons.utils.GsonUtils;
 import io.runon.stock.trading.Stock;
 import io.runon.stock.trading.Stocks;
 import io.runon.stock.trading.data.management.StockOutTimeLineJson;
-import io.runon.trading.Time;
 import io.runon.trading.TimeNumber;
-import io.runon.trading.TradingGson;
 import io.runon.trading.technical.analysis.candle.TradeCandle;
 import lombok.Data;
 
@@ -62,7 +61,7 @@ public class StockLoanDaily implements StockOutTimeLineJson, TimeNumber {
 
     public static StockLoanDaily make(String jsonStr){
 
-        return TradingGson.LOWER_CASE_WITH_UNDERSCORES.fromJson(jsonStr, StockLoanDaily.class);
+        return GsonUtils.LOWER_CASE_WITH_UNDERSCORES.fromJson(jsonStr, StockLoanDaily.class);
     }
 
     public void initZero(){
@@ -116,12 +115,12 @@ public class StockLoanDaily implements StockOutTimeLineJson, TimeNumber {
         if(t == null){
            t = Stocks.getDailyOpenTime(stock, ymd);
         }
-        return TradingGson.LOWER_CASE_WITH_UNDERSCORES.toJson(this);
+        return GsonUtils.LOWER_CASE_WITH_UNDERSCORES.toJson(this);
     }
 
     @Override
     public String toString(){
-        return TradingGson.LOWER_CASE_WITH_UNDERSCORES_PRETTY.toJson(this);
+        return GsonUtils.LOWER_CASE_WITH_UNDERSCORES_PRETTY.toJson(this);
     }
 
     @Override

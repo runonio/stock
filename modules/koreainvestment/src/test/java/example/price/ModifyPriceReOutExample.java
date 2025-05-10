@@ -23,7 +23,7 @@ public class ModifyPriceReOutExample {
     public static void usaDailyCandleReOut(){
 
         StockModifyPriceSearch search = new StockModifyPriceSearch(CountryCode.USA);
-        search.search();
+        search.search(null);
 
         UasSpotDailyCandleOut out = new UasSpotDailyCandleOut();
         Map<String, CandlePreviousCandles> map = search.getMap();
@@ -41,7 +41,7 @@ public class ModifyPriceReOutExample {
     public static void korDailyCandleReOut(){
         SpotDailyCandleOut out = new SpotDailyCandleOut();
         StockModifyPriceSearch search = new StockModifyPriceSearch(CountryCode.KOR);
-        search.search();
+        search.search(null);
 
         Map<String, CandlePreviousCandles> map = search.getMap();
         Set<String> keys = map.keySet();
@@ -51,7 +51,7 @@ public class ModifyPriceReOutExample {
             Stock stock = Stocks.getStock(key) ;
             try{Thread.sleep(1000L);}catch(Exception ignore){}
 
-            out.reOut(stock);
+            out.reOut(stock, null);
         }
     }
 
@@ -60,7 +60,7 @@ public class ModifyPriceReOutExample {
         //거래정지 종목에 한해서 데이터가 맞지않는 경우가 발생한다.
         ZoneId zoneId = TradingTimes.getZoneId(countryCode);
         StockModifyPriceSearch search = new StockModifyPriceSearch(countryCode);
-        search.search();
+        search.search(null);
 
         Map<String, CandlePreviousCandles> map = search.getMap();
 

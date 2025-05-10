@@ -1,7 +1,7 @@
 package io.runon.stock.trading.data.daily;
 
+import io.runon.commons.utils.GsonUtils;
 import io.runon.trading.TimeNumber;
-import io.runon.trading.TradingGson;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -40,7 +40,7 @@ public class StockCreditLoanDaily implements TimeNumber {
 
     @Override
     public String toString(){
-        return TradingGson.LOWER_CASE_WITH_UNDERSCORES.toJson(this);
+        return GsonUtils.LOWER_CASE_WITH_UNDERSCORES.toJson(this);
     }
 
     public long getTime(){
@@ -52,7 +52,7 @@ public class StockCreditLoanDaily implements TimeNumber {
     }
 
     public static StockCreditLoanDaily make(String jsonText){
-        return TradingGson.LOWER_CASE_WITH_UNDERSCORES.fromJson(jsonText, StockCreditLoanDaily.class);
+        return GsonUtils.LOWER_CASE_WITH_UNDERSCORES.fromJson(jsonText, StockCreditLoanDaily.class);
     }
 
     @Override

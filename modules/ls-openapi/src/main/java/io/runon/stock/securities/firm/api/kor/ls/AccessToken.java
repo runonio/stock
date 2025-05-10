@@ -7,7 +7,6 @@ import io.runon.commons.http.HttpApiResponse;
 import io.runon.commons.http.HttpApis;
 import io.runon.commons.utils.GsonUtils;
 import io.runon.commons.utils.time.Times;
-import io.runon.trading.TradingGson;
 import lombok.Data;
 
 import java.util.HashMap;
@@ -58,7 +57,7 @@ public class AccessToken {
 
     @Override
     public String toString(){
-        return TradingGson.LOWER_CASE_WITH_UNDERSCORES_PRETTY.toJson(this);
+        return GsonUtils.LOWER_CASE_WITH_UNDERSCORES_PRETTY.toJson(this);
     }
 
     public JsonObject getJsonObject(){

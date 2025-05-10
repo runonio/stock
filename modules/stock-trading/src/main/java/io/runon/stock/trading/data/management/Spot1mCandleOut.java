@@ -75,7 +75,7 @@ public class Spot1mCandleOut {
         }else{
             stocks = Stocks.getStocks(exchanges);
         }
-        out(beginYmd, exchange);
+        out(beginYmd, stocks, exchange);
     }
 
     public void out(String beginYmd, Stock [] stocks, String exchange){

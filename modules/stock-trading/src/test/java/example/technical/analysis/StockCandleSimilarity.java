@@ -23,9 +23,9 @@ public class StockCandleSimilarity {
         Stock source = Stocks.getStock("KOR_433330");
         Stock target = Stocks.getStock("KOR_488500");
 
-        TradeCandle [] sourceCandles = StockDataLoad.getCandle( source, beginYmd, endYmd);
+        TradeCandle [] sourceCandles = StockDataLoad.getCandle( source, null, beginYmd, endYmd);
 
-        TradeCandle [] targetCandles = StockDataLoad.getCandle( target, beginYmd, endYmd);
+        TradeCandle [] targetCandles = StockDataLoad.getCandle( target, null,beginYmd, endYmd);
 
         BigDecimalArray result = TradingSimilarity.changeSimilarity(sourceCandles, targetCandles, new BigDecimal("0.2"), new BigDecimal("100000000"));
 
