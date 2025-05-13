@@ -73,6 +73,11 @@ public class DartFinancialStatements {
             }
         }
 
+        if(financialStatements.getCapital() == null && financialStatements.getAssets() != null && financialStatements.getLiabilities() != null){
+            financialStatements.setCapital(financialStatements.getAssets().subtract(financialStatements.getLiabilities()));
+        }
+
+
         String month ;
         if(quarter == 1){
             month = "03";
@@ -221,6 +226,7 @@ public class DartFinancialStatements {
                  "자산총계"
                 , "자본과부채총계"
                 ,"부채와자본총계"
+                ,"자산"
         };
 
 
@@ -235,6 +241,7 @@ public class DartFinancialStatements {
 
         String [] numKeys = {
                 "부채총계"
+                ,"부채"
         };
 
         return BigDecimals.getNumber(map, mapKeys, numKeys);
@@ -248,14 +255,16 @@ public class DartFinancialStatements {
 
         String [] numKeys = {
                 "자본총계"
+                ,"자본"
                 , "자본금"
                 ,"기말자본잔액"
                 ,"분기말잔액"
                 ,"반기말잔액"
                 ,"기말자본"
+                ,"분기말자본"
+                ,"반기말자본"
+                ,"당기말자본"
         };
-
-
         return BigDecimals.getNumber(map, mapKeys, numKeys);
     }
 
@@ -274,7 +283,9 @@ public class DartFinancialStatements {
                 , "영업으로인한현금흐름"
                 , "영업활동으로부터창출된현금흐름"
                 , "영업활동으로인현금흐름"
-
+                ,"영업활동으로부터의순현금유출"
+                ,"영업활동으로부터의순현금유입(유출)"
+                ,"영업활동으로부터의순현금유입"
         };
 
         return BigDecimals.getNumber(map, mapKeys, numKeys);
@@ -406,7 +417,10 @@ public class DartFinancialStatements {
                 name = name.substring("계속영업".length());
             }
 
-            if(name.startsWith("총분기") || name.startsWith("총포괄")) {
+            if(name.startsWith("총분기") || name.startsWith("총포괄")
+            || name.startsWith("총당기") || name.startsWith("총반기") || name.startsWith("총기말")
+
+            ) {
                 name = name.substring(1);
             }
 
@@ -417,10 +431,14 @@ public class DartFinancialStatements {
                 name ="매출액";
             }
 
+            if(name.startsWith("매출액(")){
+                name = "매출액";
+            }
+
             name = name.replace("순이익손실", "순이익");
 
             name =name.replace("(주)","");
-
+            name =name.replace("()","");
             String value = row.getString("thstrm_amount");
             if(value.equals("") || value.equals("-") || value.equals("0")){
                 continue;
@@ -484,12 +502,18 @@ public class DartFinancialStatements {
         Set<String> passKey = new HashSet<>();
         passKey.add("073540,2019,4,true");
         passKey.add("303030,2019,2,false");
+        passKey.add("006200,2016,4,false");
+        passKey.add("006200,2017,1,false");
+        passKey.add("006200,2017,2,false");
+        passKey.add("006200,2017,3,false");
+        passKey.add("006200,2017,4,false");
 
 
 
         Stock [] stocks = Stocks.getAllStocks(markets, types);
 
         for(Stock stock : stocks){
+
             outer:
             for(int year = beginYear;; year++){
 
@@ -533,6 +557,19 @@ public class DartFinancialStatements {
                                 if(!isIn){
                                     continue ;
                                 }
+
+                            }
+
+                            financialStatements.setOperatingCashFlow(null);
+                        }
+
+                        if(stock.getNameKo().endsWith("생명")){
+                            if(financialStatements.getSales() == null){
+                                financialStatements.setSales(new BigDecimal(0));
+                                if(!financialStatements.isNullIn()){
+                                    continue ;
+                                }
+                                financialStatements.setSales(null);
                             }
                         }
 
@@ -568,6 +605,8 @@ public class DartFinancialStatements {
                                     continue ;
                                 }
                             }
+
+                            financialStatements.setOperatingCashFlow(null);
                         }
 
                         consoleView(stock.getStockId(), Integer.toString(year),quarter,false);
@@ -581,10 +620,6 @@ public class DartFinancialStatements {
         }
     }
 
-
-
-
-
     public static void main(String[] args) {
         Config.getConfig("");
 
@@ -592,11 +627,11 @@ public class DartFinancialStatements {
 
 //        OFS:재무제표(별도), CFS:연결재무제표
 
-        String symbol = "042420";
-        String year = "2021";
-        int quarter = 2;
-        boolean isConsolidated = true;
-
+//        String symbol = "082640";
+//        String year = "2024";
+//        int quarter = 4;
+//        boolean isConsolidated = true;
+//
 //        consoleView(symbol,year,quarter,isConsolidated);
 //
 //        FinancialStatements financialStatements =  getFinancialStatements(symbol,year,quarter,isConsolidated);
