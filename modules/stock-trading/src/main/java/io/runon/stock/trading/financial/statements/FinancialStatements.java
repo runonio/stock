@@ -105,9 +105,9 @@ public class FinancialStatements {
         if(operatingCashFlow == null){
             return true;
         }
-        if(cashEquivalents == null){
-            return true;
-        }
+//        if(cashEquivalents == null){
+//            return true;
+//        }
 
         return false;
     }

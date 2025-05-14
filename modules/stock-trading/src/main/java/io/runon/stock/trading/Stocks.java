@@ -65,7 +65,6 @@ public class Stocks {
         StockData stockData = stockDataManager.getStockData();
         return stockData.getAllStocks(exchanges,types);
     }
-    
 
     public static Stock [] getDelistedStocks(String[] exchanges, String beginYmd, String endYmd){
         StockDataManager stockDataManager = StockDataManager.getInstance();

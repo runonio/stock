@@ -84,6 +84,9 @@ public class DartFinancialStatements {
         if(financialStatements.getCapital() == null && financialStatements.getAssets() != null && financialStatements.getLiabilities() != null){
             financialStatements.setCapital(financialStatements.getAssets().subtract(financialStatements.getLiabilities()));
         }
+        if(financialStatements.getAssets() == null && financialStatements.getCapital() != null && financialStatements.getLiabilities() != null){
+            financialStatements.setAssets(financialStatements.getCapital().add(financialStatements.getLiabilities()));
+        }
 
 
         String month ;
@@ -148,6 +151,9 @@ public class DartFinancialStatements {
                 , "보험판매매출수입수수료"
                 ,"보험판매수입수수료"
                 , "수익"
+                , "수익합계"
+                ,"매출액및지분법손익"
+                ,"매출과지분법손익(영업수익)"
 
 
         };
@@ -172,6 +178,11 @@ public class DartFinancialStatements {
                 , "이익"
                 , "영업활동으로부터의이익"
                 , "영업손실(이익)"
+                ,"반기영업이익"
+                ,"분기영업이익"
+                ,"당기영업이익"
+                ,"기말영업이익"
+                ,"매출총이익"
         };
 
 
@@ -230,10 +241,32 @@ public class DartFinancialStatements {
                 ,"당기손이익"
                 ,"분기손이익"
                 ,"반기손이익"
+                ,"분기분손실"
+                ,"당기분손실"
+                ,"반기분손실"
+                ,"기말분손실"
                 ,"반기총포괄손익"
                 ,"분기총포괄손익"
                 ,"당기총포괄손익"
                 ,"기말총포괄손익"
+                ,"순이익"
+                ,"분기(당기)순이익"
+                , "분기말순이익"
+                ,"당기의순이익"
+                ,"분기의순이익"
+                ,"반기의순이익"
+                ,"기말의순이익"
+                ,"반기(당기)순이익"
+                ,"분기(당기)순이익"
+                ,"기말(당기)순이익"
+                ,"당분기순손실"
+
+                ,"당반기순손실"
+                ,"당기순익"
+                ,"분기순익"
+                ,"반기순익"
+
+
         };
 
         return BigDecimals.getNumber(map, mapKeys, numKeys);
@@ -251,6 +284,8 @@ public class DartFinancialStatements {
                 , "자본과부채총계"
                 ,"부채와자본총계"
                 ,"자산"
+                ,"부채와자본계"
+                ,"총자산"
         };
 
 
@@ -266,6 +301,7 @@ public class DartFinancialStatements {
         String [] numKeys = {
                 "부채총계"
                 ,"부채"
+                ,"총부채"
         };
 
         return BigDecimals.getNumber(map, mapKeys, numKeys);
@@ -315,6 +351,12 @@ public class DartFinancialStatements {
                 ,"영업활동으로부터의현금흐름"
                 ,"영업으로부터창출된현금흐름"
                 ,"영업에서사용된현금"
+                , "영업활동으로인한순현금흐름합계"
+                ,"영업활동에서창출된현금흐름"
+                ,"영업활동연금흐름"
+                ,"영업에서창출된현금"
+                ,"영업활동에서창출된현금"
+                ,"영업으로창출된현금흐름"
         };
 
         return BigDecimals.getNumber(map, mapKeys, numKeys);
@@ -332,6 +374,8 @@ public class DartFinancialStatements {
                 , "현금및예치금"
                 , "현금및현금성자산합계"
                 , "현금성자산"
+                ,"기초의현금및현금성자산"
+                ,"현금및상각후원가측정예치금"
         };
 
         return BigDecimals.getNumber(map, mapKeys, numKeys);
@@ -435,6 +479,7 @@ public class DartFinancialStatements {
             name = name.replace("당기기","당기");
             name = name.replace("분기기","분기");
             name = name.replace("반기기","반기");
+            name = name.replace("순이이익","순이익");
 
 
             if(name.endsWith("(손실)") || name.endsWith("(수익)") || name.endsWith("(감소)")
@@ -469,6 +514,30 @@ public class DartFinancialStatements {
             }
 
             if(name.startsWith("매출액(")){
+                name = "매출액";
+            }
+
+            if(name.startsWith("수익(")) {
+                name ="수익";
+            }
+
+            if(name.startsWith("분기순이익(")){
+                name = "분기순이익";
+            }
+
+            if(name.startsWith("분기순손실(")){
+                name = "분기순손실";
+            }
+
+            if(name.startsWith("당기순이익(")){
+                name = "당기순이익";
+            }
+
+            if(name.startsWith("반기순이익(")){
+                name = "반기순이익";
+            }
+
+            if(name.endsWith("(영업수익)")){
                 name = "매출액";
             }
 
@@ -554,16 +623,31 @@ public class DartFinancialStatements {
         passKey.add("003550,2016,3,false");
         passKey.add("003550,2016,4,false");
         passKey.add("462980,2024,4,true");
+        passKey.add("006840,2021,4,false");
+        passKey.add("230240,2017,2,false");
+        passKey.add("230240,2017,3,false");
+        passKey.add("001430,2024,1,false");
+        passKey.add("005990,2017,1,false");
+        passKey.add("000480,2023,2,false");
+
+
+
         Set<String> passSymbol = new HashSet<>();
         passSymbol.add("261200");
         passSymbol.add("003550");
+        passSymbol.add("000210");
+        passSymbol.add("003690");
+        passSymbol.add("019590");
+        passSymbol.add("299660");
+        passSymbol.add("194480");
+
 
         Stock [] stocks = Stocks.getAllStocks(markets, types);
 
         int cnt = 0;
 
         for(Stock stock : stocks){
-            System.out.println(stock.getStockId() +" "+ cnt++ +", " + stocks.length);
+//            System.out.println(stock.getStockId() +" "+ cnt++ +", " + stocks.length);
 
             if(passSymbol.contains(stock.getSymbol())){
                 continue;
@@ -620,7 +704,11 @@ public class DartFinancialStatements {
                             financialStatements.setOperatingCashFlow(null);
                         }
 
-                        if(stock.getNameKo().endsWith("생명") || stock.getNameKo().endsWith("보험") || stock.getNameKo().endsWith("캐피탈")){
+                        if(stock.getNameKo().endsWith("생명") || stock.getNameKo().endsWith("보험") || stock.getNameKo().endsWith("캐피탈")
+                                || stock.getNameKo().contains("금융")     || stock.getNameKo().contains("증권")  || stock.getNameKo().contains("은행")
+                                || stock.getNameKo().endsWith("지주")     || stock.getNameKo().endsWith("투자") || stock.getNameKo().endsWith("화재")
+                                || stock.getNameKo().endsWith("해상")
+                        ){
                             if(financialStatements.getSales() == null){
                                 financialStatements.setSales(new BigDecimal(0));
                                 if(!financialStatements.isNullIn()){
@@ -637,11 +725,17 @@ public class DartFinancialStatements {
                         if(dataMap.size() < 3){
                             continue ;
                         }
-
-                        consoleView(stock.getStockId(), Integer.toString(year),quarter,true);
-                        System.out.println(financialStatements);
+                        if(financialStatements.getCashEquivalents() == null){
+                            financialStatements.setCashEquivalents(new BigDecimal(0));
+                            if(!financialStatements.isNullIn()){
+                                continue ;
+                            }
+                        }
+//                        consoleView(stock.getStockId(), Integer.toString(year),quarter,true);
+//                        System.out.println(financialStatements);
                         System.out.println(stock.getSymbol() +"," + year +"," + quarter +",true" );
-                        return;
+//                        System.out.println(stock.getNameKo());
+//                        return;
                     }
 
 
@@ -679,7 +773,11 @@ public class DartFinancialStatements {
                             financialStatements.setOperatingCashFlow(null);
                         }
 
-                        if(stock.getNameKo().endsWith("생명") || stock.getNameKo().endsWith("보험") || stock.getNameKo().endsWith("캐피탈")){
+                        if(stock.getNameKo().endsWith("생명") || stock.getNameKo().endsWith("보험") || stock.getNameKo().endsWith("캐피탈")
+                         || stock.getNameKo().contains("금융") || stock.getNameKo().contains("증권")  || stock.getNameKo().contains("은행")
+                                || stock.getNameKo().endsWith("지주")   || stock.getNameKo().endsWith("투자") || stock.getNameKo().endsWith("화재")
+                                || stock.getNameKo().endsWith("해상")
+                        ){
                             if(financialStatements.getSales() == null){
                                 financialStatements.setSales(new BigDecimal(0));
                                 if(!financialStatements.isNullIn()){
@@ -697,10 +795,18 @@ public class DartFinancialStatements {
                             continue ;
                         }
 
-                        consoleView(stock.getStockId(), Integer.toString(year),quarter,false);
-                        System.out.println(financialStatements);
+                        if(financialStatements.getCashEquivalents() == null){
+                            financialStatements.setCashEquivalents(new BigDecimal(0));
+                            if(!financialStatements.isNullIn()){
+                                continue ;
+                            }
+                        }
+
+//                        consoleView(stock.getStockId(), Integer.toString(year),quarter,false);
+//                        System.out.println(financialStatements);
                         System.out.println(stock.getSymbol() +"," + year +"," + quarter +",false");
-                        return;
+//                        System.out.println(stock.getNameKo());
+//                        return;
                     }
 
                 }
@@ -714,8 +820,8 @@ public class DartFinancialStatements {
         searchNullIn();
 
 //        OFS:재무제표(별도), CFS:연결재무제표
-
-//        String symbol = "KOR_000400";
+//
+//        String symbol = "006120";
 //        String year = "2024";
 //        int quarter = 4;
 //        boolean isConsolidated = false;
