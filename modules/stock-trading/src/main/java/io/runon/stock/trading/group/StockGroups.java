@@ -1,5 +1,8 @@
-package io.runon.stock.trading;
+package io.runon.stock.trading.group;
 
+import io.runon.stock.trading.Stock;
+import io.runon.stock.trading.StockMap;
+import io.runon.stock.trading.Stocks;
 import io.runon.stock.trading.data.StockData;
 import io.runon.stock.trading.data.StockDataManager;
 
@@ -8,7 +11,7 @@ import io.runon.stock.trading.data.StockDataManager;
  */
 public class StockGroups {
 
-    public static Stock [] getGroupStocks(StockMap stockMap, String groupId) {
+    public static Stock[] getGroupStocks(StockMap stockMap, String groupId) {
         StockData stockData = StockDataManager.getInstance().getStockData();
         String [] groupStockIds = stockData.getGroupStockIds(groupId);
 

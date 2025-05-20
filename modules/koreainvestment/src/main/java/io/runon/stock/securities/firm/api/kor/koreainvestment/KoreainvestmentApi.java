@@ -10,6 +10,7 @@ import io.runon.commons.http.HttpApiResponse;
 import io.runon.commons.http.HttpApis;
 import io.runon.commons.utils.GsonUtils;
 import io.runon.commons.utils.time.Times;
+import io.runon.stock.trading.exception.StockApiException;
 import io.runon.trading.CountryCode;
 import io.runon.trading.closed.days.ClosedDaysFileOut;
 
@@ -66,6 +67,8 @@ public class KoreainvestmentApi {
 
     private final KoreainvestmentOverseasPeriodApi overseasPeriodApi;
 
+    private final KoreainvestmentOrderApi orderApi;
+
     private boolean isActual ;
 
     private long sleepTime = Config.getLong("stock.securities.firm.kor.koreainvestment.sleep.time", 70L);
@@ -120,6 +123,8 @@ public class KoreainvestmentApi {
         overseasStockInfoApi = new KoreainvestmentOverseasStockInfoApi(this);
         overseasPeriodApi = new KoreainvestmentOverseasPeriodApi(this);
         closedDaysFileOut = new ClosedDaysFileOut(marketApi, CountryCode.KOR);
+        orderApi = new KoreainvestmentOrderApi(this);
+
     }
 
     public boolean closedDaysOut(){
@@ -337,4 +342,39 @@ public class KoreainvestmentApi {
     public KoreainvestmentOverseasPeriodApi getOverseasPeriodApi() {
         return overseasPeriodApi;
     }
+
+
+    public KoreainvestmentOrderApi getOrderApi() {
+        return orderApi;
+    }
+
+
+    public static String getAccountNumber() {
+        String accountNumber = Config.getConfig("stock.securities.firm.api.kor.koreainvestment.account.number");
+
+        if(accountNumber == null){
+            throw new StockApiException("account number null");
+        }
+
+        return accountNumber;
+    }
+
+    public static String getCano(){
+        return getCano(getAccountNumber());
+    }
+
+    public static String getAccountProductCode(){
+        return getAccountProductCode(getAccountNumber());
+    }
+
+    public static String getCano(String accountNumber){
+        int index = accountNumber.indexOf('-');
+        return accountNumber.substring(0, index);
+    }
+
+    public static String getAccountProductCode(String accountNumber){
+        int index = accountNumber.indexOf('-');
+        return accountNumber.substring(index +1);
+    }
+
 }

@@ -3,6 +3,7 @@ package io.runon.stock.trading.financial.statements.kor;
 import io.runon.commons.config.Config;
 import io.runon.commons.exception.InvalidParameterException;
 import io.runon.commons.utils.string.Check;
+import io.runon.commons.utils.time.Times;
 import io.runon.commons.utils.time.YmdUtil;
 import io.runon.jdbc.JdbcQuery;
 import io.runon.stock.trading.Stock;
@@ -22,6 +23,34 @@ import java.util.*;
  * @author macle
  */
 public class DartFinancialStatements {
+
+    public static FinancialStatements [] getFinancialStatementsArray(String idOrSymbol, boolean isConsolidated ){
+
+        List<FinancialStatements> list = new ArrayList<>();
+
+        int beginYear = 2015;
+
+        int endYear = Times.getYear(TradingTimes.KOR_ZONE_ID) + 1;
+        int endQuarter = 5;
+
+        for (int year = beginYear; year < endYear ; year++) {
+            for (int quarter = 1; quarter <endQuarter ; quarter++) {
+                FinancialStatements financialStatements =getFinancialStatements(idOrSymbol, year, quarter, isConsolidated);
+                if (financialStatements == null) {
+                    continue;
+                }
+                if(!financialStatements.isIn()){
+                    continue;
+                }
+                list.add(financialStatements);
+            }
+        }
+
+
+        return list.toArray(new FinancialStatements[0]);
+    }
+
+
 
     public static FinancialStatements getFinancialStatements(String idOrSymbol, int year, int quarter, boolean isConsolidated ){
         return getFinancialStatements(idOrSymbol, Integer.toString(year),quarter, isConsolidated);

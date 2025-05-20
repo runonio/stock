@@ -16,7 +16,7 @@ public class KoreainvestmentApis {
         candleOut.outKor();
         candleOut.outKorDelisted();
 
-
+        candleOut.outKor("nxt");
 
     }
 

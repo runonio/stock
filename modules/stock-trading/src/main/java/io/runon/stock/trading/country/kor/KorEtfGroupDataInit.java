@@ -4,9 +4,9 @@ import io.runon.commons.config.Config;
 import io.runon.commons.utils.ExceptionUtil;
 import io.runon.jdbc.objects.JdbcObjects;
 import io.runon.jdbc.sync.JdbcSync;
-import io.runon.stock.trading.StockGroup;
-import io.runon.stock.trading.StockGroupMap;
 import io.runon.stock.trading.data.management.db.sync.StockDbSync;
+import io.runon.stock.trading.group.StockGroup;
+import io.runon.stock.trading.group.StockGroupMap;
 import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Connection;
