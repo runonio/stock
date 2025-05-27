@@ -20,10 +20,10 @@ public class KoreainvestmentAccountApi {
         this.koreainvestmentApi = koreainvestmentApi;
     }
 
-    public String getInquireBalanceJsonText(String accountNumberValue ){
+    public String getInquireBalanceJsonText(String accountNumber ){
 
-        String cano = accountNumberValue.substring(0,8);
-        String acnt_prdt_cd = accountNumberValue.substring(accountNumberValue.length()-2 );
+        String cano = KoreainvestmentApi.getCano(accountNumber);
+        String acnt_prdt_cd = KoreainvestmentApi.getAccountProductCode(accountNumber);
 
         return getInquireBalanceJsonText(cano, acnt_prdt_cd, "","","02","01","","","","","");
     }

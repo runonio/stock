@@ -7,11 +7,14 @@ import io.runon.stock.securities.firm.api.kor.koreainvestment.KoreainvestmentSto
  * 예제
  * @author macle
  */
-public class IncomeStatementExample {
+public class OrderBookExample {
     public static void main(String[] args) {
+
         KoreainvestmentApi api = KoreainvestmentApi.getInstance();
         KoreainvestmentStockInfoApi stockInfoApi = api.getStockInfoApi();
 
-        System.out.println(stockInfoApi.getIncomeStatementJsonText("0","005930"));
+        String jsonText = stockInfoApi.getOrderBookJsonText("005930","NXT");
+        System.out.println(jsonText);
+
     }
 }

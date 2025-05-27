@@ -10,6 +10,7 @@ import io.runon.stock.trading.Stocks;
 import io.runon.stock.trading.data.StockData;
 import io.runon.stock.trading.data.StockDataManager;
 import io.runon.stock.trading.group.StockGroups;
+import io.runon.trading.CountryCode;
 import io.runon.trading.TradingTimes;
 
 import java.util.*;
@@ -355,4 +356,32 @@ public class KorStocks {
         //etf는 종류별로 동일한 자산을 취급하지 않아야 분산이 가능하므로 정리된 자료를 이용한다.
         return StockGroups.getGroupStocks(stockMap, "kor_currencies_short_etf");
     }
+
+
+    public static String getSymbol(String idOrSymbol){
+
+        String countryCode = CountryCode.KOR.toString();
+
+        String symbol;
+        if(idOrSymbol.startsWith(countryCode +"_")){
+            symbol = idOrSymbol.substring(4);
+        }else{
+            symbol = idOrSymbol;
+        }
+
+        return symbol;
+    }
+
+    public static String getStockId(String idOrSymbol){
+        String stockId = idOrSymbol;
+        String country = CountryCode.KOR + "_";
+
+        if(!stockId.startsWith(country)){
+            stockId = country + stockId;
+        }
+
+        return stockId;
+    }
+
+
 }

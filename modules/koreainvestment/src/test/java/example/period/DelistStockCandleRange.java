@@ -1,4 +1,4 @@
-package example.price;
+package example.period;
 
 import io.runon.stock.trading.Stock;
 import io.runon.stock.trading.Stocks;

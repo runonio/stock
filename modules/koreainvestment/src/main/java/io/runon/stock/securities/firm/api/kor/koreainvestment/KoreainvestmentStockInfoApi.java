@@ -1,6 +1,8 @@
 package io.runon.stock.securities.firm.api.kor.koreainvestment;
 
 import io.runon.commons.http.HttpApiResponse;
+import io.runon.stock.trading.Stock;
+import io.runon.stock.trading.Stocks;
 import io.runon.stock.trading.exception.StockApiException;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -30,7 +32,6 @@ public class KoreainvestmentStockInfoApi {
     public KoreainvestmentStockInfoApi(KoreainvestmentApi koreainvestmentApi){
         this.koreainvestmentApi = koreainvestmentApi;
     }
-
 
     public String getStockInfoJsonText(String symbol){
         koreainvestmentApi.updateAccessToken();
@@ -123,8 +124,6 @@ public class KoreainvestmentStockInfoApi {
         return response.getMessage();
     }
 
-
-
     /**
      * 추정실적얻기
      * @param symbol 종목 기호
@@ -145,12 +144,10 @@ public class KoreainvestmentStockInfoApi {
 
     }
 
-
     public boolean isEstimatedPerformance(String jsonText){
         JSONObject jsonObject = new JSONObject(jsonText);
         return isEstimatedPerformance(jsonObject);
     }
-
 
 
     public boolean isEstimatedPerformance(JSONObject object){
@@ -180,9 +177,7 @@ public class KoreainvestmentStockInfoApi {
         return response.getMessage();
     }
 
-
     public String getInvestOpinionSecurities(String symbol, String beginYmd, String endYmd){
-        //apiportal.koreainvestment.com/apiservice/apiservice-domestic-stock-information#L_3a588de4-df48-49ac-88ca-9765998c00e1
         koreainvestmentApi.updateAccessToken();
         String url = "/uapi/domestic-stock/v1/quotations/invest-opbysec";
         Map<String, String> requestHeaderMap = koreainvestmentApi.computeIfAbsenttPropertySingleMap(url,"tr_id","FHKST663400C0");
@@ -193,6 +188,65 @@ public class KoreainvestmentStockInfoApi {
         }
         return response.getMessage();
     }
+
+    public String getOrderBookJsonText(String symbol, String exchange){
+//        https://apiportal.koreainvestment.com/apiservice-apiservice?/uapi/domestic-stock/v1/quotations/inquire-asking-price-exp-ccn
+        koreainvestmentApi.updateAccessToken();
+        String url = "/uapi/domestic-stock/v1/quotations/inquire-asking-price-exp-ccn";
+
+        Map<String, String> requestHeaderMap = koreainvestmentApi.computeIfAbsenttPropertySingleMap(url,"tr_id","FHKST01010200");
+
+        if(exchange.equals("KRX")){
+            exchange = "J";
+        }else if(exchange.equals("NXT")){
+            exchange = "NX";
+        }
+
+        String query = "?FID_COND_MRKT_DIV_CODE=" + exchange +"&FID_INPUT_ISCD=" + symbol;
+
+        HttpApiResponse response =  koreainvestmentApi.getHttpGet().getResponse(url + query, requestHeaderMap);
+        if(response.getResponseCode() != 200){
+            throw new StockApiException("token make fail code:" + response.getResponseCode() +", " + response.getMessage());
+        }
+
+        return response.getMessage();
+    }
+
+    public String getPriceInfoJsonText(String symbol){
+//        https://apiportal.koreainvestment.com/apiservice-apiservice?/uapi/domestic-stock/v1/quotations/inquire-price-2
+        String id = "KOR_" + symbol;
+
+        String divCode = "J";
+
+
+        Stock stock = Stocks.getStock(id);
+        if(stock != null){
+            if(stock.getStockType().equals("ETF")){
+                divCode = "ETF";
+            }else if(stock.getStockType().equals("ETN")){
+                divCode = "ETN";
+            }
+        }
+
+        String url = "/uapi/domestic-stock/v1/quotations/inquire-price-2";
+
+        Map<String, String> requestHeaderMap = koreainvestmentApi.computeIfAbsenttPropertySingleMap(url,"tr_id","FHPST01010000");
+
+
+        String query = "?FID_COND_MRKT_DIV_CODE=" + divCode +"&FID_INPUT_ISCD=" + symbol;
+
+        HttpApiResponse response =  koreainvestmentApi.getHttpGet().getResponse(url + query, requestHeaderMap);
+        if(response.getResponseCode() != 200){
+            throw new StockApiException("token make fail code:" + response.getResponseCode() +", " + response.getMessage());
+        }
+
+        return response.getMessage();
+
+
+    }
+
+
+
 
 
 

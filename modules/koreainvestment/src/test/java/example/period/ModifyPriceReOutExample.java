@@ -1,4 +1,4 @@
-package example.price;
+package example.period;
 
 import io.runon.commons.utils.time.YmdUtil;
 import io.runon.stock.securities.firm.api.kor.koreainvestment.SpotDailyCandleOut;

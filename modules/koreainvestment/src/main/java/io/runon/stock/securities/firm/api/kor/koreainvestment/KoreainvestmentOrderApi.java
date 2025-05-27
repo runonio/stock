@@ -2,7 +2,9 @@ package io.runon.stock.securities.firm.api.kor.koreainvestment;
 
 import io.runon.commons.exception.UndefinedException;
 import io.runon.commons.http.HttpApiResponse;
+import io.runon.stock.trading.country.kor.KorStocks;
 import io.runon.stock.trading.exception.StockApiException;
+import io.runon.trading.CountryCode;
 import io.runon.trading.Trade;
 import io.runon.trading.order.*;
 import org.json.JSONObject;
@@ -55,7 +57,7 @@ public class KoreainvestmentOrderApi implements LimitOrder, MarketOrder {
      * 23@중간가IOC
      * 24@중간가FOK
      */
-    public String orderJsonText(String cano, String prdt, String exchange, String symbol ,Trade.Type tradeType ,String orderCode, BigDecimal price, BigDecimal quantity){
+    public String orderJsonText(String cano, String prdt, String symbol, String exchange ,Trade.Type tradeType ,String orderCode, BigDecimal quantity , BigDecimal price ){
 
         //https://apiportal.koreainvestment.com/apiservice-apiservice?/uapi/domestic-stock/v1/trading/order-cash
         koreainvestmentApi.updateAccessToken();
@@ -72,8 +74,11 @@ public class KoreainvestmentOrderApi implements LimitOrder, MarketOrder {
             throw new UndefinedException("trade type not supported: " + tradeType);
         }
 
-        Map<String, String> requestHeaderMap = koreainvestmentApi.computeIfAbsenttPropertySingleMap(headerKey,"tr_id", trId);
+        if(exchange == null || exchange.isEmpty()){
+            exchange = "KRX";
+        }
 
+        Map<String, String> requestHeaderMap = koreainvestmentApi.computeIfAbsenttPropertySingleMap(headerKey,"tr_id", trId);
 
         String priceValue;
 
@@ -103,34 +108,41 @@ public class KoreainvestmentOrderApi implements LimitOrder, MarketOrder {
     }
 
     @Override
-    public LimitOrderTrade limitOrderQuantity(String symbol, Trade.Type type, BigDecimal quantity, BigDecimal limitPrice) {
+    public LimitOrderTrade limitOrderQuantity(String idOrSymbol, String exchange, Trade.Type type, BigDecimal quantity, BigDecimal limitPrice) {
+
+        String symbol = KorStocks.getSymbol(idOrSymbol);
+        String jsonText = orderJsonText(KoreainvestmentApi.getCano(), KoreainvestmentApi.getAccountProductCode(), idOrSymbol, exchange, type,   "00", quantity, limitPrice);
+
+
         return null;
     }
 
     @Override
-    public LimitOrderCashTrade limitOrderCash(String symbol, Trade.Type type, BigDecimal cash, BigDecimal limitPrice) {
+    public LimitOrderCashTrade limitOrderCash(String idOrSymbol, String exchange, Trade.Type type, BigDecimal cash, BigDecimal limitPrice) {
         return null;
     }
 
     @Override
-    public LimitOrderCashTrade limitOrderCash(String symbol, Trade.Type type, BigDecimal cash, BigDecimal beginPrice, BigDecimal endPrice, BigDecimal priceGap) {
+    public LimitOrderCashTrade limitOrderCash(String idOrSymbol, String exchange, Trade.Type type, BigDecimal cash, BigDecimal beginPrice, BigDecimal endPrice, BigDecimal priceGap) {
         return null;
     }
 
     @Override
-    public MarketOrderTrade marketOrderQuantity(String id, Trade.Type type, BigDecimal quantity) {
+    public MarketOrderTrade marketOrderQuantity(String idOrSymbol, String exchange, Trade.Type type, BigDecimal quantity) {
         return null;
     }
 
     @Override
-    public MarketOrderTrade marketOrderCash(String id, Trade.Type type, BigDecimal cash) {
+    public MarketOrderTrade marketOrderCash(String idOrSymbol, String exchange, Trade.Type type, BigDecimal cash) {
+
+
         return null;
     }
 
 
 
     @Override
-    public MarketOrderTrade closePosition(String id) {
+    public MarketOrderTrade closePosition(String idOrSymbol, String exchange) {
         return null;
     }
 
