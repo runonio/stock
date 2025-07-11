@@ -9,6 +9,7 @@ repositories {
 dependencies {
 
     implementation project(path: ':commons')
+    implementation project(path: ':system')
 
     implementation project(path: ':trading')
 

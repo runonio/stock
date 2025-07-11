@@ -15,14 +15,16 @@ import io.runon.stock.trading.StockApiData;
 import io.runon.stock.trading.StockDailyData;
 import io.runon.stock.trading.group.StockGroup;
 import io.runon.stock.trading.group.StockGroupMap;
+import io.runon.system.CategoryCode;
+import io.runon.system.CategoryKeyValue;
 import io.runon.trading.data.*;
 import io.runon.trading.data.calendar.EventCalendar;
 import io.runon.trading.data.calendar.EventCalendarItem;
 import io.runon.trading.data.jdbc.TradingJdbc;
-import io.runon.trading.system.Category;
-import io.runon.trading.system.CategoryCode;
-import io.runon.trading.system.CategoryKeyValue;
-import io.runon.trading.system.CommonConfig;
+import io.runon.system.Category;
+import io.runon.system.CategoryCode;
+import io.runon.system.CategoryKeyValue;
+import io.runon.system.KeyValueData;
 import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Connection;
@@ -84,7 +86,7 @@ public class StockDbSync {
 
 
         //시스템 관련 테이블 동기화
-        timeTableClassList.add(CommonConfig.class);
+        timeTableClassList.add(KeyValueData.class);
         timeTableClassList.add(Category.class);
         timeTableClassList.add(CategoryCode.class);
         timeTableClassList.add(CategoryKeyValue.class);

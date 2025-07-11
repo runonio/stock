@@ -1,8 +1,8 @@
 package io.runon.stock.trading.country.kor;
 
 import io.runon.trading.data.jdbc.TradingJdbc;
-import io.runon.trading.system.Category;
-import io.runon.trading.system.CategoryKeyValue;
+import io.runon.system.Category;
+import io.runon.system.CategoryKeyValue;
 import lombok.extern.slf4j.Slf4j;
 
 /**
