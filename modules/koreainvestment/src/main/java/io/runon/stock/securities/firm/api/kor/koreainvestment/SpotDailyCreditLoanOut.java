@@ -1,9 +1,9 @@
 package io.runon.stock.securities.firm.api.kor.koreainvestment;
 
+import io.runon.commons.utils.string.StringLines;
 import io.runon.stock.trading.Stock;
 import io.runon.stock.trading.data.daily.StockCreditLoanDaily;
 import io.runon.stock.trading.path.StockPathLastTime;
-import io.runon.trading.data.TradingLines;
 import io.runon.trading.data.file.PathTimeLine;
 import lombok.extern.slf4j.Slf4j;
 
@@ -22,9 +22,8 @@ public class SpotDailyCreditLoanOut extends KoreainvestmentDailyOut{
 
     @Override
     public String[] getLines(Stock stock, String beginYmd, String endYmd) {
-
         StockCreditLoanDaily[] array = periodDataApi.getCreditLoanDailies(stock.getSymbol(), beginYmd, endYmd);
-        return TradingLines.getLines(array);
+        return StringLines.getLines(array);
     }
 
     @Override
