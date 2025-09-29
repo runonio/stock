@@ -8,23 +8,24 @@ repositories {
 }
 
 dependencies {
-    implementation project(path: ':trading')
     implementation project(path: ':commons')
-
+    implementation project(path: ':jdbc')
+    implementation project(path: ':trading')
     implementation project(path: ':stock-trading')
     implementation project(path: ':koreainvestment')
     implementation project(path: ':ls-openapi')
 
     // jdbc 프로젝트 컨트롤
-    implementation project(path: ':jdbc')
-    implementation group: 'com.zaxxer', name: 'HikariCP', version: '5.1.0'
+    implementation libs.hikariCP
+    implementation libs.postgresql
 
-    implementation group: 'org.slf4j', name: 'slf4j-api', version: '2.0.13'
-    implementation group: 'org.json', name: 'json', version: '20240303'
-    implementation group: 'com.google.code.gson', name: 'gson', version: '2.10.1'
+    implementation libs.slf4jApi
 
-    compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.30'
-    annotationProcessor 'org.projectlombok:lombok:1.18.30'
+    implementation libs.gson
+    implementation libs.json
+
+    compileOnly libs.lombok
+    annotationProcessor libs.lombok
 
 }
 

@@ -14,14 +14,15 @@ dependencies {
     implementation project(path: ':commons')
     implementation project(path: ':jdbc')
 
-    implementation group: 'org.slf4j', name: 'slf4j-api', version: '2.0.13'
-    implementation group: 'org.json', name: 'json', version: '20240303'
-    implementation group: 'com.google.code.gson', name: 'gson', version: '2.10.1'
+    implementation libs.slf4jApi
+    implementation libs.gson
+    implementation libs.json
 
-    implementation group: 'org.postgresql', name: 'postgresql', version: '42.7.3'
+    implementation libs.hikariCP
+    implementation libs.postgresql
 
-    compileOnly group: 'org.projectlombok', name: 'lombok', version: '1.18.30'
-    annotationProcessor 'org.projectlombok:lombok:1.18.30'
+    compileOnly libs.lombok
+    annotationProcessor libs.lombok
 }
 
 test {

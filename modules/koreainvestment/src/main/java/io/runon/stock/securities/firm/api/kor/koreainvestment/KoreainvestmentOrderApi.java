@@ -1,10 +1,9 @@
 package io.runon.stock.securities.firm.api.kor.koreainvestment;
 
 import io.runon.commons.exception.UndefinedException;
-import io.runon.commons.http.HttpApiResponse;
+import io.runon.commons.apis.http.HttpApiResponse;
 import io.runon.stock.trading.country.kor.KorStocks;
 import io.runon.stock.trading.exception.StockApiException;
-import io.runon.trading.CountryCode;
 import io.runon.trading.Trade;
 import io.runon.trading.order.*;
 import org.json.JSONObject;

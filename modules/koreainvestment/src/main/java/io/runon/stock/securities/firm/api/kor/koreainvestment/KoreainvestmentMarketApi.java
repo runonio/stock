@@ -1,7 +1,7 @@
 package io.runon.stock.securities.firm.api.kor.koreainvestment;
 
 import io.runon.commons.callback.StrCallback;
-import io.runon.commons.http.HttpApiResponse;
+import io.runon.commons.apis.http.HttpApiResponse;
 import io.runon.commons.utils.time.Times;
 import io.runon.commons.utils.time.YmdUtil;
 import io.runon.stock.trading.exception.StockApiException;

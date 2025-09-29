@@ -1,6 +1,6 @@
 package io.runon.stock.securities.firm.api.kor.koreainvestment;
 
-import io.runon.commons.http.HttpApiResponse;
+import io.runon.commons.apis.http.HttpApiResponse;
 import io.runon.stock.trading.exception.StockApiException;
 import org.json.JSONObject;
 
