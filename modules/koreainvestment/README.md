@@ -12,11 +12,14 @@
 https://github.com/koreainvestment/open-trading-api/tree/main/stocks_info
 
 # communication
-### blog, homepage
+## site, blog, git
 - [runon.io](https://runon.io)
+- [blog.runon.io](https://blog.runon.io)
 - [github.com/runonio](https://github.com/runonio)
+
+## contact
+- email: info@runon.io
 
 ## main developer
 - macle
-  - github(source code): [github.com/macle86](https://github.com/macle86)
-  - email: ysys86a@gmail.com
+    - git: [github.com/macle86](https://github.com/macle86)

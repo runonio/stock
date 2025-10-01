@@ -1,6 +1,5 @@
-# stock-trading
-
-주식 퀀트 
+# stock-starter
+주식 퀀트
 
 # 개발환경
 - open jdk 17
