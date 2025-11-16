@@ -4,7 +4,7 @@ import io.runon.commons.config.Config;
 import io.runon.commons.parallel.ParallelArrayJob;
 import io.runon.commons.parallel.ParallelWork;
 import io.runon.commons.utils.time.Times;
-import io.runon.commons.utils.time.YmdUtil;
+import io.runon.commons.utils.time.YmdUtils;
 import io.runon.stock.trading.data.StockData;
 import io.runon.stock.trading.data.StockDataManager;
 import io.runon.stock.trading.data.StockLong;
@@ -176,7 +176,7 @@ public class Stocks {
 
                 ZoneId zoneId = Stocks.getZoneId(stock);
 
-                int delYmd = Integer.parseInt(YmdUtil.getYmd(stock.getUpdatedAt(), zoneId));
+                int delYmd = Integer.parseInt(YmdUtils.getYmd(stock.getUpdatedAt(), zoneId));
                 if(delYmd <= baseYmdInt){
                     continue;
                 }

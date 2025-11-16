@@ -26,6 +26,8 @@ public class BacktestingStockQuantityAccount extends BacktestingHoldingAccount<S
     private BigDecimal buyTaxRate = BigDecimal.ZERO;
     private BigDecimal sellTaxRate = new BigDecimal("0.0025");
 
+    protected BigDecimal slippage = new BigDecimal("0.001");
+
 
     private Map<String, Stock> stockMap = null;
 
@@ -100,6 +102,14 @@ public class BacktestingStockQuantityAccount extends BacktestingHoldingAccount<S
         return stock;
     }
 
+
+    public void setSlippage(BigDecimal slippage) {
+        this.slippage = slippage;
+    }
+
+    public BigDecimal getSlippage() {
+        return slippage;
+    }
 
     @Override
     public BigDecimal getPrice(String symbol) {

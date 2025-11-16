@@ -1,7 +1,7 @@
 package io.runon.stock.trading.candle;
 
 import io.runon.commons.utils.time.Times;
-import io.runon.commons.utils.time.YmdUtil;
+import io.runon.commons.utils.time.YmdUtils;
 import io.runon.stock.trading.Stock;
 import io.runon.stock.trading.Stocks;
 import io.runon.stock.trading.data.StockLong;
@@ -32,8 +32,8 @@ public class StockCandles {
     public static TradeCandle[] getDailyCandles(Stock stock, String exchange, String beginYmd, String endYmd){
         ZoneId zoneId = Stocks.getZoneId(stock);
 
-        long beginTime = YmdUtil.getTime(beginYmd, zoneId);
-        long endTime = YmdUtil.getTime(endYmd, zoneId) + Times.DAY_1 ;
+        long beginTime = YmdUtils.getTime(beginYmd, zoneId);
+        long endTime = YmdUtils.getTime(endYmd, zoneId) + Times.DAY_1 ;
         String path = StockPaths.getSpotCandleFilesPath(stock.getStockId(), exchange,"1d");
         return CsvCandle.load(path, Times.DAY_1,beginTime, endTime);
     }

@@ -1,7 +1,6 @@
 package io.runon.stock.stater;
 
 import io.runon.commons.config.Config;
-import io.runon.commons.utils.ExceptionUtil;
 import io.runon.stock.securities.firm.api.kor.koreainvestment.*;
 import io.runon.stock.securities.firm.api.kor.ls.LsSpotDailyInvestorOut;
 import io.runon.stock.trading.data.management.KorSpotDailyShortSellingOut;
@@ -22,7 +21,7 @@ public class DailyDataAllOut {
             StockDbSync.getInstance().sync();
 
         }catch (Exception e){
-            log.error(ExceptionUtil.getStackTrace(e));
+            log.error(ExceptionUtils.getStackTrace(e));
         }
         new Thread(() -> {
 

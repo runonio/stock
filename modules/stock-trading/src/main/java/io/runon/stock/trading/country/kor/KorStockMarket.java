@@ -1,6 +1,6 @@
 package io.runon.stock.trading.country.kor;
 
-import io.runon.commons.utils.time.YmdUtil;
+import io.runon.commons.utils.time.YmdUtils;
 import io.runon.trading.CountryCode;
 import io.runon.trading.TradingTimes;
 import io.runon.trading.closed.days.ClosedDays;
@@ -29,7 +29,7 @@ public class KorStockMarket implements ClosedDays{
 
 
     public String getLastTradeYmd(){
-        return getLastTradeYmd(YmdUtil.now(TradingTimes.KOR_ZONE_ID));
+        return getLastTradeYmd(YmdUtils.now(TradingTimes.KOR_ZONE_ID));
     }
 
     public void updateCloseDay(){

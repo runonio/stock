@@ -1,7 +1,7 @@
 package io.runon.stock.trading.data.management;
 
-import io.runon.commons.utils.FileUtil;
-import io.runon.commons.utils.time.YmdUtil;
+import io.runon.commons.utils.FileUtils;
+import io.runon.commons.utils.time.YmdUtils;
 import io.runon.stock.trading.Stock;
 import io.runon.stock.trading.StockYmd;
 import io.runon.stock.trading.Stocks;
@@ -25,7 +25,7 @@ public class SpotOuts {
         Map<String, Stock> stockMap = Stocks.makeMap(stocks);
 
         String filePath = stockPathLastTime.getLastTimeFilePath(countryCode, exchange, interval);
-        if(FileUtil.isFile(filePath)){
+        if(FileUtils.isFile(filePath)){
             TextLong[] idTimes = JsonTimeFile.getLastTimeLines(filePath);
 
             for(TextLong idTime : idTimes){
@@ -33,7 +33,7 @@ public class SpotOuts {
                 String id = idTime.getText();
 
 
-                int ymd = Integer.parseInt(YmdUtil.getYmd(idTime.getNumber(), zoneId));
+                int ymd = Integer.parseInt(YmdUtils.getYmd(idTime.getNumber(), zoneId));
 
                 StockYmd stockYmd = lastYmdMap.get(id);
 

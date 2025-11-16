@@ -1,7 +1,7 @@
 package example.evaluation;
 
 import io.runon.commons.data.BigDecimalArray;
-import io.runon.commons.utils.time.YmdUtil;
+import io.runon.commons.utils.time.YmdUtils;
 import io.runon.stock.trading.Stock;
 import io.runon.stock.trading.Stocks;
 import io.runon.stock.trading.candle.StockCandles;
@@ -18,7 +18,7 @@ public class GrowthRateEvaluationExample {
     public static void main(String[] args) {
         Stock stock = Stocks.getStock("KOR_078340");
 
-        String endYmd  = YmdUtil.now(TradingTimes.KOR_ZONE_ID);
+        String endYmd  = YmdUtils.now(TradingTimes.KOR_ZONE_ID);
         String beginYmd = "20150101";
 
         TradeCandle[] candles = StockCandles.getDailyCandles(stock, "KRX",beginYmd, endYmd);

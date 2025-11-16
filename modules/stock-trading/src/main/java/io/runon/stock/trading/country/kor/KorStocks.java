@@ -1,7 +1,7 @@
 package io.runon.stock.trading.country.kor;
 
 import io.runon.commons.utils.string.Check;
-import io.runon.commons.utils.time.YmdUtil;
+import io.runon.commons.utils.time.YmdUtils;
 import io.runon.jdbc.JdbcQuery;
 import io.runon.stock.trading.Stock;
 import io.runon.stock.trading.StockMap;
@@ -141,7 +141,7 @@ public class KorStocks {
     public static StockMap makeStockMap(String baseYmd){
         StockData stockData = StockDataManager.getInstance().getStockData();
         Stock [] stocks ;
-        if(YmdUtil.isNow(baseYmd, TradingTimes.KOR_ZONE_ID)){
+        if(YmdUtils.isNow(baseYmd, TradingTimes.KOR_ZONE_ID)){
             stocks = stockData.getStocks(TARGET_EXCHANGES);
         }else{
             stocks = stockData.getStocks(TARGET_EXCHANGES, baseYmd);

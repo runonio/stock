@@ -2,7 +2,7 @@ package io.runon.stock.securities.firm.api.kor.koreainvestment;
 
 import io.runon.commons.apis.http.HttpApiResponse;
 import io.runon.commons.utils.time.Times;
-import io.runon.commons.utils.time.YmdUtil;
+import io.runon.commons.utils.time.YmdUtils;
 import io.runon.stock.trading.data.daily.ProgramDaily;
 import io.runon.stock.trading.data.daily.StockCreditLoanDaily;
 import io.runon.stock.trading.exception.StockApiException;
@@ -112,10 +112,10 @@ public class KoreainvestmentPeriodDataApi {
 
             int beginYmdNum = Integer.parseInt(nextBeginYmd);
 
-            String callYmd = YmdUtil.getYmd(nextBeginYmd, 30);
+            String callYmd = YmdUtils.getYmd(nextBeginYmd, 30);
 
 
-            if(YmdUtil.compare(callYmd, endYmd) > 0){
+            if(YmdUtils.compare(callYmd, endYmd) > 0){
                 callYmd = endYmd;
             }
 
@@ -177,11 +177,11 @@ public class KoreainvestmentPeriodDataApi {
 
             }
 
-            if(YmdUtil.compare(callYmd, endYmd) >= 0){
+            if(YmdUtils.compare(callYmd, endYmd) >= 0){
                 break;
             }
 
-            nextBeginYmd = YmdUtil.getYmd(callYmd,1);
+            nextBeginYmd = YmdUtils.getYmd(callYmd,1);
 
             koreainvestmentApi.periodSleep();
 
@@ -335,8 +335,8 @@ public class KoreainvestmentPeriodDataApi {
 
             int beginYmdNum = Integer.parseInt(nextBeginYmd);
 
-            String callYmd = YmdUtil.getYmd(nextBeginYmd, 30);
-            if (YmdUtil.compare(callYmd, endYmd) > 0) {
+            String callYmd = YmdUtils.getYmd(nextBeginYmd, 30);
+            if (YmdUtils.compare(callYmd, endYmd) > 0) {
                 callYmd = endYmd;
             }
 
@@ -394,11 +394,11 @@ public class KoreainvestmentPeriodDataApi {
 
             }
 
-            if(YmdUtil.compare(callYmd, endYmd) >= 0){
+            if(YmdUtils.compare(callYmd, endYmd) >= 0){
                 break;
             }
 
-            nextBeginYmd = YmdUtil.getYmd(callYmd,1);
+            nextBeginYmd = YmdUtils.getYmd(callYmd,1);
 
             koreainvestmentApi.periodSleep();
         }

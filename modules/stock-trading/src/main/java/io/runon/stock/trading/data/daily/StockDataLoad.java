@@ -2,7 +2,7 @@ package io.runon.stock.trading.data.daily;
 
 import io.runon.commons.callback.StrCallback;
 import io.runon.commons.utils.time.Times;
-import io.runon.commons.utils.time.YmdUtil;
+import io.runon.commons.utils.time.YmdUtils;
 import io.runon.stock.trading.Stock;
 import io.runon.stock.trading.Stocks;
 import io.runon.stock.trading.candle.StockCandles;
@@ -53,7 +53,7 @@ public class StockDataLoad {
         int end = lastCandles.length-1;
         for (int i = 0; i < end ; i++) {
             TradeCandle tradeCandle = lastCandles[i];
-            int ymd =  YmdUtil.getYmdInt(tradeCandle.getOpenTime(), zoneId);
+            int ymd =  YmdUtils.getYmdInt(tradeCandle.getOpenTime(), zoneId);
             if(ymd < beginYmd){
                 continue;
             }
@@ -64,7 +64,7 @@ public class StockDataLoad {
         }
 
         //라스트 1개부터 다시 시작하기때문에 마지막 날짜로
-        int newBeginYmd = YmdUtil.getYmdInt(lastCandles[lastCandles.length - 1 ].getOpenTime(), zoneId);
+        int newBeginYmd = YmdUtils.getYmdInt(lastCandles[lastCandles.length - 1 ].getOpenTime(), zoneId);
         if(newBeginYmd < beginYmd){
             newBeginYmd = beginYmd;
         }
@@ -91,7 +91,7 @@ public class StockDataLoad {
         List<StockInvestorDaily> list = new ArrayList<>();
         StrCallback callback = str -> list.add(StockInvestorDaily.make(str, stock));
         // 0시 0분 0초를 주므로 +1일을 해준다.
-        TimeLines.load(filesPath,  YmdUtil.getTime(beginYmd, zoneId), YmdUtil.getTime(endYmd,zoneId) + (Times.DAY_1 - 1L) ,TimeName.getDefaultType(Times.DAY_1), TimeLine.JSON,callback);
+        TimeLines.load(filesPath,  YmdUtils.getTime(beginYmd, zoneId), YmdUtils.getTime(endYmd,zoneId) + (Times.DAY_1 - 1L) ,TimeName.getDefaultType(Times.DAY_1), TimeLine.JSON,callback);
         return list.toArray(new StockInvestorDaily[0]);
     }
 
@@ -146,7 +146,7 @@ public class StockDataLoad {
 
         List<ShortSellingDaily> list = new ArrayList<>();
         StrCallback callback = str -> list.add(ShortSellingDaily.make(str, stock));
-        TimeLines.load(filesPath,  YmdUtil.getTime(beginYmd, zoneId), YmdUtil.getTime(endYmd,zoneId) + (Times.DAY_1 - 1L) ,TimeName.getDefaultType(Times.DAY_1), TimeLine.JSON,callback);
+        TimeLines.load(filesPath,  YmdUtils.getTime(beginYmd, zoneId), YmdUtils.getTime(endYmd,zoneId) + (Times.DAY_1 - 1L) ,TimeName.getDefaultType(Times.DAY_1), TimeLine.JSON,callback);
 
         return list.toArray(new ShortSellingDaily[0]);
     }
@@ -201,7 +201,7 @@ public class StockDataLoad {
         List<ProgramDaily> list = new ArrayList<>();
 
         StrCallback callback = str -> list.add(ProgramDaily.make(str, stock));
-        TimeLines.load(filesPath,  YmdUtil.getTime(beginYmd, zoneId), YmdUtil.getTime(endYmd,zoneId) + (Times.DAY_1 - 1L),TimeName.getDefaultType(Times.DAY_1), TimeLine.JSON,callback);
+        TimeLines.load(filesPath,  YmdUtils.getTime(beginYmd, zoneId), YmdUtils.getTime(endYmd,zoneId) + (Times.DAY_1 - 1L),TimeName.getDefaultType(Times.DAY_1), TimeLine.JSON,callback);
         return list.toArray(new ProgramDaily[0]);
     }
 
@@ -252,7 +252,7 @@ public class StockDataLoad {
         List<StockLoanDaily> list = new ArrayList<>();
         StrCallback callback = str -> list.add(StockLoanDaily.make(str, stock));
 
-        TimeLines.load(filesPath,  YmdUtil.getTime(beginYmd, zoneId), YmdUtil.getTime(endYmd,zoneId) + (Times.DAY_1 - 1L),TimeName.getDefaultType(Times.DAY_1), TimeLine.JSON,callback);
+        TimeLines.load(filesPath,  YmdUtils.getTime(beginYmd, zoneId), YmdUtils.getTime(endYmd,zoneId) + (Times.DAY_1 - 1L),TimeName.getDefaultType(Times.DAY_1), TimeLine.JSON,callback);
         return list.toArray(new StockLoanDaily[0]);
     }
 
@@ -304,7 +304,7 @@ public class StockDataLoad {
         List<StockCreditLoanDaily> list = new ArrayList<>();
         StrCallback callback = str -> list.add(StockCreditLoanDaily.make(str));
 
-        TimeLines.load(filesPath,  YmdUtil.getTime(beginYmd, zoneId), YmdUtil.getTime(endYmd,zoneId) + (Times.DAY_1 - 1L),TimeName.getDefaultType(Times.DAY_1), TimeLine.JSON,callback);
+        TimeLines.load(filesPath,  YmdUtils.getTime(beginYmd, zoneId), YmdUtils.getTime(endYmd,zoneId) + (Times.DAY_1 - 1L),TimeName.getDefaultType(Times.DAY_1), TimeLine.JSON,callback);
         return list.toArray(new StockCreditLoanDaily[0]);
     }
     public static StockCreditLoanDaily [] getStockCreditLoan(StockCreditLoanDaily [] lastDailies,Stock stock, int beginYmd, int endYmd){
@@ -357,7 +357,7 @@ public class StockDataLoad {
         List<VolumePowerDaily> list = new ArrayList<>();
         StrCallback callback = str -> list.add(VolumePowerDaily.make(str));
 
-        TimeLines.load(filesPath,  YmdUtil.getTime(beginYmd, zoneId), YmdUtil.getTime(endYmd,zoneId) + (Times.DAY_1 - 1L),TimeName.getDefaultType(Times.DAY_1), TimeLine.JSON,callback);
+        TimeLines.load(filesPath,  YmdUtils.getTime(beginYmd, zoneId), YmdUtils.getTime(endYmd,zoneId) + (Times.DAY_1 - 1L),TimeName.getDefaultType(Times.DAY_1), TimeLine.JSON,callback);
         return list.toArray(new VolumePowerDaily[0]);
 
     }
@@ -408,7 +408,7 @@ public class StockDataLoad {
         dailies = getInvestor(dailies, stock, 20240903, 20241004);
         System.out.println(dailies.length);
         for(StockInvestorDaily daily : dailies){
-            System.out.println(YmdUtil.getYmd(daily.getTime(), zoneId)  + " " + daily);
+            System.out.println(YmdUtils.getYmd(daily.getTime(), zoneId)  + " " + daily);
         }
     }
 

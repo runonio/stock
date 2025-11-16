@@ -1,6 +1,6 @@
 package io.runon.stock.trading.data;
 
-import io.runon.commons.utils.time.YmdUtil;
+import io.runon.commons.utils.time.YmdUtils;
 import io.runon.stock.trading.Stock;
 import io.runon.stock.trading.Stocks;
 import io.runon.stock.trading.data.daily.*;
@@ -87,7 +87,7 @@ public class StockDataStore implements IdCandles {
         candles = StockDataLoad.getCandle(candles, stock, exchange, beginYmd, endYmd);
         ZoneId zoneId = Stocks.getZoneId(stock);
         if(isInvestor) {
-            investorDailies = StockDataLoad.getInvestor(investorDailies, stock, beginYmd, YmdUtil.getYmdInt(endYmd, investorDayGap));
+            investorDailies = StockDataLoad.getInvestor(investorDailies, stock, beginYmd, YmdUtils.getYmdInt(endYmd, investorDayGap));
 
             TradeCandleIndex lastCandleIndex =null;
             for(StockInvestorDaily daily : investorDailies){
@@ -106,7 +106,7 @@ public class StockDataStore implements IdCandles {
             }
         }
         if(isStockLoan) {
-            stockLoanDailies = StockDataLoad.getStockLoan(stockLoanDailies, stock, beginYmd, YmdUtil.getYmdInt(endYmd, stockLoanDayGap));
+            stockLoanDailies = StockDataLoad.getStockLoan(stockLoanDailies, stock, beginYmd, YmdUtils.getYmdInt(endYmd, stockLoanDayGap));
             TradeCandleIndex lastCandleIndex =null;
             for(StockLoanDaily daily : stockLoanDailies){
                 TradeCandleIndex candleIndex;
@@ -126,17 +126,17 @@ public class StockDataStore implements IdCandles {
         }
 
         if(isShortSelling) {
-            shortSellingDailies = StockDataLoad.getShortSelling(shortSellingDailies, stock, beginYmd, YmdUtil.getYmdInt(endYmd, shortSellingDayGap));
+            shortSellingDailies = StockDataLoad.getShortSelling(shortSellingDailies, stock, beginYmd, YmdUtils.getYmdInt(endYmd, shortSellingDayGap));
         }
         if(isProgram) {
-            programDailies = StockDataLoad.getProgram(programDailies, stock, beginYmd, YmdUtil.getYmdInt(endYmd, programDayGap));
+            programDailies = StockDataLoad.getProgram(programDailies, stock, beginYmd, YmdUtils.getYmdInt(endYmd, programDayGap));
         }
 
         if(isCreditLoan) {
-            stockCreditLoanDailies = StockDataLoad.getStockCreditLoan(stockCreditLoanDailies, stock, beginYmd, YmdUtil.getYmdInt(endYmd, stockCreditLoanDayGap));
+            stockCreditLoanDailies = StockDataLoad.getStockCreditLoan(stockCreditLoanDailies, stock, beginYmd, YmdUtils.getYmdInt(endYmd, stockCreditLoanDayGap));
         }
         if(isVolumePower) {
-            volumePowerDailies = StockDataLoad.getVolumePower(volumePowerDailies, stock, beginYmd, YmdUtil.getYmdInt(endYmd, volumePowerDayGap));
+            volumePowerDailies = StockDataLoad.getVolumePower(volumePowerDailies, stock, beginYmd, YmdUtils.getYmdInt(endYmd, volumePowerDayGap));
         }
     }
 

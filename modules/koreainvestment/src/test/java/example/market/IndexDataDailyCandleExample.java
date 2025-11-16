@@ -1,6 +1,6 @@
 package example.market;
 
-import io.runon.commons.utils.time.YmdUtil;
+import io.runon.commons.utils.time.YmdUtils;
 import io.runon.stock.securities.firm.api.kor.koreainvestment.KoreainvestmentApi;
 import io.runon.stock.securities.firm.api.kor.koreainvestment.KoreainvestmentMarketApi;
 import io.runon.trading.TradingTimes;
@@ -16,7 +16,7 @@ public class IndexDataDailyCandleExample {
 
         TradeCandle [] candles = marketApi.getIndexCandles("KOSPI", "20200101","20240626");
         for(TradeCandle tradeCandle:  candles){
-            System.out.println(YmdUtil.getYmd(tradeCandle.getOpenTime(), TradingTimes.KOR_ZONE_ID));
+            System.out.println(YmdUtils.getYmd(tradeCandle.getOpenTime(), TradingTimes.KOR_ZONE_ID));
 
             System.out.println(tradeCandle);
         }

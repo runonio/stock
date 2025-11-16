@@ -1,6 +1,6 @@
 package io.runon.stock.securities.firm.api.kor.koreainvestment;
 
-import io.runon.commons.utils.time.YmdUtil;
+import io.runon.commons.utils.time.YmdUtils;
 import io.runon.stock.trading.Stock;
 import io.runon.stock.trading.data.management.Spot1mCandleOut;
 import io.runon.stock.trading.data.management.Spot1mCandleOutParam;
@@ -33,7 +33,7 @@ public class UsaSpot1mCandleOut implements Spot1mCandleOutParam {
     }
 
     public void out(String exchange){
-        candleOut.out(YmdUtil.getYmd(YmdUtil.now(TradingTimes.USA_ZONE_ID), -45), exchange);
+        candleOut.out(YmdUtils.getYmd(YmdUtils.now(TradingTimes.USA_ZONE_ID), -45), exchange);
     }
 
 
@@ -42,7 +42,7 @@ public class UsaSpot1mCandleOut implements Spot1mCandleOutParam {
     }
 
     public void out(Stock stock, String exchange){
-        candleOut.out(YmdUtil.getYmd(YmdUtil.now(TradingTimes.USA_ZONE_ID), -45), stock, exchange);
+        candleOut.out(YmdUtils.getYmd(YmdUtils.now(TradingTimes.USA_ZONE_ID), -45), stock, exchange);
     }
 
 

@@ -1,6 +1,6 @@
 package example;
 
-import io.runon.commons.utils.time.YmdUtil;
+import io.runon.commons.utils.time.YmdUtils;
 import io.runon.stock.trading.Stock;
 import io.runon.stock.trading.Stocks;
 import io.runon.stock.trading.modify.StockModifyPriceSearch;
@@ -43,7 +43,7 @@ public class StockModifyPriceSearchExample {
 
             for(CandlePreviousCandle candle : array){
 
-                System.out.println(YmdUtil.getYmd(candle.getCandle().getOpenTime(), zoneId) + ", " + candle.getCandle().getClose().toPlainString() +", " +candle.getCandle().getPrevious().toPlainString()
+                System.out.println(YmdUtils.getYmd(candle.getCandle().getOpenTime(), zoneId) + ", " + candle.getCandle().getClose().toPlainString() +", " +candle.getCandle().getPrevious().toPlainString()
                         +", " + candle.getPreviousCandle().getClose().toPlainString());
 
             }

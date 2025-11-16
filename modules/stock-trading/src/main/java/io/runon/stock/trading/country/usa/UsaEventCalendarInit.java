@@ -1,7 +1,7 @@
 package io.runon.stock.trading.country.usa;
 
 import io.runon.commons.utils.time.Times;
-import io.runon.commons.utils.time.YmdUtil;
+import io.runon.commons.utils.time.YmdUtils;
 import io.runon.trading.CountryCode;
 import io.runon.trading.TradingTimes;
 import io.runon.trading.data.calendar.EventCalendar;
@@ -163,7 +163,7 @@ public class UsaEventCalendarInit {
         for(int ymd : ymds){
             eventCalendar.setYmd(ymd);
             eventCalendar.setEventId(eventCalendar.getCountry() + "_" + eventCalendar.getEventType() +"_" +ymd);
-            eventCalendar.setEventTime(YmdUtil.getTime(ymd, TradingTimes.USA_ZONE_ID));
+            eventCalendar.setEventTime(YmdUtils.getTime(ymd, TradingTimes.USA_ZONE_ID));
             TradingJdbc.updateTimeCheck(eventCalendar);
         }
     }
@@ -188,7 +188,7 @@ public class UsaEventCalendarInit {
         for(int ymd : ymds){
             eventCalendar.setYmd(ymd);
             eventCalendar.setEventId(eventCalendar.getCountry() + "_" + eventCalendar.getEventType() +"_" +ymd);
-            eventCalendar.setEventTime(YmdUtil.getTime(ymd, TradingTimes.USA_ZONE_ID));
+            eventCalendar.setEventTime(YmdUtils.getTime(ymd, TradingTimes.USA_ZONE_ID));
             TradingJdbc.updateTimeCheck(eventCalendar);
         }
     }

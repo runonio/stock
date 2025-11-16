@@ -4,12 +4,12 @@ import io.runon.commons.config.Config;
 import io.runon.commons.exception.InvalidParameterException;
 import io.runon.commons.utils.string.Check;
 import io.runon.commons.utils.time.Times;
-import io.runon.commons.utils.time.YmdUtil;
+import io.runon.commons.utils.time.YmdUtils;
 import io.runon.jdbc.JdbcQuery;
 import io.runon.stock.trading.Stock;
 import io.runon.stock.trading.Stocks;
 import io.runon.stock.trading.financial.statements.FinancialStatements;
-import io.runon.trading.BigDecimals;
+import io.runon.commons.math.BigDecimals;
 import io.runon.trading.CountryCode;
 import io.runon.trading.TradingTimes;
 import org.json.JSONArray;
@@ -623,7 +623,7 @@ public class DartFinancialStatements {
     public static void searchNullIn(){
         int beginYear = 2016;
 
-        int maxYm = Integer.parseInt(YmdUtil.getYmd(YmdUtil.now(TradingTimes.KOR_ZONE_ID), -93).substring(0,6));
+        int maxYm = Integer.parseInt(YmdUtils.getYmd(YmdUtils.now(TradingTimes.KOR_ZONE_ID), -93).substring(0,6));
 
         String [] markets = {
                 "KOSPI"

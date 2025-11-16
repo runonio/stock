@@ -1,7 +1,7 @@
 package io.runon.stock.trading.country.kor;
 
 import io.runon.commons.config.Config;
-import io.runon.commons.utils.ExceptionUtil;
+import io.runon.commons.utils.ExceptionUtils;
 import io.runon.jdbc.objects.JdbcObjects;
 import io.runon.jdbc.sync.JdbcSync;
 import io.runon.stock.trading.data.management.db.sync.StockDbSync;
@@ -44,7 +44,7 @@ public class KorEtfGroupDataInit {
             StockDbSync.getInstance().sync();
             KorStocks.updateStockType();
         }catch (Exception e){
-            log.error(ExceptionUtil.getStackTrace(e));
+            log.error(ExceptionUtils.getStackTrace(e));
         }
     }
 

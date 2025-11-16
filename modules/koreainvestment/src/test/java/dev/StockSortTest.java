@@ -1,6 +1,6 @@
 package dev;
 
-import io.runon.commons.utils.time.TimeUtil;
+import io.runon.commons.utils.time.TimeUtils;
 import io.runon.stock.trading.Stock;
 import io.runon.stock.trading.Stocks;
 import io.runon.stock.trading.path.StockPathLastTimeCandle;
@@ -24,7 +24,7 @@ public class StockSortTest {
         long sortBeginTime = System.currentTimeMillis();
         Stocks.sortUseLastTimeParallel(stocks,null,"1d", new StockPathLastTimeCandle());
 
-        System.out.println(TimeUtil.getTimeValue(System.currentTimeMillis() - sortBeginTime));
+        System.out.println(TimeUtils.getTimeValue(System.currentTimeMillis() - sortBeginTime));
         System.out.println("-------------------------");
 
 

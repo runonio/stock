@@ -1,6 +1,6 @@
 package example.period;
 
-import io.runon.commons.utils.time.YmdUtil;
+import io.runon.commons.utils.time.YmdUtils;
 import io.runon.stock.securities.firm.api.kor.koreainvestment.KoreainvestmentApi;
 import io.runon.stock.securities.firm.api.kor.koreainvestment.KoreainvestmentPeriodDataApi;
 import io.runon.trading.TradingTimes;
@@ -15,7 +15,7 @@ public class KorNxtCandleOut {
 
         KoreainvestmentPeriodDataApi dataApi = api.getPeriodDataApi();
 
-        TradeCandle [] candles = dataApi.getNxtCandles("005930", "D",   "20250304", YmdUtil.now(TradingTimes.KOR_ZONE_ID), true);
+        TradeCandle [] candles = dataApi.getNxtCandles("005930", "D",   "20250304", YmdUtils.now(TradingTimes.KOR_ZONE_ID), true);
 
         for(TradeCandle candle : candles){
             System.out.println(candle);

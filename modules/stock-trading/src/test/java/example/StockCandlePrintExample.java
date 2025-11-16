@@ -1,7 +1,7 @@
 package example;
 
 import io.runon.commons.config.Config;
-import io.runon.commons.utils.time.YmdUtil;
+import io.runon.commons.utils.time.YmdUtils;
 import io.runon.stock.trading.Stock;
 import io.runon.stock.trading.Stocks;
 import io.runon.stock.trading.candle.StockCandles;
@@ -25,16 +25,16 @@ public class StockCandlePrintExample {
 //        for (int i =1; i < candles.length; i++) {
 //            if(candles[i].getPrevious().compareTo(candles[i-1].getClose()) != 0){
 //                System.out.println("=----------------------");
-//                System.out.println(YmdUtil.getYmd(candles[i-1].getOpenTime(), TradingTimes.KOR_ZONE_ID) + ", " + candles[i-1].getClose().toPlainString() +", " +candles[i].getLockType());
+//                System.out.println(YmdUtils.getYmd(candles[i-1].getOpenTime(), TradingTimes.KOR_ZONE_ID) + ", " + candles[i-1].getClose().toPlainString() +", " +candles[i].getLockType());
 //
-//                System.out.println(YmdUtil.getYmd(candles[i].getOpenTime(), TradingTimes.KOR_ZONE_ID) + ", " + candles[i].getClose().toPlainString() +", " + candles[i].getPrevious().toPlainString());
+//                System.out.println(YmdUtils.getYmd(candles[i].getOpenTime(), TradingTimes.KOR_ZONE_ID) + ", " + candles[i].getClose().toPlainString() +", " + candles[i].getPrevious().toPlainString());
 //
 //            }
 //        }
 //
 
         for(TradeCandle candle :candles){
-            System.out.println(YmdUtil.getYmd(candle.getOpenTime(), TradingTimes.KOR_ZONE_ID) + ", " + candle.getClose().toPlainString() +", " + candle.getPrevious().toPlainString());
+            System.out.println(YmdUtils.getYmd(candle.getOpenTime(), TradingTimes.KOR_ZONE_ID) + ", " + candle.getClose().toPlainString() +", " + candle.getPrevious().toPlainString());
         }
 
 

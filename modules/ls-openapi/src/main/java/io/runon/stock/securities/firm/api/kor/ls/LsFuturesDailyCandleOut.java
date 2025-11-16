@@ -1,6 +1,6 @@
 package io.runon.stock.securities.firm.api.kor.ls;
 
-import io.runon.commons.utils.time.YmdUtil;
+import io.runon.commons.utils.time.YmdUtils;
 import io.runon.trading.TradingTimes;
 import io.runon.trading.data.Futures;
 import io.runon.trading.data.csv.CsvCandle;
@@ -47,7 +47,7 @@ public class LsFuturesDailyCandleOut extends KorFuturesDailyOut {
     }
 
     public void out(){
-        String nowYmd = YmdUtil.now(TradingTimes.KOR_ZONE_ID);
+        String nowYmd = YmdUtils.now(TradingTimes.KOR_ZONE_ID);
         dailyOut.out(nowYmd);
     }
 

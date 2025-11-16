@@ -1,7 +1,7 @@
 package io.runon.stock.securities.firm.api.kor.koreainvestment;
 
 import io.runon.commons.config.JsonFileProperties;
-import io.runon.commons.utils.time.YmdUtil;
+import io.runon.commons.utils.time.YmdUtils;
 import io.runon.stock.trading.Stock;
 import io.runon.stock.trading.data.management.OverseasSpotDailyOut;
 import io.runon.stock.trading.path.StockPathLastTime;
@@ -31,8 +31,8 @@ public class UasSpotDailyCandleOut extends OverseasSpotDailyOut {
         TradeCandle [] candles = overseasPeriodApi.getDailyCandles(CountryCode.USA, jsonText);
         int beginIndex = 0;
         for (int i = 0; i <candles.length ; i++) {
-            String ymd = YmdUtil.getYmd(candles[i].getOpenTime(), TradingTimes.USA_ZONE_ID);
-            if(YmdUtil.compare(ymd, beginYmd)>=0){
+            String ymd = YmdUtils.getYmd(candles[i].getOpenTime(), TradingTimes.USA_ZONE_ID);
+            if(YmdUtils.compare(ymd, beginYmd)>=0){
                 beginIndex = i;
                 break;
             }

@@ -20,6 +20,9 @@ public class KoreainvestmentAccountApi {
         this.koreainvestmentApi = koreainvestmentApi;
     }
 
+
+
+
     public String getInquireBalanceJsonText(String accountNumber ){
 
         String cano = KoreainvestmentApi.getCano(accountNumber);

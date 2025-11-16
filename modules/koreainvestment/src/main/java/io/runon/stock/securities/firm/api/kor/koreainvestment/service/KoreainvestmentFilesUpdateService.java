@@ -1,7 +1,6 @@
 package io.runon.stock.securities.firm.api.kor.koreainvestment.service;
 
 import io.runon.commons.service.Service;
-import io.runon.commons.utils.ExceptionUtil;
 import io.runon.commons.utils.time.Times;
 import io.runon.stock.securities.firm.api.kor.koreainvestment.KoreainvestmentFiles;
 import lombok.extern.slf4j.Slf4j;
@@ -24,7 +23,7 @@ public class KoreainvestmentFilesUpdateService extends Service {
             KoreainvestmentFiles.updateDownloadThemeList();
             KoreainvestmentFiles.updateOverseasStocks();
         }catch (Exception e){
-            log.error(ExceptionUtil.getStackTrace(e));
+            log.error(ExceptionUtils.getStackTrace(e));
         }
     }
 

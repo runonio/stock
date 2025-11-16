@@ -1,7 +1,7 @@
 package io.runon.stock.securities.firm.api.kor.ls;
 
 import io.runon.commons.apis.http.HttpApiResponse;
-import io.runon.commons.utils.time.YmdUtil;
+import io.runon.commons.utils.time.YmdUtils;
 import io.runon.stock.trading.exception.StockApiException;
 import io.runon.trading.CountryCode;
 import io.runon.trading.TradingTimes;
@@ -72,9 +72,9 @@ public class LsFuturesApi {
         String searchBeginYmd = beginYmd;
         for(;;){
 
-            String searchEndYmd = YmdUtil.getYmd(searchBeginYmd, 450);
+            String searchEndYmd = YmdUtils.getYmd(searchBeginYmd, 450);
 
-            if(YmdUtil.compare(searchEndYmd, endYmd) > 0){
+            if(YmdUtils.compare(searchEndYmd, endYmd) > 0){
                  searchEndYmd = endYmd;
             }
 
@@ -84,11 +84,11 @@ public class LsFuturesApi {
             JSONObject jsonObject = new JSONObject(jsonText);
 
             if(jsonObject.isNull("t8416OutBlock1")){
-                if(YmdUtil.compare(searchEndYmd, endYmd) >=0) {
+                if(YmdUtils.compare(searchEndYmd, endYmd) >=0) {
                     break;
                 }
 
-                searchBeginYmd = YmdUtil.getYmd(searchEndYmd,1);
+                searchBeginYmd = YmdUtils.getYmd(searchEndYmd,1);
                 lsApi.periodSleep();
                 continue;
             }
@@ -123,11 +123,11 @@ public class LsFuturesApi {
                 list.add(tradeCandle);
             }
 
-            if(YmdUtil.compare(searchEndYmd, endYmd) >=0) {
+            if(YmdUtils.compare(searchEndYmd, endYmd) >=0) {
                 break;
             }
 
-            searchBeginYmd = YmdUtil.getYmd(searchEndYmd,1);
+            searchBeginYmd = YmdUtils.getYmd(searchEndYmd,1);
             lsApi.periodSleep();
         }
 

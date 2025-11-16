@@ -1,7 +1,7 @@
 package example.technical.analysis;
 
 import io.runon.commons.data.BigDecimalArray;
-import io.runon.commons.utils.time.YmdUtil;
+import io.runon.commons.utils.time.YmdUtils;
 import io.runon.stock.trading.Stock;
 import io.runon.stock.trading.Stocks;
 import io.runon.stock.trading.data.daily.StockDataLoad;
@@ -18,7 +18,7 @@ public class StockCandleSimilarity {
     public static void main(String[] args) {
 
         int beginYmd = 20150101;
-        int endYmd = YmdUtil.nowInt(TradingTimes.KOR_ZONE_ID);
+        int endYmd = YmdUtils.nowInt(TradingTimes.KOR_ZONE_ID);
 
         Stock source = Stocks.getStock("KOR_433330");
         Stock target = Stocks.getStock("KOR_488500");

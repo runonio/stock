@@ -1,6 +1,5 @@
 package example.period;
 
-import io.runon.commons.utils.FileUtil;
 import io.runon.stock.securities.firm.api.kor.koreainvestment.KoreainvestmentApi;
 import io.runon.trading.technical.analysis.candle.TradeCandle;
 
@@ -14,7 +13,7 @@ import java.nio.charset.StandardCharsets;
  */
 public class PricePeriodJsonFileRead {
     public static void main(String[] args) {
-        String text = FileUtil.getFileContents(new File("modules/koreainvestment/json/price_period.json"), StandardCharsets.UTF_8);
+        String text = FileUtils.getFileContents(new File("modules/koreainvestment/json/price_period.json"), StandardCharsets.UTF_8);
 //        System.out.println(text);
 
 

@@ -3,7 +3,7 @@ package io.runon.stock.securities.firm.api.kor.koreainvestment;
 import io.runon.commons.callback.StrCallback;
 import io.runon.commons.apis.http.HttpApiResponse;
 import io.runon.commons.utils.time.Times;
-import io.runon.commons.utils.time.YmdUtil;
+import io.runon.commons.utils.time.YmdUtils;
 import io.runon.stock.trading.exception.StockApiException;
 import io.runon.trading.TradingTimes;
 import io.runon.trading.closed.days.ClosedDaysCallback;
@@ -59,12 +59,12 @@ public class KoreainvestmentMarketApi implements ClosedDaysCallback {
                 }
 
                 String ymd = row.getString("bass_dt");
-                if(YmdUtil.compare(ymd, beginYmd) < 0){
-                    baseYmd = YmdUtil.getYmd(ymd,1);
+                if(YmdUtils.compare(ymd, beginYmd) < 0){
+                    baseYmd = YmdUtils.getYmd(ymd,1);
                     continue ;
                 }
 
-                int compare = YmdUtil.compare(ymd, endYmd);
+                int compare = YmdUtils.compare(ymd, endYmd);
 
                 if(compare >  0 ){
                     break outer;
@@ -75,12 +75,12 @@ public class KoreainvestmentMarketApi implements ClosedDaysCallback {
                     callback.callback(ymd);
                 }
 
-                baseYmd = YmdUtil.getYmd(ymd,1);
+                baseYmd = YmdUtils.getYmd(ymd,1);
                 if(compare ==  0 ){
                     break outer;
                 }
 
-                if(YmdUtil.compare(baseYmd ,endYmd) > 0){
+                if(YmdUtils.compare(baseYmd ,endYmd) > 0){
                     break outer;
                 }
                 //너무 잦은 호출을 방지하기위한 조건
@@ -139,8 +139,8 @@ public class KoreainvestmentMarketApi implements ClosedDaysCallback {
         List<TradeCandle> list = new ArrayList<>();
         outer:
         for(;;){
-            String callYmd = YmdUtil.getYmd(nextBeginYmd,100);
-            if(YmdUtil.compare(callYmd,endYmd) > 0){
+            String callYmd = YmdUtils.getYmd(nextBeginYmd,100);
+            if(YmdUtils.compare(callYmd,endYmd) > 0){
                 callYmd = endYmd;
             }
             int beginYmdNum = Integer.parseInt(nextBeginYmd);
@@ -184,7 +184,7 @@ public class KoreainvestmentMarketApi implements ClosedDaysCallback {
                 tradeCandle.setAmount(row.getBigDecimal("acml_tr_pbmn"));
 
                 if(tradeCandle.getVolume().compareTo(BigDecimal.ZERO) == 0){
-                    String nowYmd = YmdUtil.now(TradingTimes.KOR_ZONE_ID);
+                    String nowYmd = YmdUtils.now(TradingTimes.KOR_ZONE_ID);
                     if(ymd.equals(nowYmd)){
                         break outer;
                     }
@@ -194,11 +194,11 @@ public class KoreainvestmentMarketApi implements ClosedDaysCallback {
             }
 
 
-            if(YmdUtil.compare(callYmd, endYmd) >= 0){
+            if(YmdUtils.compare(callYmd, endYmd) >= 0){
                 break;
             }
 
-            nextBeginYmd = YmdUtil.getYmd(callYmd,1);
+            nextBeginYmd = YmdUtils.getYmd(callYmd,1);
 
             koreainvestmentApi.periodSleep();
         }

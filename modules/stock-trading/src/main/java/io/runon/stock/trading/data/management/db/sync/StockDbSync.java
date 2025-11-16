@@ -2,7 +2,7 @@ package io.runon.stock.trading.data.management.db.sync;
 
 import io.runon.commons.callback.GenericCallBack;
 import io.runon.commons.config.Config;
-import io.runon.commons.utils.ExceptionUtil;
+import io.runon.commons.utils.ExceptionUtils;
 import io.runon.jdbc.JdbcQuery;
 import io.runon.jdbc.PrepareStatementData;
 import io.runon.jdbc.PrepareStatements;
@@ -22,8 +22,6 @@ import io.runon.trading.data.calendar.EventCalendar;
 import io.runon.trading.data.calendar.EventCalendarItem;
 import io.runon.trading.data.jdbc.TradingJdbc;
 import io.runon.system.Category;
-import io.runon.system.CategoryCode;
-import io.runon.system.CategoryKeyValue;
 import io.runon.system.KeyValueData;
 import lombok.extern.slf4j.Slf4j;
 
@@ -111,7 +109,7 @@ public class StockDbSync {
             }
 
         }catch (Exception e){
-            log.error(ExceptionUtil.getStackTrace(e));
+            log.error(ExceptionUtils.getStackTrace(e));
         }
     }
 
@@ -136,7 +134,7 @@ public class StockDbSync {
                             }
                         }
                     }catch (Exception e){
-                        log.error(ExceptionUtil.getStackTrace(e));
+                        log.error(ExceptionUtils.getStackTrace(e));
                     }
 
                 };
@@ -150,7 +148,7 @@ public class StockDbSync {
                 }
 
             }catch (Exception e){
-                log.error(ExceptionUtil.getStackTrace(e));
+                log.error(ExceptionUtils.getStackTrace(e));
             }
         }
 

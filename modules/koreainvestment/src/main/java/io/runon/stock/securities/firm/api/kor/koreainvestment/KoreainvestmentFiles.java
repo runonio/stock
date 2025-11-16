@@ -3,7 +3,6 @@ package io.runon.stock.securities.firm.api.kor.koreainvestment;
 import com.google.gson.JsonObject;
 import io.runon.commons.data.StringArray;
 import io.runon.commons.apis.http.HttpApis;
-import io.runon.commons.utils.FileUtil;
 import io.runon.commons.utils.GsonUtils;
 import io.runon.jdbc.objects.JdbcObjects;
 import io.runon.stock.trading.data.StockReg;
@@ -27,9 +26,9 @@ public class KoreainvestmentFiles {
     public static void updateDownloadThemeList() {
         String fileSeparator = FileSystems.getDefault().getSeparator();
         File file = HttpApis.downloadFile("https://new.real.download.dws.co.kr/common/master/theme_code.mst.zip", TradingDataPath.getTempPath("koreainvestment" + fileSeparator + "theme_code.mst.zip"));
-        File [] unZipFiles =FileUtil.unZip(file);
+        File [] unZipFiles = FileUtils.unZip(file);
         for(File unZipFile : unZipFiles){
-            String fileText = FileUtil.getFileContents(unZipFile,"EUC-KR");
+            String fileText = FileUtils.getFileContents(unZipFile,"EUC-KR");
             updateThemeGroup(fileText);
             //noinspection ResultOfMethodCallIgnored
             unZipFile.delete();
@@ -94,10 +93,10 @@ public class KoreainvestmentFiles {
         String fileSeparator = FileSystems.getDefault().getSeparator();
 
         File file = HttpApis.downloadFile("https://new.real.download.dws.co.kr/common/master/fo_stk_code_mts.mst.zip", TradingDataPath.getTempPath("koreainvestment" + fileSeparator + "fo_stk_code_mts.mst.zip"));
-        File [] unZipFiles = FileUtil.unZip(file);
+        File [] unZipFiles = FileUtils.unZip(file);
         for(File unZipFile : unZipFiles){
 
-            String fileText = FileUtil.getFileContents(unZipFile,"EUC-KR");
+            String fileText = FileUtils.getFileContents(unZipFile,"EUC-KR");
             Futures [] futuresArray = getFutures(fileText);
             for(Futures futures : futuresArray){
                 Futures saveObj = JdbcObjects.getObj(Futures.class, "standard_code='" +  futures.getStandardCode() + "'");
@@ -163,9 +162,9 @@ public class KoreainvestmentFiles {
         String downloadPath = TradingDataPath.getTempPath("koreainvestment" + fileSeparator + exchange.get(0) + "mst.cod.zip");
         File file = HttpApis.downloadFile(url, downloadPath);
 
-        File [] unZipFiles =FileUtil.unZip(file);
+        File [] unZipFiles = FileUtils.unZip(file);
         for(File unZipFile : unZipFiles){
-            String fileText = FileUtil.getFileContents(unZipFile,"EUC-KR");
+            String fileText = FileUtils.getFileContents(unZipFile,"EUC-KR");
             updateOverseasStocks(exchange, fileText);
             //noinspection ResultOfMethodCallIgnored
             unZipFile.delete();
@@ -207,7 +206,7 @@ public class KoreainvestmentFiles {
     public static void main(String[] args) {
 //        updateDownloadFuturesList();
 
-//        getThemeArray(FileUtil.getFileContents("theme_code.mst","EUC-KR"));
+//        getThemeArray(FileUtils.getFileContents("theme_code.mst","EUC-KR"));
         updateOverseasStocks();
     }
 
