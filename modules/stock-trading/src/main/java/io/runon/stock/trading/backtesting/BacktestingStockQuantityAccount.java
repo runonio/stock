@@ -1,7 +1,7 @@
 package io.runon.stock.trading.backtesting;
 
 import io.runon.stock.trading.Stock;
-import io.runon.stock.trading.StockHoldingQuantity;
+import io.runon.stock.trading.StockHolding;
 import io.runon.stock.trading.Stocks;
 import io.runon.stock.trading.exception.StockDataException;
 import io.runon.trading.PriceGet;
@@ -17,7 +17,7 @@ import java.util.Map;
  * @author macle
  */
 @Setter
-public class BacktestingStockQuantityAccount extends BacktestingHoldingAccount<StockHoldingQuantity> {
+public class BacktestingStockQuantityAccount extends BacktestingHoldingAccount<StockHolding> {
 
 
     private BigDecimal buyFeeRate = new BigDecimal("0.00015");
@@ -48,7 +48,7 @@ public class BacktestingStockQuantityAccount extends BacktestingHoldingAccount<S
 
 
     @Override
-    public StockHoldingQuantity newHoldingQuantity(String id, BigDecimal quantity) {
+    public StockHolding newHoldingQuantity(String id, BigDecimal quantity) {
 
         Stock stock = stockMap.get(id);
 
@@ -56,7 +56,7 @@ public class BacktestingStockQuantityAccount extends BacktestingHoldingAccount<S
             throw new StockDataException("stock map not set stock id: " + id);
         }
 
-        StockHoldingQuantity holdingQuantity = new StockHoldingQuantity(stock);
+        StockHolding holdingQuantity = new StockHolding(stock);
 
         holdingQuantity.setQuantity(quantity);
 

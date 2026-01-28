@@ -261,4 +261,12 @@ public class Stocks {
     }
 
 
+    public static String getSymbol(String stockId){
+        return stockId.substring(stockId.lastIndexOf("_")+1);
+    }
+
+
+
+
+
 }

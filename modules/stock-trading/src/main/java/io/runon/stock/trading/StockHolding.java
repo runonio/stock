@@ -1,6 +1,7 @@
 package io.runon.stock.trading;
 
 import io.runon.trading.HoldingQuantity;
+import lombok.Data;
 
 import java.math.BigDecimal;
 
@@ -8,15 +9,21 @@ import java.math.BigDecimal;
  * 보유종목과 수량정보
  *
  */
-public class StockHoldingQuantity implements HoldingQuantity {
+@Data
+public class StockHolding implements HoldingQuantity {
 
-    protected final Stock stock;
+    protected Stock stock;
 
     protected BigDecimal quantity = BigDecimal.ZERO;
+    protected BigDecimal avgPrice;
 
 
-    public StockHoldingQuantity(Stock stock){
+    public StockHolding(Stock stock){
         this.stock = stock;
+    }
+
+    public StockHolding(){
+
     }
 
 
@@ -39,6 +46,10 @@ public class StockHoldingQuantity implements HoldingQuantity {
         return stock;
     }
 
+    @Override
+    public String toString(){
+        return stock.getStockId() +"," + stock.getNameKo() +"," + quantity.toPlainString() +"," + avgPrice.toPlainString();
+    }
 
 
 }

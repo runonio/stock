@@ -1,6 +1,7 @@
-package io.runon.stock.securities.firm.api.kor.koreainvestment;
+package io.runon.stock.securities.firm.api.kor.koreainvestment.account;
 
 import io.runon.commons.apis.http.HttpApiResponse;
+import io.runon.stock.securities.firm.api.kor.koreainvestment.KoreainvestmentApi;
 import io.runon.stock.trading.exception.StockApiException;
 import org.json.JSONObject;
 
@@ -20,7 +21,9 @@ public class KoreainvestmentAccountApi {
         this.koreainvestmentApi = koreainvestmentApi;
     }
 
-
+    public String getInquireBalanceJsonText(){
+        return getInquireBalanceJsonText(KoreainvestmentApi.getAccountNumber());
+    }
 
 
     public String getInquireBalanceJsonText(String accountNumber ){
@@ -32,7 +35,6 @@ public class KoreainvestmentAccountApi {
     }
 
     /**
-     * apiportal.koreainvestment.com/apiservice/apiservice-domestic-stock#L_66c61080-674f-4c91-a0cc-db5e64e9a5e6
      * requenst
      * CANO	종합계좌번호	String	Y	8	계좌번호 체계(8-2)의 앞 8자리
      * ACNT_PRDT_CD	계좌상품코드	String	Y	2	계좌번호 체계(8-2)의 뒤 2자리
@@ -147,6 +149,12 @@ public class KoreainvestmentAccountApi {
         }
         return response.getMessage();
     }
+
+    public BigDecimal getD2Cash(){
+
+        return  getD2Cash(KoreainvestmentApi.getAccountNumber());
+    }
+
     public BigDecimal getD2Cash(String accountNumberValue){
         String jsonText = getInquireBalanceJsonText(accountNumberValue);
         return  parsingD2Cash(jsonText);

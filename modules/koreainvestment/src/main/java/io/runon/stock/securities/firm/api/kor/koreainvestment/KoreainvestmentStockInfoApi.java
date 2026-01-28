@@ -7,6 +7,7 @@ import io.runon.stock.trading.exception.StockApiException;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.math.BigDecimal;
 import java.util.Map;
 
 /**
@@ -210,6 +211,14 @@ public class KoreainvestmentStockInfoApi {
         }
 
         return response.getMessage();
+    }
+
+
+    public BigDecimal getPrice(String symbol){
+        String json = getPriceInfoJsonText(symbol);
+        JSONObject jsonObject = new JSONObject(json);
+        jsonObject = jsonObject.getJSONObject("output");
+        return jsonObject.getBigDecimal("stck_prpr");
     }
 
     public String getPriceInfoJsonText(String symbol){
