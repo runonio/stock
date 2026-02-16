@@ -265,8 +265,4 @@ public class Stocks {
         return stockId.substring(stockId.lastIndexOf("_")+1);
     }
 
-
-
-
-
 }
