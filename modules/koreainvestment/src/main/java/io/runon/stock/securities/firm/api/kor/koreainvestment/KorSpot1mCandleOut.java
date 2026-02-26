@@ -5,7 +5,7 @@ import io.runon.stock.trading.data.management.Spot1mCandleOut;
 import io.runon.stock.trading.data.management.Spot1mCandleOutParam;
 import io.runon.trading.CountryCode;
 import io.runon.trading.TradingTimes;
-import io.runon.trading.data.Exchanges;
+import io.runon.trading.data.Markets;
 import io.runon.trading.technical.analysis.candle.TradeCandle;
 
 /**
@@ -13,7 +13,7 @@ import io.runon.trading.technical.analysis.candle.TradeCandle;
  */
 public class KorSpot1mCandleOut implements Spot1mCandleOutParam {
 
-    protected String [] exchanges = Exchanges.getDefaultExchanges(CountryCode.KOR);
+    protected String [] exchanges = Markets.getDefaultExchanges(CountryCode.KOR);
 
     protected final KoreainvestmentApi koreainvestmentApi = KoreainvestmentApi.getInstance();
     protected final KoreainvestmentPeriodDataApi dataApi;

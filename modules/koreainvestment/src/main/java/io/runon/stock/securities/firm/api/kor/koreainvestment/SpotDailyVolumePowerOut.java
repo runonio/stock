@@ -20,7 +20,7 @@ public class SpotDailyVolumePowerOut extends KoreainvestmentDailyOut{
     public String[] getLines(Stock stock, String beginYmd, String endYmd) {
         KoreainvestmentApi api = KoreainvestmentApi.getInstance();
         KoreainvestmentPeriodDataApi periodDataApi = api.getPeriodDataApi();
-        VolumePowerDaily[] dailies = periodDataApi.getVolumePowerDailies(stock.getSymbol(), beginYmd, endYmd);
+        VolumePowerDaily[] dailies = periodDataApi.getVolumePowerDailies(stock.getSymbol(), beginYmd, endYmd,"J");
         return JsonOutLine.getLines(dailies);
     }
 

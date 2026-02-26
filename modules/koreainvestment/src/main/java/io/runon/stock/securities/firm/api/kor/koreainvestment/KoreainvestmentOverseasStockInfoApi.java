@@ -43,23 +43,23 @@ public class KoreainvestmentOverseasStockInfoApi {
     }
 
     public String getStockInfoJsonText(Stock stock){
-        String exchange = stock.getExchange();
-        if(exchange == null){
-            throw new StockApiException("exchange null");
+        String market = stock.getMarket();
+        if(market == null){
+            throw new StockApiException("market null");
         }
 
         String exchangeCode = null;
 
-        if(exchange.equals("NASDAQ")){
+        if(market.equals("NASDAQ")){
             exchangeCode = "512";
-        }else if(exchange.equals("NYSE")){
+        }else if(market.equals("NYSE")){
             exchangeCode = "513";
-        }else if(exchange.equals("AMEX")){
+        }else if(market.equals("AMEX")){
             exchangeCode = "529";
         }
 
         if(exchangeCode == null){
-            throw new StockApiException("exchange not mapping: " + exchange);
+            throw new StockApiException("market not mapping: " + market);
         }
 
 

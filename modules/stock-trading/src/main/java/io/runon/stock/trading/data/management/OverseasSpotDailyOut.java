@@ -4,7 +4,7 @@ import io.runon.stock.trading.Stock;
 import io.runon.stock.trading.path.StockPathLastTime;
 import io.runon.trading.CountryCode;
 import io.runon.trading.CountryUtils;
-import io.runon.trading.data.Exchanges;
+import io.runon.trading.data.Markets;
 import io.runon.trading.data.file.PathTimeLine;
 
 /**
@@ -25,7 +25,7 @@ public abstract class OverseasSpotDailyOut implements StockDailyOutParam {
         this.stockPathLastTime = stockPathLastTime;
         this.pathTimeLine = pathTimeLine;
 
-        this.exchanges = Exchanges.getDefaultExchanges(countryCode);
+        this.exchanges = Markets.getDefaultExchanges(countryCode);
         dailyOut = new SpotDailyOut(this);
         dailyOut.setZoneId(CountryUtils.getZoneId(countryCode));
         dailyOut.setCountryCode( countryCode);

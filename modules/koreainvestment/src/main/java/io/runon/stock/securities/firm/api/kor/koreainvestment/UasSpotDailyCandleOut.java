@@ -27,7 +27,7 @@ public class UasSpotDailyCandleOut extends OverseasSpotDailyOut {
 
     @Override
     public String[] getLines(Stock stock, String beginYmd, String endYmd) {
-        String jsonText = overseasPeriodApi.getDailyJsonText(stock.getExchange(), stock.getSymbol(), endYmd, true);
+        String jsonText = overseasPeriodApi.getDailyJsonText(stock.getMarket(), stock.getSymbol(), endYmd, true);
         TradeCandle [] candles = overseasPeriodApi.getDailyCandles(CountryCode.USA, jsonText);
         int beginIndex = 0;
         for (int i = 0; i <candles.length ; i++) {

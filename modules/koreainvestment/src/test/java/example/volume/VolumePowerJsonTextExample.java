@@ -11,7 +11,7 @@ import org.json.JSONObject;
 public class VolumePowerJsonTextExample {
     public static void main(String[] args) {
         KoreainvestmentPeriodDataApi api = KoreainvestmentApi.getInstance().getPeriodDataApi();
-        String text = api.getVolumePowerDailyJsonText("005930","20240601","20240625");
+        String text = api.getVolumePowerDailyJsonText("005930","J","20240601","20240625");
 
         JSONObject object = new JSONObject(text);
 

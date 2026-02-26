@@ -77,45 +77,45 @@ public class SpotDailyOut {
         isLastLineCheck = lastLineCheck;
     }
 
-    public void setLastYmdMap(Stock [] stocks, String exchange){
-        SpotOuts.setLastYmdMap(lastYmdMap, stocks, countryCode, exchange, param.getStockPathLastTime(), interval, zoneId);
+    public void setLastYmdMap(Stock [] stocks, String market){
+        SpotOuts.setLastYmdMap(lastYmdMap, stocks, countryCode, market, param.getStockPathLastTime(), interval, zoneId);
     }
 
 
-    public void outLastYmdMap(String exchange){
-        SpotOuts.outLastYmdMap(lastYmdMap, countryCode, exchange,param.getStockPathLastTime(), interval);
+    public void outLastYmdMap(String market){
+        SpotOuts.outLastYmdMap(lastYmdMap, countryCode, market,param.getStockPathLastTime(), interval);
     }
 
 
-    public void out(String exchange){
+    public void out(String market){
         //전체 종목 일봉 내리기
         //KONEX 는 제외
-        String [] exchanges = param.getMarkets();
+        String [] markets = param.getMarkets();
         Stock[] stocks;
         if(isDelisted) {
             StockDataManager stockDataManager = StockDataManager.getInstance();
             StockData stockData = stockDataManager.getStockData();
-            stocks = stockData.getAllStocks(exchanges);
+            stocks = stockData.getAllStocks(markets);
         }else{
-            stocks = Stocks.getStocks(exchanges);
+            stocks = Stocks.getStocks(markets);
         }
-        out(stocks, exchange);
+        out(stocks, market);
     }
 
-    public void out(Stock [] stocks, String exchange){
-        setLastYmdMap(stocks, exchange);
+    public void out(Stock [] stocks, String market){
+        setLastYmdMap(stocks, market);
 
-        Stocks.sortUseLastTimeParallel(stocks,exchange,interval, stockPathLastTime);
+        Stocks.sortUseLastTimeParallel(stocks,market,interval, stockPathLastTime);
         int count = 0;
 
         for(Stock stock : stocks){
             try {
                 //같은 데이터를 호출하면 호출 제한이 걸리는 경우가 있다 전체 캔들을 내릴때는 예외처리를 강제해서 멈추지 않는 로직을 추가
-                out(stock, exchange);
+                out(stock, market);
                 param.sleep();
                 count++;
                 if(count > 50){
-                    outLastYmdMap(exchange);
+                    outLastYmdMap(market);
                     count = 0;
                 }
             }catch (Exception e){
@@ -126,7 +126,7 @@ public class SpotDailyOut {
             }
         }
 
-        outLastYmdMap(exchange);
+        outLastYmdMap(market);
     }
 
     //상폐된 주식 캔들 내리기

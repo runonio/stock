@@ -20,8 +20,8 @@ public class Stock {
     @Column(name = "stock_id")
     String stockId;
 
-    @Column(name = "exchange")
-    String exchange;
+    @Column(name = "market")
+    String market;
 
     @Column(name = "symbol")
     String symbol;

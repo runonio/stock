@@ -4,7 +4,7 @@ import io.runon.commons.config.JsonFileProperties;
 import io.runon.stock.trading.data.management.KorSpotDailyOut;
 import io.runon.stock.trading.path.StockPathLastTime;
 import io.runon.trading.CountryCode;
-import io.runon.trading.data.Exchanges;
+import io.runon.trading.data.Markets;
 import io.runon.trading.data.file.PathTimeLine;
 
 /**
@@ -20,7 +20,7 @@ public abstract class KoreainvestmentDailyOut extends KorSpotDailyOut {
 
     protected final KoreainvestmentPeriodDataApi periodDataApi = koreainvestmentApi.getPeriodDataApi();
 
-    protected String [] exchanges = Exchanges.getDefaultExchanges(CountryCode.KOR);
+    protected String [] exchanges = Markets.getDefaultExchanges(CountryCode.KOR);
 
     public KoreainvestmentDailyOut(StockPathLastTime stockPathLastTime, PathTimeLine pathTimeLine){
         super(stockPathLastTime, pathTimeLine);

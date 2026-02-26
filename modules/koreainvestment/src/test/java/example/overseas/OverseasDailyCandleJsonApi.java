@@ -15,7 +15,7 @@ public class OverseasDailyCandleJsonApi {
         KoreainvestmentApi api = KoreainvestmentApi.getInstance();
         KoreainvestmentOverseasPeriodApi periodApi  = api.getOverseasPeriodApi();
 
-        System.out.println(periodApi.getDailyJsonText(stock.getExchange(), stock.getSymbol(), "20241112", true));
+        System.out.println(periodApi.getDailyJsonText(stock.getMarket(), stock.getSymbol(), "20241112", true));
     }
 
 }

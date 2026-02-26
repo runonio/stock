@@ -8,8 +8,7 @@ import io.runon.stock.trading.Stock;
 import io.runon.stock.trading.Stocks;
 import io.runon.stock.trading.path.StockPaths;
 import io.runon.trading.CountryCode;
-import io.runon.trading.TradingConfig;
-import io.runon.trading.data.Exchanges;
+import io.runon.trading.data.Markets;
 import io.runon.trading.data.modify.ModifyPrice;
 import io.runon.trading.technical.analysis.candle.CandlePreviousCandle;
 import io.runon.trading.technical.analysis.candle.CandlePreviousCandles;
@@ -47,7 +46,7 @@ public class StockModifyPriceSearch {
     }
 
     public StockModifyPriceSearch(CountryCode countryCode){
-        Stock[] stocks = Stocks.getStocks(Exchanges.getDefaultExchanges(countryCode));
+        Stock[] stocks = Stocks.getStocks(Markets.getDefaultExchanges(countryCode));
         stockIds = Stocks.getIds(stocks);
 
     }
@@ -99,7 +98,7 @@ public class StockModifyPriceSearch {
 
 
     public static void main(String[] args) {
-        Stock[] stocks = Stocks.getStocks(Exchanges.getDefaultExchanges(CountryCode.KOR));
+        Stock[] stocks = Stocks.getStocks(Markets.getDefaultExchanges(CountryCode.KOR));
         long beginTime = System.currentTimeMillis() - (Times.DAY_1*1000);
         for(Stock stock : stocks){
             if(stock.getNameKo().contains("현대글로비스")){

@@ -13,7 +13,7 @@ import io.runon.stock.trading.path.StockPaths;
 import io.runon.trading.CountryCode;
 import io.runon.trading.CountryUtils;
 import io.runon.trading.TradingTimes;
-import io.runon.trading.data.Exchanges;
+import io.runon.trading.data.Markets;
 import io.runon.trading.data.csv.CsvCandle;
 import io.runon.trading.data.file.TimeFiles;
 import io.runon.trading.technical.analysis.candle.TradeCandle;
@@ -105,7 +105,7 @@ public class Stocks {
     }
 
     public static ZoneId getZoneId(Stock stock){
-        return Exchanges.getZoneId(stock.getExchange());
+        return Markets.getZoneId(stock.getMarket());
     }
 
     public static ZoneId getZoneId(String stockId){
@@ -113,7 +113,7 @@ public class Stocks {
         return TradingTimes.getZoneId(countryCode);
     }
 
-    public static void sortUseLastTimeParallel(Stock [] stocks, String exchange, String interval, StockPathLastTime stockPathLastTime){
+    public static void sortUseLastTimeParallel(Stock [] stocks, String market, String interval, StockPathLastTime stockPathLastTime){
 
         StockLong[] sortStocks = new StockLong[stocks.length];
         for (int i = 0; i <sortStocks.length ; i++) {
@@ -124,7 +124,7 @@ public class Stocks {
 
         ParallelWork<StockLong> work = stockLong -> {
 
-            long time = stockPathLastTime.getLastTime(stockLong.getStock(), exchange, interval);
+            long time = stockPathLastTime.getLastTime(stockLong.getStock(), market, interval);
             stockLong.setNum(time);
         };
 

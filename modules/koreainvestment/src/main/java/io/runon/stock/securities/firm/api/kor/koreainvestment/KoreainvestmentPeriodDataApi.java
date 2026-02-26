@@ -409,23 +409,25 @@ public class KoreainvestmentPeriodDataApi {
         return list.toArray(new ProgramDaily[0]);
     }
 
-    public String getVolumePowerDailyJsonText(String symbol, String beginYmd, String endYmd){
+    public String getVolumePowerDailyJsonText(String symbol, String marketDivCode,String beginYmd, String endYmd){
         koreainvestmentApi.updateAccessToken();
         String url = "/uapi/domestic-stock/v1/quotations/inquire-daily-trade-volume";
         Map<String, String> requestHeaderMap = koreainvestmentApi.computeIfAbsenttPropertySingleMap(url,"tr_id","FHKST03010800");
 
-        String query = "?fid_cond_mrkt_div_code=J&fid_input_iscd=" + symbol +"&fid_input_date_1=" +beginYmd +"&fid_input_date_2=" + endYmd +"&fid_period_div_code=D";
+        String query = "?FID_COND_MRKT_DIV_CODE="+ marketDivCode+ "&fid_input_iscd=" + symbol +"&fid_input_date_1=" +beginYmd +"&fid_input_date_2=" + endYmd +"&fid_period_div_code=D&FID_COND_MRKT_DIV_CODE_1=" + marketDivCode+"&FID_INPUT_ISCD_1=" +symbol;
         HttpApiResponse response =  koreainvestmentApi.getHttpGet().getResponse(url + query, requestHeaderMap);
         if(response.getResponseCode() != 200){
             throw new StockApiException("token make fail code:" + response.getResponseCode() +", " + response.getMessage());
         }
+
+
         return response.getMessage();
 
     }
 
     //최대 100건
-    public VolumePowerDaily []  getVolumePowerDailies(String symbol, String beginYmd, String endYmd){
-        String jsonText = getVolumePowerDailyJsonText(symbol, beginYmd, endYmd);
+    public VolumePowerDaily []  getVolumePowerDailies(String symbol, String marketDivCode , String beginYmd, String endYmd){
+        String jsonText = getVolumePowerDailyJsonText(symbol, marketDivCode,beginYmd, endYmd);
         JSONObject object = new JSONObject(jsonText);
 
         JSONArray array = object.getJSONArray("output2");

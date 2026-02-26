@@ -74,22 +74,22 @@ public class KoreainvestmentOverseasPeriodApi {
         return response.getMessage();
     }
 
-    public String get1mCandleJsonText(String exchange, String symbol, String ymd, String hm){
+    public String get1mCandleJsonText(String market, String symbol, String ymd, String hm){
         //apiportal.koreainvestment.com/apiservice/apiservice-oversea-stock-quotations#L_852d7e45-4f34-418b-b6a1-a4552bbcdf90
         koreainvestmentApi.updateAccessToken();
         String url = "/uapi/overseas-price/v1/quotations/inquire-time-itemchartprice";
         Map<String, String> requestHeaderMap = koreainvestmentApi.computeIfAbsenttPropertySingleMap(url,"tr_id","HHDFS76950200");
 
-        String exchangeCode = exchange;
-        if(exchangeCode.equals("NASDAQ")){
-            exchangeCode = "NAS";
-        }else if(exchangeCode.equals("NYSE")){
-            exchangeCode = "NYS";
-        }else if(exchangeCode.equals("AMEX")){
-            exchangeCode = "AMS";
+        String marketCode = market;
+        if(marketCode.equals("NASDAQ")){
+            marketCode = "NAS";
+        }else if(marketCode.equals("NYSE")){
+            marketCode = "NYS";
+        }else if(marketCode.equals("AMEX")){
+            marketCode = "AMS";
         }
 
-        String query = "?AUTH=&EXCD=" + exchangeCode + "&SYMB=" + symbol + "&NMIN=1&PINC=1&NEXT=1&NREC=120&FILL=&KEYB=" +ymd+hm+"00";
+        String query = "?AUTH=&EXCD=" + marketCode + "&SYMB=" + symbol + "&NMIN=1&PINC=1&NEXT=1&NREC=120&FILL=&KEYB=" +ymd+hm+"00";
         HttpApiResponse response =  koreainvestmentApi.getHttpGet().getResponse(url + query, requestHeaderMap);
         if(response.getResponseCode() != 200){
             throw new StockApiException("token make fail code:" + response.getResponseCode() +", " + response.getMessage());
@@ -100,7 +100,7 @@ public class KoreainvestmentOverseasPeriodApi {
 
     public TradeCandle [] get1mCandles(Stock stock, String ymd){
         //그날의 최대시간 호출
-        String firstText = get1mCandleJsonText(stock.getExchange(), stock.getSymbol(), ymd, "2350");
+        String firstText = get1mCandleJsonText(stock.getMarket(), stock.getSymbol(), ymd, "2350");
         JSONObject object = new JSONObject(firstText);
         String code = object.getString("rt_cd");
         if(!code.equals("0")){
@@ -145,7 +145,7 @@ public class KoreainvestmentOverseasPeriodApi {
             String ymdhm = last.getData(TradeCandleDataKey.YMDHM);
             String next = Times.getYmdhm(ymdhm, -Times.MINUTE_1);
             next = Times.getHm(next);
-            String jsonText = get1mCandleJsonText(stock.getExchange(), stock.getSymbol(), ymd, next);
+            String jsonText = get1mCandleJsonText(stock.getMarket(), stock.getSymbol(), ymd, next);
 
 //            System.out.println(stock.getSymbol() + " " + ymd +" " + next);
 
@@ -232,19 +232,19 @@ public class KoreainvestmentOverseasPeriodApi {
     }
 
 
-    public String getDailyJsonText(String exchange, String symbol, String baseYmd, boolean isRevisePrice){
+    public String getDailyJsonText(String market, String symbol, String baseYmd, boolean isRevisePrice){
         //apiportal.koreainvestment.com/apiservice/apiservice-oversea-stock-quotations#L_0e9fb2ba-bbac-4735-925a-a35e08c9a790
 
         koreainvestmentApi.updateAccessToken();
         String url = "/uapi/overseas-price/v1/quotations/dailyprice";
 
-        String exchangeCode = exchange;
-        if(exchangeCode.equals("NASDAQ")){
-            exchangeCode = "NAS";
-        }else if(exchangeCode.equals("NYSE")){
-            exchangeCode = "NYS";
-        }else if(exchangeCode.equals("AMEX")){
-            exchangeCode = "AMS";
+        String marketCode = market;
+        if(marketCode.equals("NASDAQ")){
+            marketCode = "NAS";
+        }else if(marketCode.equals("NYSE")){
+            marketCode = "NYS";
+        }else if(marketCode.equals("AMEX")){
+            marketCode = "AMS";
         }
 
         String modp;
@@ -255,7 +255,7 @@ public class KoreainvestmentOverseasPeriodApi {
         }
 
         Map<String, String> requestHeaderMap = koreainvestmentApi.computeIfAbsenttPropertySingleMap(url,"tr_id","HHDFS76240000");
-        String query = "?AUTH=&EXCD=" + exchangeCode + "&SYMB=" + symbol + "&GUBN=0&BYMD=" + baseYmd+"&MODP="+ modp;
+        String query = "?AUTH=&EXCD=" + marketCode + "&SYMB=" + symbol + "&GUBN=0&BYMD=" + baseYmd+"&MODP="+ modp;
         HttpApiResponse response =  koreainvestmentApi.getHttpGet().getResponse(url + query, requestHeaderMap);
         if(response.getResponseCode() != 200){
             throw new StockApiException("token make fail code:" + response.getResponseCode() +", " + response.getMessage());
