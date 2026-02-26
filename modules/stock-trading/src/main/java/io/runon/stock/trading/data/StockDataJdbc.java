@@ -52,31 +52,31 @@ public class StockDataJdbc implements StockData{
     }
 
     @Override
-    public Stock[] getStocks(String[] exchanges) {
-        if(exchanges == null){
-            throw new StockDataException("exchange null");
+    public Stock[] getStocks(String[] markets) {
+        if(markets == null){
+            throw new StockDataException("markets null");
         }
 
-        if(exchanges.length == 0){
-            throw new StockDataException("exchange size 0");
+        if(markets.length == 0){
+            throw new StockDataException("markets size 0");
         }
-        String where = "exchange in " + QueryUtils.whereIn(exchanges) +
+        String where = "market in " + QueryUtils.whereIn(markets) +
                 " and is_listing = true";
 
         return JdbcObjects.getObjList(Stock.class, where).toArray(new Stock[0]);
     }
 
     @Override
-    public Stock[] getStocks(String[] exchanges, String baseYmd) {
-        if(exchanges == null){
-            throw new StockDataException("exchange null");
+    public Stock[] getStocks(String[] markets, String baseYmd) {
+        if(markets == null){
+            throw new StockDataException("markets null");
         }
 
         if(baseYmd == null){
-            return getStocks(exchanges);
+            return getStocks(markets);
         }
 
-        String where = "exchange in " + QueryUtils.whereIn(exchanges) +
+        String where = "market in " + QueryUtils.whereIn(markets) +
                 " and listed_ymd <=" + baseYmd;
 
 
@@ -89,24 +89,24 @@ public class StockDataJdbc implements StockData{
     }
 
     @Override
-    public Stock[] getDelistedStocks(String[] exchanges, String beginYmd, String endYmd) {
-        if(exchanges == null){
-            throw new StockDataException("exchange null");
+    public Stock[] getDelistedStocks(String[] markets, String beginYmd, String endYmd) {
+        if(markets == null){
+            throw new StockDataException("markets null");
         }
 
-        String where = "exchange in " + QueryUtils.whereIn(exchanges) +
+        String where = "market in " + QueryUtils.whereIn(markets) +
                 " and delisted_ymd >=" + beginYmd +" and delisted_ymd <= " + endYmd;
 
         return  JdbcObjects.getObjList(Stock.class, where).toArray(new Stock[0]);
     }
 
     @Override
-    public Stock[] getAllStocks(String[] exchanges, String [] types) {
+    public Stock[] getAllStocks(String[] markets, String [] types) {
 
         StringBuilder where = new StringBuilder();
 
-        if(exchanges != null){
-            where.append("exchange in ") .append(QueryUtils.whereIn(exchanges));
+        if(markets != null){
+            where.append("market in ") .append(QueryUtils.whereIn(markets));
         }
 
         if(types != null){
@@ -117,21 +117,21 @@ public class StockDataJdbc implements StockData{
         }
 
         if(where.isEmpty()){
-            throw new StockDataException("exchange, types null");
+            throw new StockDataException("market, types null");
         }
 
         return  JdbcObjects.getObjList(Stock.class, where.toString()).toArray(new Stock[0]);
     }
 
     @Override
-    public Stock[] getAllStocks(String[] exchanges) {
+    public Stock[] getAllStocks(String[] markets) {
         StringBuilder where = new StringBuilder();
 
-        if(exchanges != null){
-            where.append("exchange in ") .append(QueryUtils.whereIn(exchanges));
+        if(markets != null){
+            where.append("market in ") .append(QueryUtils.whereIn(markets));
         }
         if(where.isEmpty()){
-            throw new StockDataException("exchange null");
+            throw new StockDataException("market null");
         }
 
         return  JdbcObjects.getObjList(Stock.class, where.toString()).toArray(new Stock[0]);

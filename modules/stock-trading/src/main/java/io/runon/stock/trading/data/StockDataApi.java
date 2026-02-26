@@ -11,32 +11,32 @@ public class StockDataApi implements StockData{
     }
 
     @Override
-    public Stock[] getStocks(String[] exchanges, String[] types) {
+    public Stock[] getStocks(String[] markets, String[] types) {
         return new Stock[0];
     }
 
     @Override
-    public Stock[] getStocks(String[] exchanges) {
+    public Stock[] getStocks(String[] markets) {
         return new Stock[0];
     }
 
     @Override
-    public Stock[] getStocks(String[] exchanges, String baseYmd) {
+    public Stock[] getStocks(String[] markets, String baseYmd) {
         return new Stock[0];
     }
 
     @Override
-    public Stock[] getDelistedStocks(String[] exchanges, String beginYmd, String endYmd) {
+    public Stock[] getDelistedStocks(String[] markets, String beginYmd, String endYmd) {
         return new Stock[0];
     }
 
     @Override
-    public Stock[] getAllStocks(String[] exchanges, String [] types) {
+    public Stock[] getAllStocks(String[] markets, String [] types) {
         return new Stock[0];
     }
 
     @Override
-    public Stock[] getAllStocks(String[] exchanges) {
+    public Stock[] getAllStocks(String[] markets) {
         return new Stock[0];
     }
 

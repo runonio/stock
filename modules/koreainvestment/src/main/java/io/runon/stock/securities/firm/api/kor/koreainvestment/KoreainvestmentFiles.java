@@ -187,7 +187,7 @@ public class KoreainvestmentFiles {
                 StockReg stockReg = new StockReg();
                 stockReg.setSymbol(values[4]);
                 stockReg.setStockId("USA_" + stockReg.getSymbol());
-                stockReg.setExchange(exchange.get(1));
+                stockReg.setMarket(exchange.get(1));
                 stockReg.setNameKo(values[6]);
                 stockReg.setNameEn(values[7]);
                 if(values[8].equals("2")) {
