@@ -60,7 +60,7 @@ create index idx_stock_group_map_01
 CREATE TABLE stock
 (
     stock_id             VARCHAR NOT NULL,
-    exchange             VARCHAR NULL,
+    market               VARCHAR NULL,
     symbol               VARCHAR NULL,
     stock_type           VARCHAR NOT NULL DEFAULT 'STOCK',
     isin                 VARCHAR NULL,
@@ -83,7 +83,7 @@ ALTER TABLE stock
 
 
 create index idx_stock_01
-    on stock (exchange desc);
+    on stock (market desc);
 
 
 create index idx_stock_02
@@ -92,7 +92,7 @@ create index idx_stock_02
 
 comment on table stock is '주식';
         comment on column stock.stock_id is '주식아이디';
-         comment on column stock.exchange is '거래소';
+         comment on column stock.market is '시장';
          comment on column stock.symbol is '심볼';
          comment on column stock.stock_type is '주식유형';
          comment on column stock.isin is 'ISIN';
@@ -510,3 +510,32 @@ create index idx_no_date_data_02
 
 create index idx_no_date_data_03
     on no_date_data (data_type desc);
+
+
+CREATE TABLE market
+(
+    market               VARCHAR NOT NULL,
+    country              VARCHAR NOT NULL,
+    currency             VARCHAR NOT NULL,
+    name_ko              VARCHAR NULL,
+    name_en              VARCHAR NULL,
+    description          VARCHAR NULL,
+    updated_at           TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (market)
+);
+
+
+
+comment on table market is '시장';
+        comment on column market.market is '시장';
+         comment on column market.country is '국가';
+         comment on column market.currency is '기준통화';
+         comment on column market.name_ko is '이름_한글';
+         comment on column market.name_en is '이름_영문';
+         comment on column market.description is 'description';
+         comment on column market.updated_at is '업데이트일시';
+
+
+
+create index idx_market_01
+    on market (updated_at desc);
