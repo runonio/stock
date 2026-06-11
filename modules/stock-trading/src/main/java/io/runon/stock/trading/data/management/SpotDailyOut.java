@@ -121,7 +121,7 @@ public class SpotDailyOut {
             }catch (Exception e){
                 log.error(ExceptionUtils.getStackTrace(e) +"\n" + stock);
                 try{
-                    Thread.sleep(Times.MINUTE_1);
+                    Thread.sleep(2000);
                 }catch (Exception ignore){}
             }
         }

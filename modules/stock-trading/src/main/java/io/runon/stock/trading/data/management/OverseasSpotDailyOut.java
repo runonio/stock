@@ -25,7 +25,7 @@ public abstract class OverseasSpotDailyOut implements StockDailyOutParam {
         this.stockPathLastTime = stockPathLastTime;
         this.pathTimeLine = pathTimeLine;
 
-        this.exchanges = Markets.getDefaultExchanges(countryCode);
+        this.exchanges = Markets.getDefaultMarkets(countryCode);
         dailyOut = new SpotDailyOut(this);
         dailyOut.setZoneId(CountryUtils.getZoneId(countryCode));
         dailyOut.setCountryCode( countryCode);

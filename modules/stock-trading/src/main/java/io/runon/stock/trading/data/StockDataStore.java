@@ -8,7 +8,7 @@ import io.runon.trading.TradingTimes;
 import io.runon.trading.data.TimeNumbersMap;
 import io.runon.trading.data.TimeRange;
 import io.runon.trading.data.daily.VolumePowerDaily;
-import io.runon.trading.technical.analysis.candle.IdCandles;
+import io.runon.trading.technical.analysis.candle.IdCandlesGet;
 import io.runon.trading.technical.analysis.candle.TradeCandle;
 import io.runon.trading.technical.analysis.candle.TradeCandleIndex;
 import lombok.Data;
@@ -22,7 +22,7 @@ import java.util.Map;
  * @author macle
  */
 @Data
-public class StockDataStore implements IdCandles {
+public class StockDataStore implements IdCandlesGet {
 
     private Stock stock;
 

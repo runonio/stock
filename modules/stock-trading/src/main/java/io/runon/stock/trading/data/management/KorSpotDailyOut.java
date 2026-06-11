@@ -12,7 +12,7 @@ import io.runon.trading.data.file.PathTimeLine;
  */
 public abstract class KorSpotDailyOut implements StockDailyOutParam {
 
-    protected String [] exchanges = Markets.getDefaultExchanges(CountryCode.KOR);
+    protected String [] exchanges = Markets.getDefaultMarkets(CountryCode.KOR);
 
     protected final PathTimeLine pathTimeLine;
 

@@ -13,7 +13,7 @@ import io.runon.trading.technical.analysis.candle.TradeCandle;
  */
 public class KorSpot1mCandleOut implements Spot1mCandleOutParam {
 
-    protected String [] exchanges = Markets.getDefaultExchanges(CountryCode.KOR);
+    protected String [] exchanges = Markets.getDefaultMarkets(CountryCode.KOR);
 
     protected final KoreainvestmentApi koreainvestmentApi = KoreainvestmentApi.getInstance();
     protected final KoreainvestmentPeriodDataApi dataApi;

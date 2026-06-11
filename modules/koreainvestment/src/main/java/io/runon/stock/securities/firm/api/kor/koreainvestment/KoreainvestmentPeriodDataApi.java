@@ -421,6 +421,8 @@ public class KoreainvestmentPeriodDataApi {
         }
 
 
+
+
         return response.getMessage();
 
     }
@@ -428,6 +430,9 @@ public class KoreainvestmentPeriodDataApi {
     //최대 100건
     public VolumePowerDaily []  getVolumePowerDailies(String symbol, String marketDivCode , String beginYmd, String endYmd){
         String jsonText = getVolumePowerDailyJsonText(symbol, marketDivCode,beginYmd, endYmd);
+
+        System.out.println(symbol +" " + jsonText);
+
         JSONObject object = new JSONObject(jsonText);
 
         JSONArray array = object.getJSONArray("output2");

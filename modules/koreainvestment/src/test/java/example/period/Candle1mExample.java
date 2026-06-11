@@ -5,7 +5,7 @@ import io.runon.stock.securities.firm.api.kor.koreainvestment.KoreainvestmentApi
 import io.runon.stock.securities.firm.api.kor.koreainvestment.KoreainvestmentPeriodDataApi;
 import io.runon.trading.TradingTimes;
 import io.runon.trading.technical.analysis.candle.TradeCandle;
-import io.runon.trading.technical.analysis.candle.TradeCandles;
+import io.runon.trading.technical.analysis.candle.TradeCandlesGet;
 
 /**
  * @author macle
@@ -31,6 +31,6 @@ public class Candle1mExample {
         System.out.println(candles[1].getVolume());
 
 
-        System.out.println(TradeCandles.sumVolume(candles));
+        System.out.println(TradeCandlesGet.sumVolume(candles));
     }
 }

@@ -15,7 +15,7 @@ public abstract class LsStockDailyOut extends KorSpotDailyOut {
 
     protected final LsApi api = LsApi.getInstance();
 
-    protected String [] exchanges = Markets.getDefaultExchanges(CountryCode.KOR);
+    protected String [] exchanges = Markets.getDefaultMarkets(CountryCode.KOR);
 
 
 

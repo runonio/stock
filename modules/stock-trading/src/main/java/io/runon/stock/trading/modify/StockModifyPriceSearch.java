@@ -46,7 +46,7 @@ public class StockModifyPriceSearch {
     }
 
     public StockModifyPriceSearch(CountryCode countryCode){
-        Stock[] stocks = Stocks.getStocks(Markets.getDefaultExchanges(countryCode));
+        Stock[] stocks = Stocks.getStocks(Markets.getDefaultMarkets(countryCode));
         stockIds = Stocks.getIds(stocks);
 
     }
@@ -98,7 +98,7 @@ public class StockModifyPriceSearch {
 
 
     public static void main(String[] args) {
-        Stock[] stocks = Stocks.getStocks(Markets.getDefaultExchanges(CountryCode.KOR));
+        Stock[] stocks = Stocks.getStocks(Markets.getDefaultMarkets(CountryCode.KOR));
         long beginTime = System.currentTimeMillis() - (Times.DAY_1*1000);
         for(Stock stock : stocks){
             if(stock.getNameKo().contains("현대글로비스")){

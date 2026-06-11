@@ -12,7 +12,7 @@ public class VolumePowerDailyExample {
     public static void main(String[] args) {
 
         KoreainvestmentPeriodDataApi api = KoreainvestmentApi.getInstance().getPeriodDataApi();
-        VolumePowerDaily[] dailies = api.getVolumePowerDailies("005930","J","20240601","20240625");
+        VolumePowerDaily[] dailies = api.getVolumePowerDailies("385550","J","20240601","20240625");
 
         for(VolumePowerDaily daily : dailies){
             System.out.println(daily);

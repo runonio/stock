@@ -14,7 +14,7 @@ import io.runon.trading.technical.analysis.candle.TradeCandle;
  */
 public class UsaSpot1mCandleOut implements Spot1mCandleOutParam {
 
-    protected String [] exchanges = Markets.getDefaultExchanges(CountryCode.USA);
+    protected String [] exchanges = Markets.getDefaultMarkets(CountryCode.USA);
 
     protected final KoreainvestmentApi koreainvestmentApi = KoreainvestmentApi.getInstance();
     protected final KoreainvestmentOverseasPeriodApi dataApi;

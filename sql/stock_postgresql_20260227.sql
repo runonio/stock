@@ -536,6 +536,5 @@ comment on table market is '시장';
          comment on column market.updated_at is '업데이트일시';
 
 
-
 create index idx_market_01
     on market (updated_at desc);

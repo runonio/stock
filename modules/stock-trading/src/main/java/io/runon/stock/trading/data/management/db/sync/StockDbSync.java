@@ -62,6 +62,7 @@ public class StockDbSync {
         timeTableClassList.add(Stock.class);
         timeTableClassList.add(StockGroup.class);
         timeTableClassList.add(StockGroupMap.class);
+        timeTableClassList.add(Market.class);
         timeTableClassList.add(Exchange.class);
 
         timeTableClassList.add(Futures.class);

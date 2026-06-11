@@ -70,14 +70,13 @@ public class KoreainvestmentApi {
 
     private final KoreainvestmentOrderApi orderApi;
 
-    private boolean isActual ;
+    private boolean isActual;
 
-    private long sleepTime = Config.getLong("stock.securities.firm.kor.koreainvestment.sleep.time", 70L);
+    private long sleepTime = Config.getLong("stock.securities.firm.kor.koreainvestment.sleep.time", 1000L);
 
-    private long periodSleepTime = Config.getLong("stock.securities.firm.kor.koreainvestment.period.out.time", 1000L);
+    private long periodSleepTime = Config.getLong("stock.securities.firm.kor.koreainvestment.period.out.time", 1500L);
 
-
-    private long minuteSleepTime = Config.getLong("stock.securities.firm.kor.koreainvestment.minute.out.time", 300L);
+    private long minuteSleepTime = Config.getLong("stock.securities.firm.kor.koreainvestment.minute.out.time", 1000L);
 
     private final ClosedDaysFileOut closedDaysFileOut;
 

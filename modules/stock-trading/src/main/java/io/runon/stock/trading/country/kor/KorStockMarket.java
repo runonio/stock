@@ -1,10 +1,14 @@
 package io.runon.stock.trading.country.kor;
 
+import io.runon.commons.math.BigDecimals;
+import io.runon.commons.utils.time.Times;
 import io.runon.commons.utils.time.YmdUtils;
 import io.runon.trading.CountryCode;
 import io.runon.trading.TradingTimes;
 import io.runon.trading.closed.days.ClosedDays;
 import io.runon.trading.closed.days.ClosedDaysSet;
+
+import java.math.BigDecimal;
 
 /**
  * 한국주식시장
@@ -56,4 +60,18 @@ public class KorStockMarket implements ClosedDays{
     public String getMinCloseDay(){
         return closedDaysSet.getMinYmd();
     }
+
+
+    public static BigDecimal getUpDownLimitPercent(long time){
+
+        int ymd = YmdUtils.getYmdInt(time, Times.KOR_ZONE_ID);
+
+        if(ymd > 20150615){
+            return BigDecimals.DECIMAL_30;
+        }else{
+            return BigDecimals.DECIMAL_15;
+        }
+
+    }
+
 }

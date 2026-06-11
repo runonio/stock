@@ -20,7 +20,7 @@ public abstract class KoreainvestmentDailyOut extends KorSpotDailyOut {
 
     protected final KoreainvestmentPeriodDataApi periodDataApi = koreainvestmentApi.getPeriodDataApi();
 
-    protected String [] exchanges = Markets.getDefaultExchanges(CountryCode.KOR);
+    protected String [] exchanges = Markets.getDefaultMarkets(CountryCode.KOR);
 
     public KoreainvestmentDailyOut(StockPathLastTime stockPathLastTime, PathTimeLine pathTimeLine){
         super(stockPathLastTime, pathTimeLine);
